@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@android:color/background_light">
+
+
+    <TableLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*" android:background="#ff0000">
+    <TableRow android:background="#00ff00" android:layout_margin="2dip">
+        <Button android:id="@+id/button" android:text="+" android:background="#0000ff" android:layout_margin="2dip"/>
+        <TextView android:text="asd"  android:background="#0000ff" android:layout_margin="2dip"/>
+        <TextView android:id="@+id/amount"  android:background="#0000ff" android:layout_margin="2dip"/>
+    </TableRow>
+    </TableLayout>
+</LinearLayout>
