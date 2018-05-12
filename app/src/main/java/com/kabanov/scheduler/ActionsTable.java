@@ -1,13 +1,9 @@
 package com.kabanov.scheduler;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,44 +14,34 @@ public class ActionsTable {
 
     private MainActivity activity;
     private TableLayout table;
-    private View view;
 
 
     public ActionsTable(MainActivity activity) {
         this.activity = activity;
 
 
+        table = getTableLayout();
+    }
+
+    private TableLayout getTableLayout() {
         LayoutInflater inflater = activity.getLayoutInflater();
         View actionsTable = inflater.inflate(R.layout.actions_table, null);
-        table = actionsTable.findViewById(R.id.table);
+        TableLayout table = actionsTable.findViewById(R.id.table);
         ((ViewGroup) table.getParent()).removeView(table);
+        return table;
+    }
 
-        {
-          /*  View view = activity.getLayoutInflater().inflate(R.layout.temp2, null);
-            Button button = view.findViewById(R.id.button);
-            ((ViewGroup) button.getParent()).removeView(button);
-
-
-            LinearLayout content = activity.findViewById(R.id.content_main_layout);
-            content.addView(button);*/
-            //contentMain.addView(button);
-
-        /*LayoutInflater inflater = activity.getLayoutInflater();
-        view = inflater.inflate(R.layout.actions_table, null);
-        table = view.findViewById(R.id.table);*/
-        }
+    private TableRow getTableRowLayout() {
+        View view = activity.getLayoutInflater().inflate(R.layout.actions_table_row, null);
+        TableRow tableRow = view.findViewById(R.id.table_row);
+        ((ViewGroup) tableRow.getParent()).removeView(tableRow);
+        return tableRow;
     }
 
     public void addRow(NewAction action) {
 
         {
-            View view = activity.getLayoutInflater().inflate(R.layout.actions_table_row, null);
-            TableRow tableRow = view.findViewById(R.id.table_row);
-            ((ViewGroup) tableRow.getParent()).removeView(tableRow);
-
-
-            LinearLayout contentMain = activity.findViewById(R.id.table);
-            contentMain.addView(tableRow);
+            table.addView(getTableRowLayout());
         }
 
         //table.addView(createTableRow(action));
