@@ -1,6 +1,5 @@
 package com.kabanov.scheduler;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,18 +38,16 @@ public class ActionsTable {
 
     public void addRow(NewAction action) {
         TableRow tableRow = getTableRowLayout();
+        filTableRow(tableRow, action);
         table.addView(tableRow);
     }
 
-    @NonNull
-    private TextView addText(String text) {
-        TextView textView = new TextView(activity);
-        textView.setText(text);
-        return textView;
+    private void filTableRow(TableRow tableRow, NewAction action) {
+        ((TextView)tableRow.findViewById(R.id.action_name)).setText(action.getName());
+        ((TextView)tableRow.findViewById(R.id.action_due_date)).setText(String.valueOf(action.getDates()));
     }
 
     public TableLayout getActionsTable() {
         return table;
     }
-
 }
