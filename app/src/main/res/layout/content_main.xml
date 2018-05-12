@@ -12,5 +12,6 @@
         android:id="@+id/content_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ececec"
         android:orientation="vertical"></LinearLayout>
 </android.support.constraint.ConstraintLayout>
