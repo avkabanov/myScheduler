@@ -23,7 +23,7 @@ public class ActionsTable {
 
     private TableLayout getTableLayout() {
         LayoutInflater inflater = activity.getLayoutInflater();
-        View actionsTable = inflater.inflate(R.layout.temp, null);
+        View actionsTable = inflater.inflate(R.layout.actions_table_template, null);
         TableLayout table = actionsTable.findViewById(R.id.table);
         ((ViewGroup) table.getParent()).removeView(table);
         table.removeAllViewsInLayout();
@@ -31,7 +31,7 @@ public class ActionsTable {
     }
 
     private TableRow getTableRowLayout() {
-        View view = activity.getLayoutInflater().inflate(R.layout.temp, null);
+        View view = activity.getLayoutInflater().inflate(R.layout.actions_table_template, null);
         TableRow tableRow = view.findViewById(R.id.table_row);
         ((ViewGroup) tableRow.getParent()).removeView(tableRow);
         return tableRow;
