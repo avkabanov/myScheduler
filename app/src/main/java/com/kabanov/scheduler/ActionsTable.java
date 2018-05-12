@@ -18,59 +18,28 @@ public class ActionsTable {
 
     public ActionsTable(MainActivity activity) {
         this.activity = activity;
-
-
         table = getTableLayout();
     }
 
     private TableLayout getTableLayout() {
         LayoutInflater inflater = activity.getLayoutInflater();
-        View actionsTable = inflater.inflate(R.layout.actions_table, null);
+        View actionsTable = inflater.inflate(R.layout.temp, null);
         TableLayout table = actionsTable.findViewById(R.id.table);
         ((ViewGroup) table.getParent()).removeView(table);
+        table.removeAllViewsInLayout();
         return table;
     }
 
     private TableRow getTableRowLayout() {
-        View view = activity.getLayoutInflater().inflate(R.layout.actions_table_row, null);
+        View view = activity.getLayoutInflater().inflate(R.layout.temp, null);
         TableRow tableRow = view.findViewById(R.id.table_row);
         ((ViewGroup) tableRow.getParent()).removeView(tableRow);
         return tableRow;
     }
 
     public void addRow(NewAction action) {
-
-        {
-            table.addView(getTableRowLayout());
-        }
-
-        //table.addView(createTableRow(action));
-    }
-
-/*
-    private View createTableRow(NewAction action) {
-
-
-        TableRow tableRow = new TableRow(activity);
-        tableRow.setBackgroundColor(Color.BLUE);
-        tableRow.setMinimumHeight(500);
-        return tableRow;
-
-    }
-
-*/
-    private View createTableRow(NewAction action) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.actions_table_row, null);
-        View tableRow = view.findViewById(R.id.table_row);
-        ((ViewGroup)tableRow.getParent()).removeView(tableRow);
-
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View actionsTableRowLayout = inflater.inflate(R.layout.actions_table_row, null);
-        //TableRow tableRow = actionsTableRowLayout.findViewById(R.id.table_row);
-        //((TextView)rowView.findViewById(R.id.name)).setText(action.getName());
-//        ((TextView)rowView.findViewById(R.id.finish_time)).setText(action.getDates());
-        return tableRow;
+        TableRow tableRow = getTableRowLayout();
+        table.addView(tableRow);
     }
 
     @NonNull
