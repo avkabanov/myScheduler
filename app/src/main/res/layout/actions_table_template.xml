@@ -11,16 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="@color/TableBgColor"
         android:gravity="top">
 
         <TableRow
             android:id="@+id/table_row"
             android:layout_width="match_parent"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="0dp"
             android:background="#ececec"
             android:minHeight="40dp"
             tools:padding="10dp">
@@ -55,6 +54,14 @@
             </TableRow>
 
         </TableRow>
+
+        <TableRow
+            android:id="@+id/table_row_delimiter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@color/TableBgColor"
+            android:minHeight="1dp" />
 
     </TableLayout>
 
