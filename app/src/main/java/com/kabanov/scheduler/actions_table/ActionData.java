@@ -12,11 +12,13 @@ public class ActionData {
     private String comment;
     private List<Date> executionHistory;
     private Date nextExecutionDate;
+    private Date lastExecutionDate;
 
     public ActionData(String id, String name, int periodicityDays) {
         this.id = id;
         this.name = name;
         this.periodicityDays = periodicityDays;
+        lastExecutionDate = new Date();
         updateNextExecutionDate();
     }
 
@@ -54,7 +56,7 @@ public class ActionData {
 
     private void updateNextExecutionDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+        calendar.setTime(lastExecutionDate);
         calendar.add(Calendar.DATE, periodicityDays);
         nextExecutionDate = calendar.getTime();
     }
@@ -65,5 +67,10 @@ public class ActionData {
 
     public String getId() {
         return id;
+    }
+
+    public void setExecutedAt(Date date) {
+        lastExecutionDate = date;
+        updateNextExecutionDate();
     }
 }

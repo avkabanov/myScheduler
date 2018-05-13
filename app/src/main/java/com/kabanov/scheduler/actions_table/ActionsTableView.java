@@ -19,11 +19,13 @@ public class ActionsTableView {
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
 
     private MainActivity activity;
+    private ActionsTableViewController viewController;
     private TableLayout table;
 
 
-    public ActionsTableView(MainActivity activity) {
+    public ActionsTableView(MainActivity activity, ActionsTableViewController viewController) {
         this.activity = activity;
+        this.viewController = viewController;
         table = getTableLayout();
     }
 
@@ -45,7 +47,15 @@ public class ActionsTableView {
         tableRow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return false;
+                viewController.onActionLongClick(String.valueOf(v.getTag()));
+                return true;
+            }
+        });
+        tableRow.setClickable(true);
+        tableRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewController.onActionClick(String.valueOf(v.getTag()));
             }
         });
         return tableRow;
@@ -60,14 +70,14 @@ public class ActionsTableView {
 
     public void addRow(ActionData action) {
         TableRow tableRow = getTableRowLayout();
-        filTableRow(tableRow, action);
+        fillTableRow(tableRow, action);
         Preconditions.checkNotNull(action.getId());
         tableRow.setTag(action.getId());
         table.addView(tableRow);
         table.addView(getTableRowDelimiter());
     }
 
-    private void filTableRow(TableRow tableRow, ActionData action) {
+    private void fillTableRow(TableRow tableRow, ActionData action) {
         ((TextView) tableRow.findViewById(R.id.action_name)).setText(action.getName());
         ((TextView) tableRow.findViewById(R.id.action_due_date)).setText(
                 formatNextExecutionDate(action.getNextExecutionDate()));
@@ -79,5 +89,10 @@ public class ActionsTableView {
 
     private String formatNextExecutionDate(Date date) {
         return dateFormatter.format(date);
+    }
+
+    public void updateAction(String actionId, ActionData actionData) {
+        TableRow tableRow = getActionsTable().findViewWithTag(actionId);
+        fillTableRow(tableRow, actionData);
     }
 }

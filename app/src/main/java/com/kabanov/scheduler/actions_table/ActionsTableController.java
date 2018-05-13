@@ -5,7 +5,9 @@ import android.widget.TableLayout;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.add_action.NewAction;
 
-public class ActionsTableController {
+import java.util.Date;
+
+public class ActionsTableController implements ActionsTableViewController {
 
     private ActionsTableModel tableModel;
     private ActionsTableView tableView;
@@ -14,7 +16,7 @@ public class ActionsTableController {
     public ActionsTableController(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
 
-        tableView = new ActionsTableView(mainActivity);
+        tableView = new ActionsTableView(mainActivity, this);
         tableModel = new ActionsTableModel();
     }
 
@@ -36,5 +38,20 @@ public class ActionsTableController {
 
     private String generateActionId() {
         return "action" + System.currentTimeMillis();
+    }
+
+    @Override
+    public void onActionClick(String actionId) {
+        tableModel.setExecutionDateTo(actionId, new Date());
+
+        ActionData actionData = tableModel.getAction(actionId);
+        tableView.updateAction(actionId, actionData);
+
+
+    }
+
+    @Override
+    public void onActionLongClick(String actionId) {
+
     }
 }
