@@ -8,49 +8,54 @@ import android.widget.TextView;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.R;
-import com.kabanov.scheduler.utils.Callback;
+import com.kabanov.scheduler.actions_table.ActionData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AddActionDialog {
+public class UpdateActionDialog {
 
     private final MainActivity activity;
-    private View popupView;
+    private final View popupView;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
 
-    public AddActionDialog(MainActivity activity, final Callback<NewAction> callback) {
+
+    public UpdateActionDialog(MainActivity activity, final UpdateActionViewPresenter viewPresenter, final ActionData actionData) {
         this.activity = activity;
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         // Set the dialog title
-        builder.setTitle("Add New Action");
+        builder.setTitle("Edit Action");
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         popupView = inflater.inflate(R.layout.add_action_popup, null);
 
-        ((TextView) popupView.findViewById(R.id.executed_last_time_txt))
-                .setText(formatLastExecutedDate(new Date()));
+        fillPopupView(actionData);
         builder.
                 setView(popupView)
+                .setNeutralButton("Remove", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewPresenter.onActionDeleteBtnPressed(actionData.getId());
+                    }
+                })
                 // Set the action buttons
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        NewAction newAction;
 
                         try {
-                            newAction = getNewAction();
+                            updateActionData(actionData);
                         } catch (ValidationException e) {
                             showErrorDialog(e.getMessage());
-                            
+
                             return;
                         }
-                        callback.onCallback(newAction);
+                        viewPresenter.onActionUpdateBtnPressed(actionData.getId(), actionData);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -60,6 +65,16 @@ public class AddActionDialog {
                 });
 
         builder.create().show();
+    }
+
+
+
+    private void fillPopupView(ActionData actionData) {
+        ((TextView) popupView.findViewById(R.id.executed_last_time_txt))
+                .setText(formatLastExecutedDate(actionData.getLastExecutionDate()));
+
+        ((TextView) popupView.findViewById(R.id.action_name_txt)).setText(actionData.getName());
+        ((TextView) popupView.findViewById(R.id.days_number_txt)).setText(String.valueOf(actionData.getPeriodicityDays()));
     }
 
     private void showErrorDialog(String message) {
@@ -76,7 +91,7 @@ public class AddActionDialog {
                 .show();
     }
 
-    public NewAction getNewAction() throws ValidationException {
+    public void updateActionData(ActionData actionData) throws ValidationException {
         TextView actionName = popupView.findViewById(R.id.action_name_txt);
         TextView actionDate = popupView.findViewById(R.id.days_number_txt);
         TextView lastExecutedDateTV = popupView.findViewById(R.id.executed_last_time_txt);
@@ -90,11 +105,10 @@ public class AddActionDialog {
             throw new ValidationException("Can not parse date: " + dateToParse);
 
         }
-        return new NewAction(
-                actionName.getText().toString(),
-                Integer.parseInt(actionDate.getText().toString()),
-                lastExecutedDate
-        );
+
+        actionData.setName(actionName.getText().toString());
+        actionData.setPeriodicityDays(Integer.parseInt(actionDate.getText().toString()));
+        actionData.setExecutedAt(lastExecutedDate);
 
     }
 
@@ -105,6 +119,4 @@ public class AddActionDialog {
     private Date parseLastExecutedDate(String string) throws ParseException {
         return dateFormatter.parse(string);
     }
-
-
 }

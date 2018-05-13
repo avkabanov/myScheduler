@@ -25,6 +25,7 @@
                 android:ems="10"
                 android:hint="Action Name"
                 android:inputType="text"
+                android:paddingLeft="20dp"
                 tools:clickable="true" />
 
             <EditText
@@ -34,7 +35,36 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Days "
-                android:inputType="date" />
+                android:inputType="date"
+                android:paddingLeft="20dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Executed last time:"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/executed_last_time_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:ems="10" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

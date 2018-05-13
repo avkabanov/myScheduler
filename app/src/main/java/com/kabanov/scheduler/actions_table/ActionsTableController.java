@@ -4,6 +4,8 @@ import android.widget.TableLayout;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.add_action.UpdateActionDialog;
+import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 
 import java.util.Date;
 
@@ -48,12 +50,31 @@ public class ActionsTableController implements ActionsTableViewController {
 
         ActionData actionData = tableModel.getAction(actionId);
         tableView.updateAction(actionId, actionData);
+    }
 
+    private void actionWasRemoved(String actionId) {
+        tableModel.removeAction(actionId);
+        tableView.removeRow(actionId);
+    }
 
+    private void actionWasUpdated(String actionId, ActionData actionData) {
+        tableView.updateAction(actionId, actionData);
     }
 
     @Override
     public void onActionLongClick(String actionId) {
+        ActionData actionData = tableModel.getAction(actionId);
+        new UpdateActionDialog(mainActivity, new UpdateActionViewPresenter() {
+            @Override
+            public void onActionDeleteBtnPressed(String actionId) {
+                ActionsTableController.this.actionWasRemoved(actionId);
+            }
+
+            @Override
+            public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
+                ActionsTableController.this.actionWasUpdated(actionId, actionData);
+            }
+        }, actionData);
 
     }
 }

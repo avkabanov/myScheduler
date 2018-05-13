@@ -106,4 +106,9 @@ public class ActionsTableView {
             tableRow.setBackgroundColor(Color.parseColor("#ececec"));
         }
     }
+
+    public void removeRow(String actionId) {
+        TableRow tableRow = getActionsTable().findViewWithTag(actionId);
+        table.removeView(tableRow);
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ActionData {
 
-    private String id;
+    private final String id;
     private String name;
     private int periodicityDays;
     private String comment;
@@ -78,5 +78,9 @@ public class ActionData {
 
     public boolean isOverdue() {
         return TimeUtils.cutWithDayAcc(nextExecutionDate) < TimeUtils.cutWithDayAcc(new Date());
+    }
+
+    public Date getLastExecutionDate() {
+        return lastExecutionDate;
     }
 }

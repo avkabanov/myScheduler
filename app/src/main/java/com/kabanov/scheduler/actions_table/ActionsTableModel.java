@@ -19,4 +19,8 @@ public class ActionsTableModel {
     public ActionData getAction(String actionId) {
         return actions.get(actionId);
     }
+
+    public void removeAction(String actionId) {
+        actions.remove(actionId);
+    }
 }

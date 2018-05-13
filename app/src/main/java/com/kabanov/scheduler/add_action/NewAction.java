@@ -12,6 +12,12 @@ public class NewAction {
         this.dates = dates;
     }
 
+    public NewAction(String name, int dates, Date lastExecutedDate) {
+        this.name = name;
+        this.dates = dates;
+        this.lastExecutedDate = lastExecutedDate;
+    }
+
     public String getName() {
         return name;
     }
