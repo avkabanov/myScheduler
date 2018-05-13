@@ -1,5 +1,7 @@
 package com.kabanov.scheduler.actions_table;
 
+import com.kabanov.scheduler.utils.TimeUtils;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -72,5 +74,9 @@ public class ActionData {
     public void setExecutedAt(Date date) {
         lastExecutionDate = date;
         updateNextExecutionDate();
+    }
+
+    public boolean isOverdue() {
+        return TimeUtils.cutWithDayAcc(nextExecutionDate) < TimeUtils.cutWithDayAcc(new Date());
     }
 }

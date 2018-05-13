@@ -33,7 +33,9 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     private ActionData createActionData(NewAction action) {
-        return new ActionData(generateActionId(), action.getName(), action.getDates());
+        ActionData actionData = new ActionData(generateActionId(), action.getName(), action.getDates());
+        actionData.setExecutedAt(action.getLastExecutedDate());
+        return actionData;
     }
 
     private String generateActionId() {

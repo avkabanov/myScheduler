@@ -15,6 +15,8 @@ import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.utils.Callback;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActionsTableController actionsTableController;
@@ -48,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        {
+            NewAction action = new NewAction("First", 2);
+            action.setLastExecutedDate(new Date(new Date().getTime() - 10000000000L));
+            actionsTableController.addNewAction(action);
+        }
+
+        {
+            NewAction action = new NewAction("Second", 3);
+            actionsTableController.addNewAction(action);
+        }
+
+
     }
 
     @Override

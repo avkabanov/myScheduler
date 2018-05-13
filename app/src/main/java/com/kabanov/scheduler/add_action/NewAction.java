@@ -1,8 +1,11 @@
 package com.kabanov.scheduler.add_action;
 
+import java.util.Date;
+
 public class NewAction {
     private String name;
     private int dates;
+    private Date lastExecutedDate = new Date();
 
     public NewAction(String name, int dates) {
         this.name = name;
@@ -23,5 +26,13 @@ public class NewAction {
 
     public void setDates(int dates) {
         this.dates = dates;
+    }
+
+    public void setLastExecutedDate(Date lastExecutedDate) {
+        this.lastExecutedDate = lastExecutedDate;
+    }
+
+    public Date getLastExecutedDate() {
+        return lastExecutedDate;
     }
 }

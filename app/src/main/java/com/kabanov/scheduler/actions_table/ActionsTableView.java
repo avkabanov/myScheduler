@@ -1,5 +1,6 @@
 package com.kabanov.scheduler.actions_table;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class ActionsTableView {
     public void addRow(ActionData action) {
         TableRow tableRow = getTableRowLayout();
         fillTableRow(tableRow, action);
+        updateTableRowView(action, tableRow);
         Preconditions.checkNotNull(action.getId());
         tableRow.setTag(action.getId());
         table.addView(tableRow);
@@ -94,5 +96,14 @@ public class ActionsTableView {
     public void updateAction(String actionId, ActionData actionData) {
         TableRow tableRow = getActionsTable().findViewWithTag(actionId);
         fillTableRow(tableRow, actionData);
+        updateTableRowView(actionData, tableRow);
+    }
+
+    private void updateTableRowView(ActionData actionData, TableRow tableRow) {
+        if (actionData.isOverdue()) {
+            tableRow.setBackgroundColor(Color.parseColor("#ee9292"));
+        } else {
+            tableRow.setBackgroundColor(Color.parseColor("#ececec"));
+        }
     }
 }
