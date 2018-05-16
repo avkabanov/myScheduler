@@ -35,8 +35,8 @@ public class UpdateActionDialog {
         popupView = inflater.inflate(R.layout.add_action_popup, null);
 
         fillPopupView(actionData);
-        builder.
-                setView(popupView)
+        builder
+                .setView(popupView)
                 .setNeutralButton("Remove", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

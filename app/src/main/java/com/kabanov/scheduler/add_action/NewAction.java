@@ -4,17 +4,17 @@ import java.util.Date;
 
 public class NewAction {
     private String name;
-    private int dates;
+    private int periodicityDays;
     private Date lastExecutedDate = new Date();
 
-    public NewAction(String name, int dates) {
+    public NewAction(String name, int periodicityDays) {
         this.name = name;
-        this.dates = dates;
+        this.periodicityDays = periodicityDays;
     }
 
-    public NewAction(String name, int dates, Date lastExecutedDate) {
+    public NewAction(String name, int periodicityDays, Date lastExecutedDate) {
         this.name = name;
-        this.dates = dates;
+        this.periodicityDays = periodicityDays;
         this.lastExecutedDate = lastExecutedDate;
     }
 
@@ -26,12 +26,12 @@ public class NewAction {
         this.name = name;
     }
 
-    public int getDates() {
-        return dates;
+    public int getPeriodicityDays() {
+        return periodicityDays;
     }
 
-    public void setDates(int dates) {
-        this.dates = dates;
+    public void setPeriodicityDays(int periodicityDays) {
+        this.periodicityDays = periodicityDays;
     }
 
     public void setLastExecutedDate(Date lastExecutedDate) {

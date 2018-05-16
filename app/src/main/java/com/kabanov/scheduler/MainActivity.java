@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         {
-            NewAction action = new NewAction("First", 2);
+            NewAction action = new NewAction("First", 5);
             action.setLastExecutedDate(new Date(new Date().getTime() - 10000000000L));
             actionsTableController.addNewAction(action);
         }

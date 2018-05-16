@@ -14,4 +14,18 @@ public class TimeUtils {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime().getTime();
     }
+
+    public static void sleepForMillisecond() {
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() == start) {
+            // do nothing
+        }
+    }
+
+    public static Date addDays(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
+    }
 }

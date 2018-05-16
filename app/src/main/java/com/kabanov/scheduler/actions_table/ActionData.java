@@ -2,7 +2,6 @@ package com.kabanov.scheduler.actions_table;
 
 import com.kabanov.scheduler.utils.TimeUtils;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -57,10 +56,7 @@ public class ActionData {
     }
 
     private void updateNextExecutionDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(lastExecutionDate);
-        calendar.add(Calendar.DATE, periodicityDays);
-        nextExecutionDate = calendar.getTime();
+        nextExecutionDate = TimeUtils.addDays(lastExecutionDate, periodicityDays);
     }
 
     public Date getNextExecutionDate() {

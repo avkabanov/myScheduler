@@ -76,7 +76,7 @@ public class ActionsTableView {
         Preconditions.checkNotNull(action.getId());
         tableRow.setTag(action.getId());
         table.addView(tableRow);
-        table.addView(getTableRowDelimiter());
+        //table.addView(getTableRowDelimiter());
     }
 
     private void fillTableRow(TableRow tableRow, ActionData action) {
@@ -110,5 +110,22 @@ public class ActionsTableView {
     public void removeRow(String actionId) {
         TableRow tableRow = getActionsTable().findViewWithTag(actionId);
         table.removeView(tableRow);
+    }
+
+    public void moveRow(int oldIndex, int newIndex) {
+        if (oldIndex == newIndex) return;
+
+        int totalRows = table.getChildCount();
+        View child = table.getChildAt(oldIndex);
+        if (newIndex == totalRows) {
+            table.removeView(child);
+            table.addView(child);
+        } else if (oldIndex < newIndex) {
+            table.addView(child, newIndex);
+            table.removeView(child);
+        } else {
+            table.removeView(child);
+            table.addView(child, newIndex);
+        }
     }
 }
