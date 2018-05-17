@@ -41,4 +41,13 @@ public class NewAction {
     public Date getLastExecutedDate() {
         return lastExecutedDate;
     }
+
+    @Override
+    public String toString() {
+        return "NewAction{" +
+                "name='" + name + '\'' +
+                ", periodicityDays=" + periodicityDays +
+                ", lastExecutedDate=" + lastExecutedDate +
+                '}';
+    }
 }

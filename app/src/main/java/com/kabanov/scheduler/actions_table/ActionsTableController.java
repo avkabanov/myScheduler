@@ -12,8 +12,11 @@ import com.kabanov.scheduler.utils.Utils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ActionsTableController implements ActionsTableViewController {
+
+    private static final Logger logger = Logger.getLogger(ActionsTableController.class.getName());
 
     private ActionsTableModel tableModel;
     private ActionsTableView tableView;
@@ -40,9 +43,10 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     public void addNewAction(NewAction action) {
+        logger.info("Add new action: " + action);
         ActionData actionData = createActionData(action);
+        logger.info("Action id: " + actionData.getId());
 
-        System.out.println("New action added with id: " + actionData.getId());
         tableModel.addAction(actionData);
         tableView.addRow(actionData);
         actionsListInView.add(actionData.getId());
@@ -57,7 +61,7 @@ public class ActionsTableController implements ActionsTableViewController {
 
             moveInActionList(oldIndex, newIndex);
             tableView.moveRow(oldIndex, newIndex);
-            System.out.println("Moving action to index: " + newIndex);
+            logger.info("Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
         }
     }
 
@@ -78,6 +82,7 @@ public class ActionsTableController implements ActionsTableViewController {
 
     @Override
     public void onActionClick(String actionId) {
+        logger.info("On action click: " + actionId);
         updateLastExecutionTime(actionId);
     }
 
@@ -101,6 +106,7 @@ public class ActionsTableController implements ActionsTableViewController {
 
     @Override
     public void onActionLongClick(String actionId) {
+        logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
         new UpdateActionDialog(mainActivity, new UpdateActionViewPresenter() {
             @Override
