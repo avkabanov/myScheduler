@@ -2,10 +2,12 @@ package com.kabanov.scheduler.actions_table;
 
 import com.kabanov.scheduler.utils.TimeUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ActionData {
+public class ActionData implements Serializable {
+    private static final long serialVersionUID = 2348293740919238876L;
 
     private final String id;
     private String name;
@@ -78,5 +80,13 @@ public class ActionData {
 
     public Date getLastExecutionDate() {
         return lastExecutionDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ActionData{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -10,17 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.saver.ActivityStateManager;
 import com.kabanov.scheduler.utils.Callback;
 
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActionsTableController actionsTableController;
     private LinearLayout mainLayout;
+    private ActivityStateManager activityStateManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionsTableController = new ActionsTableController(this);
+        activityStateManager = new ActivityStateManager(getFilesDir());
 
         mainLayout.addView(actionsTableController.getTableView());
 
@@ -61,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
             NewAction action = new NewAction("Second", 3);
             actionsTableController.addNewAction(action);
         }
-
-
     }
 
     @Override
@@ -85,5 +88,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        activityStateManager.saveActions(actionsTableController.getAllActions());
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        List<ActionData> list = activityStateManager.loadActions();
+        actionsTableController.clearAll();
+        for (ActionData actionData : list) {
+            actionsTableController.addNewAction(actionData);
+        }
+        super.onResume();
     }
 }

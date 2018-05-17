@@ -1,7 +1,9 @@
 package com.kabanov.scheduler.actions_table;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActionsTableModel {
@@ -23,4 +25,9 @@ public class ActionsTableModel {
     public void removeAction(String actionId) {
         actions.remove(actionId);
     }
+
+    public List<ActionData> getAllActions() {
+       return new ArrayList<>(actions.values());
+    }
+
 }

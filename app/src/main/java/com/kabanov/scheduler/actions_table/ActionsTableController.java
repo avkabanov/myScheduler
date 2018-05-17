@@ -43,8 +43,12 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     public void addNewAction(NewAction action) {
-        logger.info("Add new action: " + action);
         ActionData actionData = createActionData(action);
+        addNewAction(actionData);
+    }
+
+    public void addNewAction(ActionData actionData) {
+        logger.info("Add new action: " + actionData);
         logger.info("Action id: " + actionData.getId());
 
         tableModel.addAction(actionData);
@@ -121,8 +125,18 @@ public class ActionsTableController implements ActionsTableViewController {
         }, actionData);
     }
 
+    @Override
+    public void clearAll() {
+        for (ActionData action : tableModel.getAllActions()) {
+            tableModel.removeAction(action.getId());
+            tableView.removeRow(action.getId());
+            actionsListInView.remove(action.getId());
+        }
+    }
+
     private int getNewRowPosition(String actionId) {
         long nextDate = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
+        int newPosition;
 
         int i;
         for (i = 0; i < actionsListInView.size(); i++) {
@@ -130,9 +144,41 @@ public class ActionsTableController implements ActionsTableViewController {
             long currNextExecutionDate = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
 
             if (nextDate < currNextExecutionDate) {
-                return i;
+                newPosition = i;
+                break;
             }
         }
-        return i;
+        newPosition = i;
+
+
+        if (actionsListInView.get(newPosition).equals(actionId)) {
+            return newPosition;
+        } else {
+            if (actionId.equals(actionsListInView.get(newPosition - 1))) {
+                return newPosition - 1 - 1; // return old position
+            }
+        }
+
+
+
+
+        // if previous or next element is the same, newPosition is omitted.
+        // if newPosition is in the end and element is the same as the last one
+        /*if (newPosition == actionsListInView.size()) {
+            if (actionId.equals(actionsListInView.get(actionsListInView.size() - 1))) {
+                return actionsListInView.size() - 1; // return old position
+            }
+        } else if(newPosition > 0) {
+            if (actionId.equals(actionsListInView.get(newPosition - 1))) {
+                return newPosition - 1;
+            } else if(actionId.equals(actionsListInView.get(newPosition + 1))) {
+                return newPosition + 1;
+            }
+        }*/
+        return newPosition;
+    }
+
+    public List<ActionData> getAllActions() {
+        return tableModel.getAllActions();
     }
 }

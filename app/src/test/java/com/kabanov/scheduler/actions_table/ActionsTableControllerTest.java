@@ -27,16 +27,16 @@ public class ActionsTableControllerTest {
     private ActionsTableView tableView = mock(ActionsTableView.class);
     private ActionsTableController controller = spy(new ActionsTableController(mainActivity, tableView));
 
-    private List<String> actions = new ArrayList<>();
-    private Map<String, ActionData> map = new HashMap<>();
+    private List<String> viewActionIds = new ArrayList<>();
+    private Map<String, ActionData> mapIdToActionData = new HashMap<>();
 
     {
         Mockito.doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 ActionData actionData = (ActionData) invocation.getArguments()[0];
-                actions.add(actionData.getId());
-                map.put(actionData.getId(), actionData);
+                viewActionIds.add(actionData.getId());
+                mapIdToActionData.put(actionData.getId(), actionData);
                 return null;
             }
         }).when(tableView).addRow(Matchers.<ActionData>anyObject());
@@ -45,8 +45,8 @@ public class ActionsTableControllerTest {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 String id = (String) invocation.getArguments()[0];
-                actions.add(id);
-                map.remove(id);
+                viewActionIds.add(id);
+                mapIdToActionData.remove(id);
                 return null;
             }
         }).when(tableView).removeRow(Matchers.<String>anyObject());
@@ -56,7 +56,7 @@ public class ActionsTableControllerTest {
             public Object answer(InvocationOnMock invocation) {
                 int oldIndex = (Integer)invocation.getArguments()[0];
                 int newIndex = (Integer)invocation.getArguments()[1];
-                Utils.switchElements(oldIndex, newIndex, actions);
+                Utils.switchElements(oldIndex, newIndex, viewActionIds);
                 return null;
             }
         }).when(tableView).moveRow(Matchers.anyInt(), Matchers.anyInt());
@@ -66,16 +66,15 @@ public class ActionsTableControllerTest {
     public void addActionsInNormalOrder() {
         controller.addNewAction(new NewAction("First", 1, new Date()));
         controller.addNewAction(new NewAction("Second", 2, new Date()));
-        Assert.assertEquals(getAction(0).getName(), "First");
-        Assert.assertEquals(getAction(1).getName(), "Second");
+        assertViewOrder("First", "Second");
     }
 
     @Test
     public void addActionsInBackOrder() {
         controller.addNewAction(new NewAction("First", 2, new Date()));
         controller.addNewAction(new NewAction("Second", 1, new Date()));
-        Assert.assertEquals(getAction(0).getName(), "Second");
-        Assert.assertEquals(getAction(1).getName(), "First");
+
+        assertViewOrder("Second", "First");
     }
 
     @Test
@@ -84,11 +83,12 @@ public class ActionsTableControllerTest {
         controller.addNewAction(new NewAction("Second", 2, new Date()));                          // not overdue
 
         // should be sorted like: First, Second. Click on the first one.
-        controller.onActionClick(actions.get(0));
+        assertViewOrder("First", "Second");
+        controller.onActionClick(viewActionIds.get(0));
 
         // should be reordered
-        Assert.assertEquals("Second", getAction(0).getName());
-        Assert.assertEquals("First", getAction(1).getName());
+        assertViewOrder("Second", "First");
+
         // check that next execution date is updated
         Assert.assertEquals(
                 TimeUtils.cutWithDayAcc(addDays(new Date(), 5)),
@@ -96,16 +96,19 @@ public class ActionsTableControllerTest {
 
 
         controller.addNewAction(new NewAction("Third", 3, new Date())); // should be located in the middle
-        Assert.assertEquals("Second", getAction(0).getName());
-        Assert.assertEquals("Third", getAction(1).getName());
-        Assert.assertEquals("First", getAction(2).getName());
+        assertViewOrder("Second", "Third", "First");
     }
 
     @Test
-    public void checkNextExecutionDateOnAddAction() {
+    public void reorderingOnClick() {
+        controller.addNewAction(new NewAction("Second", 3, new Date()));
+        controller.addNewAction(new NewAction("Third", 12, new Date()));
+        controller.addNewAction(new NewAction("First", 43, new Date()));
 
+        assertViewOrder("Second", "Third", "First");
+        controller.onActionClick(viewActionIds.get(0));
 
-
+        assertViewOrder("Second", "Third", "First");
     }
 
 
@@ -117,9 +120,17 @@ public class ActionsTableControllerTest {
     }
 
     ActionData getAction(int index) {
-        String id = actions.get(index);
-        return map.get(id);
+        String id = viewActionIds.get(index);
+        return mapIdToActionData.get(id);
     }
 
+    private void assertViewOrder(String ...names) {
+        for (int i = 0; i < names.length; i++) {
+            String expectedName = names[i];
+            String actualName = mapIdToActionData.get(viewActionIds.get(i)).getName();
+
+            Assert.assertEquals(expectedName, actualName);
+        }
+    }
 
 }
