@@ -61,11 +61,14 @@ public class ActionsTableController implements ActionsTableViewController {
     private void reorderIfRequired(ActionData actionData) {
         if (actionsListInView.size() > 1) {
             int oldIndex = actionsListInView.indexOf(actionData.getId());
+            actionsListInView.remove(oldIndex);
             int newIndex = getNewRowPosition(actionData.getId());
 
-            moveInActionList(oldIndex, newIndex);
-            tableView.moveRow(oldIndex, newIndex);
-            logger.info("Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
+            actionsListInView.add(newIndex, actionData.getId());
+            if (oldIndex != newIndex) {
+                tableView.moveRow(oldIndex, newIndex);
+                logger.info("Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
+            }
         }
     }
 
@@ -135,29 +138,27 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     private int getNewRowPosition(String actionId) {
-        long nextDate = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
-        int newPosition;
+        long nextDateForCurrAction = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
 
         int i;
         for (i = 0; i < actionsListInView.size(); i++) {
             ActionData currAction = tableModel.getAction(actionsListInView.get(i));
-            long currNextExecutionDate = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
+            long nextExecutionDateOfItem = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
 
-            if (nextDate < currNextExecutionDate) {
-                newPosition = i;
-                break;
+            if (nextDateForCurrAction < nextExecutionDateOfItem) {
+                return i;
             }
         }
-        newPosition = i;
+        return i;
 
 
-        if (actionsListInView.get(newPosition).equals(actionId)) {
+       /* if (actionsListInView.get(newPosition).equals(actionId)) {
             return newPosition;
         } else {
             if (actionId.equals(actionsListInView.get(newPosition - 1))) {
                 return newPosition - 1 - 1; // return old position
             }
-        }
+        }*/
 
 
 
@@ -175,7 +176,21 @@ public class ActionsTableController implements ActionsTableViewController {
                 return newPosition + 1;
             }
         }*/
-        return newPosition;
+    }
+
+    private int calculateNewPosition(String actionId) {
+        long nextDate = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
+
+        int i;
+        for (i = 0; i < actionsListInView.size(); i++) {
+            ActionData currAction = tableModel.getAction(actionsListInView.get(i));
+            long currNextExecutionDate = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
+
+            if (nextDate < currNextExecutionDate) {
+                return i;
+            }
+        }
+        return i;
     }
 
     public List<ActionData> getAllActions() {
