@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class TimeUtilsTest {
+public class TimeTestUtilsTest {
 
     @Test
     public void cutWithDayAcc() {

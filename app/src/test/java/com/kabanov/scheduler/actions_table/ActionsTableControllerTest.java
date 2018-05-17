@@ -1,9 +1,9 @@
 package com.kabanov.scheduler.actions_table;
 
 import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.TestUtils;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.utils.TimeUtils;
-import com.kabanov.scheduler.utils.Utils;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class ActionsTableControllerTest {
             public Object answer(InvocationOnMock invocation) {
                 int oldIndex = (Integer)invocation.getArguments()[0];
                 int newIndex = (Integer)invocation.getArguments()[1];
-                Utils.switchElements(oldIndex, newIndex, viewActionIds);
+                TestUtils.switchElements(oldIndex, newIndex, viewActionIds);
                 return null;
             }
         }).when(tableView).moveRow(Matchers.anyInt(), Matchers.anyInt());

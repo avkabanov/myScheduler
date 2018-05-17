@@ -7,7 +7,6 @@ import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.UpdateActionDialog;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.utils.TimeUtils;
-import com.kabanov.scheduler.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,10 +69,6 @@ public class ActionsTableController implements ActionsTableViewController {
                 logger.info("Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
             }
         }
-    }
-
-    private void moveInActionList(int oldIndex, int newIndex) {
-        Utils.switchElements(oldIndex, newIndex, actionsListInView);
     }
 
     private ActionData createActionData(NewAction action) {
@@ -146,47 +141,6 @@ public class ActionsTableController implements ActionsTableViewController {
             long nextExecutionDateOfItem = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
 
             if (nextDateForCurrAction < nextExecutionDateOfItem) {
-                return i;
-            }
-        }
-        return i;
-
-
-       /* if (actionsListInView.get(newPosition).equals(actionId)) {
-            return newPosition;
-        } else {
-            if (actionId.equals(actionsListInView.get(newPosition - 1))) {
-                return newPosition - 1 - 1; // return old position
-            }
-        }*/
-
-
-
-
-        // if previous or next element is the same, newPosition is omitted.
-        // if newPosition is in the end and element is the same as the last one
-        /*if (newPosition == actionsListInView.size()) {
-            if (actionId.equals(actionsListInView.get(actionsListInView.size() - 1))) {
-                return actionsListInView.size() - 1; // return old position
-            }
-        } else if(newPosition > 0) {
-            if (actionId.equals(actionsListInView.get(newPosition - 1))) {
-                return newPosition - 1;
-            } else if(actionId.equals(actionsListInView.get(newPosition + 1))) {
-                return newPosition + 1;
-            }
-        }*/
-    }
-
-    private int calculateNewPosition(String actionId) {
-        long nextDate = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
-
-        int i;
-        for (i = 0; i < actionsListInView.size(); i++) {
-            ActionData currAction = tableModel.getAction(actionsListInView.get(i));
-            long currNextExecutionDate = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
-
-            if (nextDate < currNextExecutionDate) {
                 return i;
             }
         }

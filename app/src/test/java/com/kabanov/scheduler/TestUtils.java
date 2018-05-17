@@ -1,8 +1,8 @@
-package com.kabanov.scheduler.utils;
+package com.kabanov.scheduler;
 
 import java.util.List;
 
-public class Utils {
+public class TestUtils {
     public static void switchElements(int oldIndex, int newIndex, List<String> actionsListInView) {
         if (newIndex == actionsListInView.size()) {
             String id = actionsListInView.remove(oldIndex);
