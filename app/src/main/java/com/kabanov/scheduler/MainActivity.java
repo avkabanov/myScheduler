@@ -14,10 +14,10 @@ import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.saver.ActivityStateManager;
 import com.kabanov.scheduler.utils.Callback;
 
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionsTableController actionsTableController;
     private LinearLayout mainLayout;
     private ActivityStateManager activityStateManager;
+    private ActionController actionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        actionsTableController = new ActionsTableController(this);
+        actionController = new ActionsControllerImpl(this);
+        actionsTableController = new ActionsTableController(this, actionController);
+        actionController.setActionsTableController(actionsTableController);
+
         activityStateManager = new ActivityStateManager(getFilesDir());
 
         mainLayout.addView(actionsTableController.getTableView());
@@ -49,23 +53,16 @@ public class MainActivity extends AppCompatActivity {
                 new AddActionDialog(MainActivity.this, new Callback<NewAction>() {
                    @Override
                    public void onCallback(NewAction action) {
-                       MainActivity.this.actionsTableController.addNewAction(action);
+                       try {
+                           actionController.addActionRequest(action);
+                       } catch (ValidationException e) {
+                           e.printStackTrace();
+                       }
                    }
                });
 
             }
         });
-
-        {
-            NewAction action = new NewAction("First", 5);
-            action.setLastExecutedDate(new Date(new Date().getTime() - 10000000000L));
-            actionsTableController.addNewAction(action);
-        }
-
-        {
-            NewAction action = new NewAction("Second", 3);
-            actionsTableController.addNewAction(action);
-        }
     }
 
     @Override
@@ -92,16 +89,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        activityStateManager.saveActions(actionsTableController.getAllActions());
+        activityStateManager.saveActions(actionController.getAllActions());
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         List<ActionData> list = activityStateManager.loadActions();
-        actionsTableController.clearAll();
+        actionController.clearAll();
         for (ActionData actionData : list) {
-            actionsTableController.addNewAction(actionData);
+            try {
+                actionController.addActionRequest(actionData);
+            } catch (ValidationException e) {
+                e.printStackTrace();
+            }
         }
         super.onResume();
     }

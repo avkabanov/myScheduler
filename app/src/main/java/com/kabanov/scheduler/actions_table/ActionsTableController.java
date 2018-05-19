@@ -2,14 +2,13 @@ package com.kabanov.scheduler.actions_table;
 
 import android.widget.TableLayout;
 
+import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.UpdateActionDialog;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.utils.TimeUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,14 +19,17 @@ public class ActionsTableController implements ActionsTableViewController {
     private ActionsTableModel tableModel;
     private ActionsTableView tableView;
     private MainActivity mainActivity;
+    private final ActionController actionController;
     private List<String> actionsListInView = new ArrayList<>();
 
-    public ActionsTableController(MainActivity mainActivity) {
-        this(mainActivity, null);
+    public ActionsTableController(MainActivity mainActivity, ActionController actionController) {
+        this(mainActivity, null, actionController);
     }
 
-    public ActionsTableController(MainActivity mainActivity, ActionsTableView actionsTableView) {
+    public ActionsTableController(MainActivity mainActivity, ActionsTableView actionsTableView,
+                                  ActionController actionController) {
         this.mainActivity = mainActivity;
+        this.actionController = actionController;
 
         if (actionsTableView == null) {
             tableView = new ActionsTableView(mainActivity, this);
@@ -39,11 +41,6 @@ public class ActionsTableController implements ActionsTableViewController {
 
     public TableLayout getTableView() {
         return tableView.getActionsTable();
-    }
-
-    public void addNewAction(NewAction action) {
-        ActionData actionData = createActionData(action);
-        addNewAction(actionData);
     }
 
     public void addNewAction(ActionData actionData) {
@@ -71,39 +68,10 @@ public class ActionsTableController implements ActionsTableViewController {
         }
     }
 
-    private ActionData createActionData(NewAction action) {
-        ActionData actionData = new ActionData(generateActionId(), action.getName(), action.getPeriodicityDays());
-        actionData.setExecutedAt(action.getLastExecutedDate());
-        return actionData;
-    }
-
-    private String generateActionId() {
-        TimeUtils.sleepForMillisecond();
-        return "action" + System.currentTimeMillis();
-    }
-
     @Override
     public void onActionClick(String actionId) {
         logger.info("On action click: " + actionId);
-        updateLastExecutionTime(actionId);
-    }
-
-    private void updateLastExecutionTime(String actionId) {
-        tableModel.setExecutionDateTo(actionId, new Date());
-        ActionData actionData = tableModel.getAction(actionId);
-        tableView.updateAction(actionId, actionData);
-        reorderIfRequired(actionData);
-    }
-
-    private void actionWasRemoved(String actionId) {
-        tableModel.removeAction(actionId);
-        tableView.removeRow(actionId);
-        actionsListInView.remove(actionId);
-    }
-
-    private void actionWasUpdated(String actionId, ActionData actionData) {
-        tableView.updateAction(actionId, actionData);
-        reorderIfRequired(actionData);
+        actionController.updateLastExecutionTimeRequest(actionId);
     }
 
     @Override
@@ -113,12 +81,12 @@ public class ActionsTableController implements ActionsTableViewController {
         new UpdateActionDialog(mainActivity, new UpdateActionViewPresenter() {
             @Override
             public void onActionDeleteBtnPressed(String actionId) {
-                ActionsTableController.this.actionWasRemoved(actionId);
+                actionController.removeActionRequest(actionId);
             }
 
             @Override
             public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
-                ActionsTableController.this.actionWasUpdated(actionId, actionData);
+                actionController.updateActionRequest(actionId, actionData);
             }
         }, actionData);
     }
@@ -147,7 +115,14 @@ public class ActionsTableController implements ActionsTableViewController {
         return i;
     }
 
-    public List<ActionData> getAllActions() {
-        return tableModel.getAllActions();
+    public void removeAction(String actionId) {
+        tableModel.removeAction(actionId);
+        tableView.removeRow(actionId);
+        actionsListInView.remove(actionId);
+    }
+
+    public void updateAction(String actionId, ActionData actionData) {
+        tableView.updateAction(actionId, actionData);
+        reorderIfRequired(actionData);
     }
 }

@@ -1,8 +1,11 @@
 package com.kabanov.scheduler.actions_table;
 
+import com.kabanov.scheduler.ActionController;
+import com.kabanov.scheduler.ActionsControllerImpl;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.TestUtils;
 import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.utils.TimeUtils;
 
 import org.junit.Assert;
@@ -25,12 +28,15 @@ import static org.mockito.Mockito.spy;
 public class ActionsTableControllerTest {
     private MainActivity mainActivity = mock(MainActivity.class);
     private ActionsTableView tableView = mock(ActionsTableView.class);
-    private ActionsTableController controller = spy(new ActionsTableController(mainActivity, tableView));
+
+    private ActionController actionController = new ActionsControllerImpl(mainActivity);
+    private ActionsTableController controller = spy(new ActionsTableController(mainActivity, tableView, actionController));
 
     private List<String> viewActionIds = new ArrayList<>();
     private Map<String, ActionData> mapIdToActionData = new HashMap<>();
 
     {
+        actionController.setActionsTableController(controller);
         Mockito.doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) {
@@ -63,24 +69,24 @@ public class ActionsTableControllerTest {
     }
 
     @Test
-    public void addActionsInNormalOrder() {
-        controller.addNewAction(new NewAction("First", 1, new Date()));
-        controller.addNewAction(new NewAction("Second", 2, new Date()));
+    public void addActionsInNormalOrder() throws ValidationException {
+        actionController.addActionRequest(new NewAction("First", 1, new Date()));
+        actionController.addActionRequest(new NewAction("Second", 2, new Date()));
         assertViewOrder("First", "Second");
     }
 
     @Test
-    public void addActionsInBackOrder() {
-        controller.addNewAction(new NewAction("First", 2, new Date()));
-        controller.addNewAction(new NewAction("Second", 1, new Date()));
+    public void addActionsInBackOrder() throws ValidationException {
+        actionController.addActionRequest(new NewAction("First", 2, new Date()));
+        actionController.addActionRequest(new NewAction("Second", 1, new Date()));
 
         assertViewOrder("Second", "First");
     }
 
     @Test
-    public void reorderActionsOnUpdate() {
-        controller.addNewAction(new NewAction("First", 5, addDays(new Date(),  -10)));     // hardly overdue
-        controller.addNewAction(new NewAction("Second", 2, new Date()));                          // not overdue
+    public void reorderActionsOnUpdate() throws ValidationException {
+        actionController.addActionRequest(new NewAction("First", 5, addDays(new Date(),  -10)));     // hardly overdue
+        actionController.addActionRequest(new NewAction("Second", 2, new Date()));                          // not overdue
 
         // should be sorted like: First, Second. Click on the first one.
         assertViewOrder("First", "Second");
@@ -95,15 +101,15 @@ public class ActionsTableControllerTest {
                 TimeUtils.cutWithDayAcc(getAction(1).getNextExecutionDate()));
 
 
-        controller.addNewAction(new NewAction("Third", 3, new Date())); // should be located in the middle
+        actionController.addActionRequest(new NewAction("Third", 3, new Date())); // should be located in the middle
         assertViewOrder("Second", "Third", "First");
     }
 
     @Test
-    public void reorderingOnClick() {
-        controller.addNewAction(new NewAction("Second", 3, new Date()));
-        controller.addNewAction(new NewAction("Third", 12, new Date()));
-        controller.addNewAction(new NewAction("First", 43, new Date()));
+    public void reorderingOnClick() throws ValidationException {
+        actionController.addActionRequest(new NewAction("Second", 3, new Date()));
+        actionController.addActionRequest(new NewAction("Third", 12, new Date()));
+        actionController.addActionRequest(new NewAction("First", 43, new Date()));
 
         assertViewOrder("Second", "Third", "First");
         controller.onActionClick(viewActionIds.get(0));
@@ -119,7 +125,7 @@ public class ActionsTableControllerTest {
         return calendar.getTime();
     }
 
-    ActionData getAction(int index) {
+    private ActionData getAction(int index) {
         String id = viewActionIds.get(index);
         return mapIdToActionData.get(id);
     }

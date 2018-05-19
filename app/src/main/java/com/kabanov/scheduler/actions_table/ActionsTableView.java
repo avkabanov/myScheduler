@@ -113,7 +113,6 @@ public class ActionsTableView {
 
     public void moveRow(int oldIndex, int newIndex) {
         if (oldIndex == newIndex) return;
-        System.out.println(Thread.currentThread().getName());
         int totalRows = table.getChildCount();
         View child = table.getChildAt(oldIndex);
         if (newIndex == totalRows) {
