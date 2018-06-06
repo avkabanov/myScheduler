@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.kabanov.scheduler.MainActivity;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -16,9 +17,20 @@ public class NotificationController {
 
     public NotificationController(MainActivity activity) {
         this.activity = activity;
+        setPeriodicalAlarmService();
     }
 
-    public void setNotification() {
+    private Date getAt10AMGivenDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 10);
+        return calendar.getTime();
+    }
+
+    private void setPeriodicalAlarmService() {
         Calendar calendar = Calendar.getInstance();
 
 
@@ -27,10 +39,11 @@ public class NotificationController {
         //calendar.set(Calendar.YEAR, 2016);
         //calendar.set(Calendar.DAY_OF_MONTH, 18);
 
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        calendar.set(Calendar.MINUTE, 27);
+        calendar.setTime(new Date());
+        //calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 11);
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM,Calendar.AM);
+        //calendar.set(Calendar.AM_PM,Calendar.AM);
 
         Intent myIntent = new Intent(activity, MyReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);

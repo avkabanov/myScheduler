@@ -5,16 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.kabanov.scheduler.MainActivity;
+
 public class MyReceiver extends BroadcastReceiver {
+
+
     @Override
     public void onReceive(Context context, Intent intent)
     {
-      /*Intent service1 = new Intent(context, MyAlarmService.class);
-        context.startService(service1);*/
         Log.i("App", "called receiver method");
-        try{
-            NotificationManager2.generateNotification(context);
-        }catch(Exception e){
+        int overdueActionsCount = MainActivity.instance.getActionController().
+                getAllOverdueActions().size();
+        // TODO this line should be uncommented
+        /*
+        if (overdueActionsCount == 0) {
+            return;
+        }*/
+        try {
+            NotificationGenerator.generateNotification(context, overdueActionsCount);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

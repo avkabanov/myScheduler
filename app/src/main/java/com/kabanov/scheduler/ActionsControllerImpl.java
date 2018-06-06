@@ -1,5 +1,9 @@
 package com.kabanov.scheduler;
 
+import android.support.annotation.Nullable;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.NewAction;
@@ -15,14 +19,11 @@ import java.util.Map;
 
 public class ActionsControllerImpl implements ActionController {
 
-    private final MainActivity mainActivity;
     private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
     private ActionsTableController actionsTableController;
-    private NotificationController notifications;
 
     public ActionsControllerImpl(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-        notifications = new NotificationController(mainActivity);
+        new NotificationController(mainActivity);
     }
 
     public void setActionsTableController(ActionsTableController actionsTableController) {
@@ -66,6 +67,18 @@ public class ActionsControllerImpl implements ActionController {
     public void clearAll() {
         actionIdToActionMap.clear();
         actionsTableController.clearAll();
+    }
+
+    @Override
+    public List<ActionData> getAllOverdueActions() {
+        return FluentIterable.from(actionIdToActionMap.values())
+                .filter(new Predicate<ActionData>() {
+                    @Override
+                    public boolean apply(@Nullable ActionData input) {
+                        return input != null && input.isOverdue();
+                    }
+                })
+                .toList();
     }
 
     private ActionData createActionData(NewAction action) {

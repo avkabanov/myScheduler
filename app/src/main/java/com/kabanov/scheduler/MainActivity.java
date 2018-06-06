@@ -22,25 +22,25 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActionsTableController actionsTableController;
-    private LinearLayout mainLayout;
     private ActivityStateManager activityStateManager;
     private ActionController actionController;
+    public static MainActivity instance;
+    {
+        instance = this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainLayout = findViewById(R.id.content_main_layout);
+        LinearLayout mainLayout = findViewById(R.id.content_main_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionController = new ActionsControllerImpl(this);
-        actionsTableController = new ActionsTableController(this, actionController);
+        ActionsTableController actionsTableController = new ActionsTableController(this, actionController);
         actionController.setActionsTableController(actionsTableController);
-
         activityStateManager = new ActivityStateManager(getFilesDir());
-
         mainLayout.addView(actionsTableController.getTableView());
 
         final FloatingActionButton fab = findViewById(R.id.fab);
@@ -105,5 +105,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onResume();
+    }
+
+    public ActionController getActionController() {
+        return actionController;
     }
 }
