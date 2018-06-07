@@ -16,6 +16,7 @@ public class ActionData implements Serializable {
     private List<Date> executionHistory;
     private Date nextExecutionDate;
     private Date lastExecutionDate;
+    private Date lastUpdateExecutionTime;
 
     public ActionData(String id, String name, int periodicityDays) {
         this.id = id;
@@ -80,6 +81,14 @@ public class ActionData implements Serializable {
 
     public Date getLastExecutionDate() {
         return lastExecutionDate;
+    }
+
+    public Date getLastUpdateExecutionTime() {
+        return lastUpdateExecutionTime;
+    }
+
+    public void setLastUpdateExecutionTime(Date lastUpdateExecutionTime) {
+        this.lastUpdateExecutionTime = lastUpdateExecutionTime;
     }
 
     @Override

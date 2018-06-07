@@ -1,6 +1,7 @@
 package com.kabanov.scheduler;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ActionsControllerImpl implements ActionController {
 
@@ -51,12 +53,26 @@ public class ActionsControllerImpl implements ActionController {
     @Override
     public void updateActionRequest(String actionId, ActionData actionData) {
         actionsTableController.updateAction(actionId, actionData);
+        actionData.setLastUpdateExecutionTime(null);
     }
 
     @Override
     public void updateLastExecutionTimeRequest(String actionId) {
-        actionIdToActionMap.get(actionId).setExecutedAt(new Date());
-        updateActionRequest(actionId, actionIdToActionMap.get(actionId));
+        ActionData action = actionIdToActionMap.get(actionId);
+        if (actionCanBeUpdated(action)) {
+            action.setExecutedAt(new Date());
+            action.setLastUpdateExecutionTime(new Date());
+            updateActionRequest(actionId, actionIdToActionMap.get(actionId));
+        } else {
+            Log.d("ActionControllerImpl", "Update last execution time for action "
+                    + actionId + " is spamming");
+        }
+    }
+
+    // update should fire not more often than once per 1 minute. Otherwise that will not make sense
+    private boolean actionCanBeUpdated(ActionData action) {
+        return action.getLastUpdateExecutionTime() != null &&
+                new Date().getTime() - action.getLastUpdateExecutionTime().getTime() > TimeUnit.MINUTES.toMillis(1);
     }
 
     @Override
