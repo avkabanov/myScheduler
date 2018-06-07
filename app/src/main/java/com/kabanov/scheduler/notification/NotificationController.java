@@ -2,12 +2,14 @@ package com.kabanov.scheduler.notification;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 
 import com.kabanov.scheduler.MainActivity;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -17,7 +19,7 @@ public class NotificationController {
 
     public NotificationController(MainActivity activity) {
         this.activity = activity;
-        setPeriodicalAlarmService();
+        setPeriodicalAlarmService(activity);
     }
 
     private Date getAt10AMGivenDay(Date date) {
@@ -30,7 +32,16 @@ public class NotificationController {
         return calendar.getTime();
     }
 
-    private void setPeriodicalAlarmService() {
+    public static void setPeriodicalAlarmService(Context activity) {
+        Intent myIntent = new Intent(activity, MyReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
+
+        alarmManager.setRepeating(AlarmManager.RTC, new Date().getTime(), TimeUnit.SECONDS.toMillis(30), pendingIntent );
+
+    }
+
+    private void setSingleAlarm() {
         Calendar calendar = Calendar.getInstance();
 
 

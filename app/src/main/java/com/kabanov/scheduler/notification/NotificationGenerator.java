@@ -44,10 +44,8 @@ public class NotificationGenerator {
 
         nb.setContentIntent(resultPendingIntent);
         nb.setAutoCancel(true);
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
 
+        // mId allows you to update the notification later on.
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(11221, nb.build());
