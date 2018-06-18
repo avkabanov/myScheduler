@@ -71,7 +71,8 @@ public class ActionsControllerImpl implements ActionController {
 
     // update should fire not more often than once per 1 minute. Otherwise that will not make sense
     private boolean actionCanBeUpdated(ActionData action) {
-        return action.getLastUpdateExecutionTime() != null &&
+        return action.getLastUpdateExecutionTime() == null ||
+                action.getLastUpdateExecutionTime() != null &&
                 new Date().getTime() - action.getLastUpdateExecutionTime().getTime() > TimeUnit.MINUTES.toMillis(1);
     }
 
