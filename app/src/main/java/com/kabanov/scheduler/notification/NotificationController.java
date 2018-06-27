@@ -4,17 +4,19 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.kabanov.scheduler.MainActivity;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import static android.content.Context.ALARM_SERVICE;
 
 public class NotificationController {
+
+    private static final Logger logger = Logger.getLogger(NotificationController.class.getName());
 
     private MainActivity activity;
 
@@ -34,13 +36,14 @@ public class NotificationController {
     }
 
     public static void setPeriodicalAlarmService(Context activity) {
+        logger.info("Setting alarm service");
         Intent myIntent = new Intent(activity, MyReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
 
         alarmManager.setRepeating(AlarmManager.RTC, new Date().getTime(), TimeUnit.SECONDS.toMillis(30), pendingIntent );
 
-        Log.i("MainActivity","Set alarm manager to fire");
+        logger.info("Set alarm manager to fire");
     }
 
     private void setSingleAlarm() {

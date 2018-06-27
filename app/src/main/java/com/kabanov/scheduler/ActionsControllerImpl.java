@@ -1,10 +1,5 @@
 package com.kabanov.scheduler;
 
-import android.support.annotation.Nullable;
-import android.util.Log;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.NewAction;
@@ -18,8 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ActionsControllerImpl implements ActionController {
+
+    private static final Logger logger = Logger.getLogger(ActionsControllerImpl.class.getName());
 
     private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
     private ActionsTableController actionsTableController;
@@ -33,7 +32,7 @@ public class ActionsControllerImpl implements ActionController {
     }
 
     @Override
-    public void addActionRequest(ActionData actionData) throws ValidationException {
+    public void addActionRequest(ActionData actionData) {
         actionIdToActionMap.put(actionData.getId(), actionData);
         actionsTableController.addNewAction(actionData);
     }
@@ -64,7 +63,7 @@ public class ActionsControllerImpl implements ActionController {
             action.setLastUpdateExecutionTime(new Date());
             updateActionRequest(actionId, actionIdToActionMap.get(actionId));
         } else {
-            Log.d("ActionControllerImpl", "Update last execution time for action "
+            logger.info("Update last execution time for action "
                     + actionId + " is spamming");
         }
     }
@@ -88,14 +87,7 @@ public class ActionsControllerImpl implements ActionController {
 
     @Override
     public List<ActionData> getAllOverdueActions() {
-        return FluentIterable.from(actionIdToActionMap.values())
-                .filter(new Predicate<ActionData>() {
-                    @Override
-                    public boolean apply(@Nullable ActionData input) {
-                        return input != null && input.isOverdue();
-                    }
-                })
-                .toList();
+        return actionIdToActionMap.values().stream().filter(input -> input != null && input.isOverdue()).collect(Collectors.toList());
     }
 
     private ActionData createActionData(NewAction action) {

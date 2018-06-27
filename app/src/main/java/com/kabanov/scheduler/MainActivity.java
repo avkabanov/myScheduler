@@ -21,8 +21,11 @@ import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final Logger logger = Logger.getLogger(MainActivity.class.getName());
 
     private ActivityStateManager activityStateManager;
     private ActionController actionController;
@@ -108,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        logger.info("Actions loaded: " + list.size());
         super.onResume();
     }
 

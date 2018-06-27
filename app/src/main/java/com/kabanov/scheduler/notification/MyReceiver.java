@@ -3,28 +3,31 @@ package com.kabanov.scheduler.notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.saver.ActivityStateManager;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MyReceiver extends BroadcastReceiver {
+
+    private static final Logger logger = Logger.getLogger(MyReceiver.class.getName());
+
 
     private static List<ActionData> cache;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("App", "called receiver method");
+        logger.info("called receiver method");
 
         if (context == null) return;
 
         if (intent.getAction() != null) {
             if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
                 // Set the alarm here.
-                Log.d(MyReceiver.class.getName(), "onReceive: BOOT_COMPLETED");
+                logger.info("onReceive: BOOT_COMPLETED");
                 NotificationController.setPeriodicalAlarmService(context);
             }
         }
@@ -32,7 +35,7 @@ public class MyReceiver extends BroadcastReceiver {
         int overdueActionsCount = 0;
         if (MainActivity.instance == null) {
             if (cache == null) {
-                Log.d("MyReceiver", "Loading activities from persistence");
+                logger.info("Loading activities from persistence");
                 ActivityStateManager activityStateManager = new ActivityStateManager(context.getFilesDir());
                 cache = activityStateManager.loadActions();
             }
@@ -47,7 +50,7 @@ public class MyReceiver extends BroadcastReceiver {
                     getAllOverdueActions().size();
         }
 
-        Log.d("MyReceiver", "Showing notification with overdue actions count: " +
+        logger.info("Showing notification with overdue actions count: " +
                 overdueActionsCount);
         // TODO this line should be uncommented
         /*
