@@ -7,16 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.AddActionDialog;
-import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.saver.ActivityStateManager;
-import com.kabanov.scheduler.utils.Callback;
 
 import org.acra.ACRA;
 import org.acra.config.CoreConfigurationBuilder;
@@ -49,24 +46,19 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.addView(actionsTableController.getTableView());
 
         final FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        fab.setOnClickListener(view -> {
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
 
-                new AddActionDialog(MainActivity.this, new Callback<NewAction>() {
-                   @Override
-                   public void onCallback(NewAction action) {
-                       try {
-                           actionController.addActionRequest(action);
-                       } catch (ValidationException e) {
-                           e.printStackTrace();
-                       }
-                   }
-               });
-            }
+            new AddActionDialog(MainActivity.this, action -> {
+                try {
+                    actionController.addActionRequest(action);
+                } catch (ValidationException e) {
+                    e.printStackTrace();
+                }
+            });
         });
+        initAcra();
     }
 
     @Override
@@ -82,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        initAcra();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             throw new RuntimeException("test exceotion");
