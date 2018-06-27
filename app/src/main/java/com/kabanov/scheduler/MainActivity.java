@@ -18,6 +18,11 @@ import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.saver.ActivityStateManager;
 import com.kabanov.scheduler.utils.Callback;
 
+import org.acra.ACRA;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.MailSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,13 +82,22 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        initAcra();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            throw new RuntimeException("test exceotion");
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initAcra() {
+        CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this);
+        builder.setBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.JSON);
+        builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setEnabled(true);
+        builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(false);
+        builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setMailTo("mrnuke@yandex.ru");
+        ACRA.init(this.getApplication(), builder);
     }
 
     @Override

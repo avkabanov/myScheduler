@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.kabanov.scheduler.MainActivity;
 
@@ -39,6 +40,7 @@ public class NotificationController {
 
         alarmManager.setRepeating(AlarmManager.RTC, new Date().getTime(), TimeUnit.SECONDS.toMillis(30), pendingIntent );
 
+        Log.i("MainActivity","Set alarm manager to fire");
     }
 
     private void setSingleAlarm() {
