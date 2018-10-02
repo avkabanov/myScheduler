@@ -1,7 +1,5 @@
 package com.kabanov.scheduler.saver;
 
-import com.kabanov.scheduler.actions_table.ActionData;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kabanov.scheduler.actions_table.ActionData;
 
 public class ActivityStateManager {
     public static final String ACTIVITIES_STORAGE_FILENAME = "activities.dat";
@@ -64,11 +64,7 @@ public class ActivityStateManager {
             } else {
                 System.out.println("File not found. Skipping");
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return result;

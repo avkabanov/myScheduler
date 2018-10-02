@@ -1,5 +1,19 @@
 package com.kabanov.scheduler;
 
+import java.util.List;
+
+import org.acra.ACRA;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.MailSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
+
+import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.actions_table.ActionsTableController;
+import com.kabanov.scheduler.add_action.AddActionDialog;
+import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.saver.ActivityStateManager;
+import com.kabanov.scheduler.utils.Logger;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,20 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-
-import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.AddActionDialog;
-import com.kabanov.scheduler.add_action.ValidationException;
-import com.kabanov.scheduler.saver.ActivityStateManager;
-
-import org.acra.ACRA;
-import org.acra.config.CoreConfigurationBuilder;
-import org.acra.config.MailSenderConfigurationBuilder;
-import org.acra.data.StringFormat;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
             });
         });
         initAcra();
+        logger.debug("onCreate");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        logger.debug("OnStart");
     }
 
     @Override
@@ -79,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            throw new RuntimeException("test exceotion");
+            throw new RuntimeException("test exceotion 1");
         }
 
         return super.onOptionsItemSelected(item);
@@ -102,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        logger.debug("On Resume");
+        actionController.setNotificationController();
+        
         List<ActionData> list = activityStateManager.loadActions();
         actionController.clearAll();
         for (ActionData actionData : list) {

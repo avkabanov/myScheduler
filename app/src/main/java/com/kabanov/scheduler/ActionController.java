@@ -1,13 +1,15 @@
 package com.kabanov.scheduler;
 
+import java.util.List;
+
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.ValidationException;
 
-import java.util.List;
-
 public interface ActionController {
+
+    void setNotificationController();
 
     void setActionsTableController(ActionsTableController actionsTableController);
 

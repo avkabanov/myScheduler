@@ -1,15 +1,15 @@
 package com.kabanov.scheduler.notification;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+import java.util.List;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.saver.ActivityStateManager;
+import com.kabanov.scheduler.utils.Logger;
 
-import java.util.List;
-import java.util.logging.Logger;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 
 public class MyReceiver extends BroadcastReceiver {
 

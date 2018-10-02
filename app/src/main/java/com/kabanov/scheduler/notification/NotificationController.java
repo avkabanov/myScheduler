@@ -1,18 +1,17 @@
 package com.kabanov.scheduler.notification;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.utils.Logger;
+
+import static android.content.Context.ALARM_SERVICE;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
-import com.kabanov.scheduler.MainActivity;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-
-import static android.content.Context.ALARM_SERVICE;
 
 public class NotificationController {
 

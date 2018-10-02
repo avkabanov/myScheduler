@@ -1,12 +1,5 @@
 package com.kabanov.scheduler;
 
-import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.NewAction;
-import com.kabanov.scheduler.add_action.ValidationException;
-import com.kabanov.scheduler.notification.NotificationController;
-import com.kabanov.scheduler.utils.TimeUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,17 +9,34 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.actions_table.ActionsTableController;
+import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.notification.NotificationController;
+import com.kabanov.scheduler.utils.TimeUtils;
+
+import android.util.Log;
+
 public class ActionsControllerImpl implements ActionController {
 
     private static final Logger logger = Logger.getLogger(ActionsControllerImpl.class.getName());
 
     private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
     private ActionsTableController actionsTableController;
+    private MainActivity mainActivity;
 
     public ActionsControllerImpl(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
+    
+    @Override
+    public void setNotificationController() {
         new NotificationController(mainActivity);
+        Log.d("MainActivity","notification controller is set");
     }
 
+    @Override
     public void setActionsTableController(ActionsTableController actionsTableController) {
         this.actionsTableController = actionsTableController;
     }

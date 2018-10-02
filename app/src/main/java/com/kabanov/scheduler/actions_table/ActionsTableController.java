@@ -1,16 +1,16 @@
 package com.kabanov.scheduler.actions_table;
 
-import android.widget.TableLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.add_action.UpdateActionDialog;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
+import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import android.widget.TableLayout;
 
 public class ActionsTableController implements ActionsTableViewController {
 
