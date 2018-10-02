@@ -12,6 +12,7 @@ import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.saver.ActivityStateManager;
+import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         LinearLayout mainLayout = findViewById(R.id.content_main_layout);
 
+        Log4jHelper.configureLog4j(getFilesDir());
+        
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionController = new ActionsControllerImpl(this);
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAcra() {
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder(this);
         builder.setBuildConfigClass(BuildConfig.class).setReportFormat(StringFormat.JSON);
+        builder.setBuildConfigClass(BuildConfig.class).setApplicationLogFileLines(1000);
         builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setEnabled(true);
         builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setReportAsFile(false);
         builder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).setMailTo("mrnuke@yandex.ru");
@@ -112,7 +116,10 @@ public class MainActivity extends AppCompatActivity {
         logger.debug("On Resume");
         actionController.setNotificationController();
         
+        logger.debug("Starting loading actions");
         List<ActionData> list = activityStateManager.loadActions();
+        logger.debug("Actions loaded " + list.size());
+
         actionController.clearAll();
         for (ActionData actionData : list) {
             try {
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        logger.info("Actions loaded: " + list.size());
+        logger.info("Actions added: " + list.size());
         super.onResume();
     }
 

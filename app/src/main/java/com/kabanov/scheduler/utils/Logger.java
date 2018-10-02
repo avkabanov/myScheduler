@@ -19,8 +19,6 @@ public class Logger {
   private Logger(String tag) {
     this.tag = tag;
     log4jLogger = org.apache.log4j.Logger.getLogger(tag);
-    Log4jHelper.configureLog4j();
-
     javaUtilLogger = java.util.logging.Logger.getLogger(tag);
   }
 

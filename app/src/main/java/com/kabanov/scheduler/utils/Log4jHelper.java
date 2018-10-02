@@ -1,5 +1,7 @@
 package com.kabanov.scheduler.utils;
 
+import java.io.File;
+
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 /**
@@ -9,13 +11,10 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
 public class Log4jHelper {
   private final static LogConfigurator mLogConfigrator = new LogConfigurator();
 
-  static {
-    configureLog4j();
-  }
 
-  public static void configureLog4j() {
+  public static void configureLog4j(File filesDir) {
     //String fileName = Environment.getExternalStorageDirectory() + "/" + "log4j.log";
-    String fileName = "log4j.log";
+    String fileName = filesDir.getAbsolutePath() + System.lineSeparator() + "log4j.log";
     String filePattern = "%d - [%c] - %p : %m%n";
     int maxBackupSize = 10;
     long maxFileSize = 1024 * 1024;
