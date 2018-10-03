@@ -24,14 +24,14 @@ public class NotificationController {
         setPeriodicalAlarmService(activity);
     }
 
-    private Date getAt10AMGivenDay(Date date) {
+    private static long getAt10AM() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime(new Date());
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 10);
-        return calendar.getTime();
+        return calendar.getTime().getTime();
     }
 
     public static void setPeriodicalAlarmService(Context activity) {
@@ -39,8 +39,7 @@ public class NotificationController {
         Intent myIntent = new Intent(activity, MyReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
-
-        alarmManager.setRepeating(AlarmManager.RTC, new Date().getTime(), TimeUnit.SECONDS.toMillis(30), pendingIntent );
+        alarmManager.setRepeating(AlarmManager.RTC, getAt10AM(), TimeUnit.DAYS.toMillis(1), pendingIntent );
 
         logger.info("Set alarm manager to fire");
     }
