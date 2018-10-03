@@ -18,13 +18,16 @@ public class NotificationController {
     private static final Logger logger = Logger.getLogger(NotificationController.class.getName());
 
     private MainActivity activity;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    
 
     public NotificationController(MainActivity activity) {
         this.activity = activity;
         setPeriodicalAlarmService(activity);
     }
 
-    private static long getAt10AM() {
+    private long getAt10AM() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.MILLISECOND, 0);
@@ -34,20 +37,25 @@ public class NotificationController {
         return calendar.getTime().getTime();
     }
 
-    public static void setPeriodicalAlarmService(Context activity) {
+    public void setPeriodicalAlarmService(Context activity) {
         logger.info("Setting alarm service");
         Intent myIntent = new Intent(activity, MyReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, getAt10AM(), TimeUnit.DAYS.toMillis(1), pendingIntent );
+        
+        pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
+        alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, getAt10AM(), TimeUnit.DAYS.toMillis(1), pendingIntent);
 
         logger.info("Set alarm manager to fire");
     }
 
+    public void stopAlarmService() {
+        logger.debug("Stopping alarm service");
+        alarmManager.cancel(pendingIntent);
+        logger.debug("Alarm service stopped");
+    }
+
     private void setSingleAlarm() {
         Calendar calendar = Calendar.getInstance();
-
-
 
         //calendar.set(Calendar.MONTH, 8);
         //calendar.set(Calendar.YEAR, 2016);
@@ -62,7 +70,7 @@ public class NotificationController {
         Intent myIntent = new Intent(activity, MyReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
 
-        AlarmManager alarmManager = (AlarmManager)activity.getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 }
