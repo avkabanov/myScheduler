@@ -9,8 +9,6 @@ import com.kabanov.scheduler.add_action.ValidationException;
 
 public interface ActionController {
 
-    void setNotificationController();
-
     void setActionsTableController(ActionsTableController actionsTableController);
 
     void addActionRequest(ActionData actionData) throws ValidationException;

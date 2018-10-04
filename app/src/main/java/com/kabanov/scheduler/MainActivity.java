@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.addView(actionsTableController.getTableView());
 
         final FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
+        fab.setOnClickListener(view -> {    
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         logger.debug("On Resume");
-        actionController.setNotificationController();
         
         logger.debug("Starting loading actions");
         List<ActionData> list = activityStateManager.loadActions();

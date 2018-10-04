@@ -27,7 +27,7 @@ public class NotificationController {
         setPeriodicalAlarmService(activity);
     }
 
-    private static long getAt10AM() {
+    private static long getAt10AM(int shift) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.MILLISECOND, 0);
@@ -35,7 +35,19 @@ public class NotificationController {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 10);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        return calendar.getTime().getTime();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        return calendar.getTimeInMillis();
+    }
+
+    private static boolean nowIsAfter10AM() {
+        Calendar calendar = Calendar.getInstance();
+        Date currentTime = new Date();
+        calendar.setTime(currentTime);
+        calendar.set(Calendar.HOUR, 10);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        
+        return calendar.getTimeInMillis() > currentTime.getTime();
+        
     }
 
     public static void setPeriodicalAlarmService(Context activity) {
@@ -44,7 +56,8 @@ public class NotificationController {
         
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, getAt10AM(), TimeUnit.DAYS.toMillis(1), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, nowIsAfter10AM() ? getAt10AM(1) : getAt10AM(0),
+                TimeUnit.DAYS.toMillis(1), pendingIntent);
 
         logger.info("Set alarm manager to fire");
     }

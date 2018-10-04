@@ -28,10 +28,6 @@ public class ActionsControllerImpl implements ActionController {
 
     public ActionsControllerImpl(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-    }
-    
-    @Override
-    public void setNotificationController() {
         new NotificationController(mainActivity);
         Log.d("MainActivity","notification controller is set");
     }
