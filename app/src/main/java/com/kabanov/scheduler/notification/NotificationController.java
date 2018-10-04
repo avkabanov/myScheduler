@@ -27,7 +27,7 @@ public class NotificationController {
         setPeriodicalAlarmService(activity);
     }
 
-    private static long getAt10AM(int shift) {
+    public static long getAt10AM(int shift) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.MILLISECOND, 0);
@@ -35,11 +35,11 @@ public class NotificationController {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 10);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.add(Calendar.DAY_OF_YEAR, shift);
+        calendar.add(Calendar.DATE, shift);
         return calendar.getTimeInMillis();
     }
 
-    private static boolean nowIsAfter10AM() {
+    public static boolean nowIsAfter10AM() {
         Calendar calendar = Calendar.getInstance();
         Date currentTime = new Date();
         calendar.setTime(currentTime);
