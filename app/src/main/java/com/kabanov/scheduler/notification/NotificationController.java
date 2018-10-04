@@ -35,7 +35,7 @@ public class NotificationController {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 10);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        calendar.add(Calendar.DAY_OF_YEAR, shift);
         return calendar.getTimeInMillis();
     }
 
