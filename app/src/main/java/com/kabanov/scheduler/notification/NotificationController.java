@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.utils.Logger;
+import com.kabanov.scheduler.utils.TimeUtils;
 
 import static android.content.Context.ALARM_SERVICE;
 import android.app.AlarmManager;
@@ -27,29 +28,8 @@ public class NotificationController {
         setPeriodicalAlarmService(activity);
     }
 
-    public static long getAt10AM(int shift) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 10);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.add(Calendar.DATE, shift);
-        return calendar.getTimeInMillis();
-    }
-
-    public static boolean nowIsAfter10AM() {
-        Calendar calendar = Calendar.getInstance();
-        Date currentTime = new Date();
-        calendar.setTime(currentTime);
-        calendar.set(Calendar.HOUR, 10);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-        
-        return calendar.getTimeInMillis() < currentTime.getTime();
-        
+    private static boolean nowIsAfter10AM() {
+        return TimeUtils.isAfter10AM(new Date());
     }
 
     public static void setPeriodicalAlarmService(Context activity) {
@@ -58,7 +38,10 @@ public class NotificationController {
         
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, nowIsAfter10AM() ? getAt10AM(1) : getAt10AM(0),
+        
+        Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
+        
+        alarmManager.setRepeating(AlarmManager.RTC, TimeUtils.getTime10AMGivenDay(nextAlarmDay),
                 TimeUnit.DAYS.toMillis(1), pendingIntent);
 
         logger.info("Set alarm manager to fire");

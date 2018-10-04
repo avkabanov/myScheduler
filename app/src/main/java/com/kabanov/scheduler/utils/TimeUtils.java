@@ -28,4 +28,26 @@ public class TimeUtils {
         calendar.add(Calendar.DATE, days);
         return calendar.getTime();
     }
+
+    public static long getTime10AMGivenDay(Date day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(day);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 10);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        return calendar.getTimeInMillis();
+    }
+
+    public static boolean isAfter10AM(Date time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        calendar.set(Calendar.HOUR, 10);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+
+        return calendar.getTimeInMillis() < time.getTime();
+    }
 }

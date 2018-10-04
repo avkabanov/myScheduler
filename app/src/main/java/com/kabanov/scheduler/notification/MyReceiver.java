@@ -29,6 +29,7 @@ public class MyReceiver extends BroadcastReceiver {
                 // Set the alarm here.
                 logger.info("onReceive: BOOT_COMPLETED");
                 NotificationController.setPeriodicalAlarmService(context);
+                return;
             }
         }
 
