@@ -11,7 +11,7 @@ import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.ValidationException;
-import com.kabanov.scheduler.saver.ActivityStateManager;
+import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 

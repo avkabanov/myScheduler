@@ -2,6 +2,7 @@ package com.kabanov.scheduler.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -15,10 +16,28 @@ public class TimeTestUtilsTest {
 
     @Test
     public void cutWithDayAcc() {
-        Date first = new Date();
+        Date date = new Date();
         Uninterruptibles.sleepUninterruptibly(1, TimeUnit.MILLISECONDS);
+        Assert.assertEquals(TimeUtils.cutWithDayAcc(date), TimeUtils.cutWithDayAcc(new Date()));
+        
+        
+        {
+            Calendar first = Calendar.getInstance();
+            first.setTime(new Date());
+            first.set(Calendar.HOUR_OF_DAY, 0);
+            first.set(Calendar.MINUTE, 0);
+            first.set(Calendar.SECOND, 0);
+            first.set(Calendar.MILLISECOND, 1);
 
-        Assert.assertEquals(TimeUtils.cutWithDayAcc(first), TimeUtils.cutWithDayAcc(new Date()));
+            Calendar second = Calendar.getInstance();
+            second.setTime(new Date());
+            second.set(Calendar.HOUR_OF_DAY, 23);
+            second.set(Calendar.MINUTE, 59);
+            second.set(Calendar.SECOND, 59);
+            second.set(Calendar.MILLISECOND, 100);
+
+            Assert.assertEquals(TimeUtils.cutWithDayAcc(first.getTime()), TimeUtils.cutWithDayAcc(second.getTime()));
+        }
     }
 
     @Test

@@ -1,5 +1,12 @@
 package com.kabanov.scheduler.actions_table;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.google.common.base.Preconditions;
+import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.R;
+
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import com.google.common.base.Preconditions;
-import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class ActionsTableView {
 
@@ -44,20 +44,12 @@ public class ActionsTableView {
         ((ViewGroup) tableRow.getParent()).removeView(tableRow);
 
         tableRow.setLongClickable(true);
-        tableRow.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                viewController.onActionLongClick(String.valueOf(v.getTag()));
-                return true;
-            }
+        tableRow.setOnLongClickListener(v -> {
+            viewController.onActionLongClick(String.valueOf(v.getTag()));
+            return true;
         });
         tableRow.setClickable(true);
-        tableRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewController.onActionClick(String.valueOf(v.getTag()));
-            }
-        });
+        tableRow.setOnClickListener(v -> viewController.onActionClick(String.valueOf(v.getTag())));
         return tableRow;
     }
 
@@ -100,9 +92,11 @@ public class ActionsTableView {
 
     private void updateTableRowView(ActionData actionData, TableRow tableRow) {
         if (actionData.isOverdue()) {
-            tableRow.setBackgroundColor(Color.parseColor("#ee9292"));
+            tableRow.setBackgroundColor(Color.parseColor("#EE9292"));
+        } else if (actionData.isAboutToOverdue()) {
+            tableRow.setBackgroundColor(Color.parseColor("#FFFF66"));
         } else {
-            tableRow.setBackgroundColor(Color.parseColor("#ececec"));
+            tableRow.setBackgroundColor(Color.parseColor("#ECECEC"));
         }
     }
 

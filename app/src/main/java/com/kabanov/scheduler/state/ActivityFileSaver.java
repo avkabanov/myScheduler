@@ -1,4 +1,4 @@
-package com.kabanov.scheduler.saver;
+package com.kabanov.scheduler.state;
 
 public class ActivityFileSaver {
 

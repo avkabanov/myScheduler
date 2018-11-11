@@ -1,4 +1,4 @@
-package com.kabanov.scheduler.saver;
+package com.kabanov.scheduler.state;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +43,11 @@ public class ActivityStateManager {
         } catch (IOException e) {
             System.out.println("Error initializing stream");
         }
+        
+        ///
+
+        //DropboxActions dropboxActions = new DropboxActions("Apps/MyScheduler");
+        //dropboxActions.performWithPermissions(DropboxActions.FileAction.UPLOAD, new File(applicationDateDir, ACTIVITIES_STORAGE_FILENAME).getAbsolutePath());
     }
 
     public List<ActionData> loadActions() {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.saver.ActivityStateManager;
+import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.content.BroadcastReceiver;

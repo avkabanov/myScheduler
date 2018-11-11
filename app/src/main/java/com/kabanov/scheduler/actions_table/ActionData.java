@@ -1,10 +1,10 @@
 package com.kabanov.scheduler.actions_table;
 
-import com.kabanov.scheduler.utils.TimeUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import com.kabanov.scheduler.utils.TimeUtils;
 
 public class ActionData implements Serializable {
     private static final long serialVersionUID = 2348293740919238876L;
@@ -77,6 +77,10 @@ public class ActionData implements Serializable {
 
     public boolean isOverdue() {
         return TimeUtils.cutWithDayAcc(nextExecutionDate) < TimeUtils.cutWithDayAcc(new Date());
+    }
+
+    public boolean isAboutToOverdue() {
+        return TimeUtils.cutWithDayAcc(nextExecutionDate) == TimeUtils.cutWithDayAcc(new Date());
     }
 
     public Date getLastExecutionDate() {
