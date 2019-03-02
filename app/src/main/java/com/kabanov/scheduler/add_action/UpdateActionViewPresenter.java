@@ -8,6 +8,6 @@ public interface UpdateActionViewPresenter {
 
     void onActionUpdateBtnPressed(String actionId, ActionData actionData);
 
-
+    void onActionCompleteBtnPressed(String actionId);
 
 }

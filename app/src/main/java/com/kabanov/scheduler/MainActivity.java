@@ -7,9 +7,9 @@ import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
+import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.AddActionDialog;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.utils.Log4jHelper;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (ValidationException e) {
                     e.printStackTrace();
                 }
-            });
+            }).show();
         });
         initAcra();
         logger.debug("onCreate");

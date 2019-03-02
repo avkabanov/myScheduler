@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.add_action.UpdateActionDialog;
+import com.kabanov.scheduler.action_details.dialogs.EditActionDialog;
+import com.kabanov.scheduler.action_details.dialogs.ViewActionDialog;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
@@ -21,6 +22,22 @@ public class ActionsTableController implements ActionsTableViewController {
     private MainActivity mainActivity;
     private final ActionController actionController;
     private List<String> actionsListInView = new ArrayList<>();
+    private UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenter() {
+        @Override
+        public void onActionDeleteBtnPressed(String actionId) {
+            actionController.removeActionRequest(actionId);
+        }
+
+        @Override
+        public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
+            actionController.updateActionRequest(actionId, actionData);
+        }
+
+        @Override
+        public void onActionCompleteBtnPressed(String actionId) {
+            actionController.updateLastExecutionTimeRequest(actionId);
+        }
+    };
 
     public ActionsTableController(MainActivity mainActivity, ActionController actionController) {
         this(mainActivity, null, actionController);
@@ -63,7 +80,8 @@ public class ActionsTableController implements ActionsTableViewController {
             actionsListInView.add(newIndex, actionData.getId());
             if (oldIndex != newIndex) {
                 tableView.moveRow(oldIndex, newIndex);
-                logger.info("Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
+                logger.info(
+                        "Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
             }
         }
     }
@@ -71,24 +89,15 @@ public class ActionsTableController implements ActionsTableViewController {
     @Override
     public void onActionClick(String actionId) {
         logger.info("On action click: " + actionId);
-        actionController.updateLastExecutionTimeRequest(actionId);
+        ActionData actionData = tableModel.getAction(actionId);
+        new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter);
     }
 
     @Override
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        new UpdateActionDialog(mainActivity, new UpdateActionViewPresenter() {
-            @Override
-            public void onActionDeleteBtnPressed(String actionId) {
-                actionController.removeActionRequest(actionId);
-            }
-
-            @Override
-            public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
-                actionController.updateActionRequest(actionId, actionData);
-            }
-        }, actionData);
+        new EditActionDialog(mainActivity, updateActionViewPresenter, actionData);
     }
 
     @Override
