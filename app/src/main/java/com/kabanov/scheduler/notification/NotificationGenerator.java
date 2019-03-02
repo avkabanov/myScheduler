@@ -47,6 +47,7 @@ public class NotificationGenerator {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setAutoCancel(true);
 
         notificationManager.notify(notificationId, mBuilder.build());
     }
