@@ -24,10 +24,8 @@ public class ActionsControllerImpl implements ActionController {
 
     private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
     private ActionsTableController actionsTableController;
-    private MainActivity mainActivity;
 
     public ActionsControllerImpl(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
         new NotificationController(mainActivity);
         Log.d("MainActivity","notification controller is set");
     }
@@ -86,6 +84,7 @@ public class ActionsControllerImpl implements ActionController {
         return new ArrayList<>(actionIdToActionMap.values());
     }
 
+    @Override
     public void clearAll() {
         actionIdToActionMap.clear();
         actionsTableController.clearAll();
