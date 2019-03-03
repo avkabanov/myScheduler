@@ -26,7 +26,7 @@ public class EditActionDialog extends BaseActionDetailsDialog {
                         ActionUtils.validateFieldsNotEmpty(data);
                         actionData.setName(data.getName());
                         actionData.setExecutedAt(data.getLastExecutedDate());
-                        
+                        actionData.setPeriodicityDays(data.getPeriodicityDays());
                     } catch (ValidationException e) {
                         showErrorDialog(e.getMessage());
                         return;
