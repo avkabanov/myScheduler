@@ -90,14 +90,14 @@ public class ActionsTableController implements ActionsTableViewController {
     public void onActionClick(String actionId) {
         logger.info("On action click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter);
+        new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
     }
 
     @Override
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        new EditActionDialog(mainActivity, updateActionViewPresenter, actionData);
+        new EditActionDialog(mainActivity, updateActionViewPresenter, actionData).show();
     }
 
     @Override

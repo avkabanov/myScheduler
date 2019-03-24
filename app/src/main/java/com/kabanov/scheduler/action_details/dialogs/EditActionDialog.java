@@ -13,7 +13,7 @@ public class EditActionDialog extends BaseActionDetailsDialog {
 
     public EditActionDialog(MainActivity activity, final UpdateActionViewPresenter viewPresenter, final ActionData actionData) {
         super(activity);
-        
+
         fillDialog(actionData);
         builder
                 .setNeutralButton("Remove",

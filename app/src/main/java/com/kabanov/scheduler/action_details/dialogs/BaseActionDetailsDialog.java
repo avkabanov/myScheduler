@@ -27,13 +27,12 @@ import android.widget.TextView;
  */
 public class BaseActionDetailsDialog {
 
-    protected final MainActivity activity;
+    private final MainActivity activity;
     private final View popupView;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
-    protected final AlertDialog.Builder builder;
+    final AlertDialog.Builder builder;
 
-    final Calendar myCalendar = Calendar.getInstance();
-
+    private final Calendar myCalendar = Calendar.getInstance();
 
     public BaseActionDetailsDialog(MainActivity activity) {
         this.activity = activity;
@@ -50,7 +49,6 @@ public class BaseActionDetailsDialog {
 
         EditText edittext= popupView.findViewById(R.id.executed_last_time_txt);
         DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
-            // TODO Auto-generated method stub
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

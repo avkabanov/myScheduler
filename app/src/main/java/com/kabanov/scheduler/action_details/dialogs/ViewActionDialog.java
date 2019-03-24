@@ -12,7 +12,6 @@ public class ViewActionDialog extends BaseActionDetailsDialog {
     public ViewActionDialog(MainActivity activity, final ActionData actionData,
                             final UpdateActionViewPresenter viewPresenter) {
         super(activity);
-
         builder
                 .setNeutralButton("Complete", (dialog, id) -> {
                     viewPresenter.onActionCompleteBtnPressed(actionData.getId());
@@ -23,8 +22,6 @@ public class ViewActionDialog extends BaseActionDetailsDialog {
                 .setPositiveButton("Close", (dialog, id) -> {    
                 });
 
-        builder.create().show();
-        
         fillDialog(actionData);
         setReadOnly(true);
     }
@@ -32,6 +29,6 @@ public class ViewActionDialog extends BaseActionDetailsDialog {
     @NonNull
     @Override
     String getDialogTitle() {
-        return "View Dialog";
+        return "View Action";
     }
 }
