@@ -157,14 +157,13 @@ public class BaseActionDetailsDialog {
         Integer executionInterval = getExecutionInterval();
         Date lastExecutedDate = getLastExecutedDate();
 
-        
         return new NewAction(actionName, executionInterval, lastExecutedDate);
     }
-    
+
     public void setReadOnly(boolean readOnly) {
-            popupView.findViewById(R.id.action_name_txt).setEnabled(!readOnly);
-            popupView.findViewById(R.id.days_number_txt).setEnabled(!readOnly);
-            popupView.findViewById(R.id.executed_last_time_txt).setEnabled(!readOnly);
+        popupView.findViewById(R.id.action_name_txt).setEnabled(!readOnly);
+        popupView.findViewById(R.id.days_number_txt).setEnabled(!readOnly);
+        popupView.findViewById(R.id.executed_last_time_txt).setEnabled(!readOnly);
     }
 }
 
