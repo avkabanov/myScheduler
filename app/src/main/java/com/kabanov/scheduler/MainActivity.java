@@ -12,6 +12,7 @@ import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.state.ActivityStateManager;
+import com.kabanov.scheduler.state.ApplicationState;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
@@ -107,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        activityStateManager.saveActions(actionController.getAllActions());
+        ApplicationState applicationState = new ApplicationState(actionController.getAllActions());
+        activityStateManager.saveActions(applicationState);
         super.onPause();
     }
 
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         logger.debug("On Resume");
         
         logger.debug("Starting loading actions");
-        List<ActionData> list = activityStateManager.loadActions();
+        List<ActionData> list = activityStateManager.loadActions().getActions();
         logger.debug("Actions loaded " + list.size());
 
         actionController.clearAll();

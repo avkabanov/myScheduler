@@ -2,13 +2,9 @@ package com.kabanov.scheduler.state;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.kabanov.scheduler.actions_table.ActionData;
 
-@XmlRootElement(name = "actions_list")
 public class ApplicationState  {
-    private static final long serialVersionUID = 2348251741919238876L;
 
     private List<ActionData> list;
 
@@ -19,11 +15,11 @@ public class ApplicationState  {
         this.list = list;
     }
 
-    public List<ActionData> getList() {
+    public List<ActionData> getActions() {
         return list;
     }
 
-    public void setList(List<ActionData> list) {
+    public void getActions(List<ActionData> list) {
         this.list = list;
     }
 
