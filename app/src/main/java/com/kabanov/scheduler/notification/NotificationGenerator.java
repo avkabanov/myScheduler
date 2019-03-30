@@ -27,7 +27,7 @@ public class NotificationGenerator {
         int notificationId = 1;
         String channelId = "channel-01";
         String channelName = "Channel Name";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(
