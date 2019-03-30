@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         actionController = new ActionsControllerImpl(this);
         ActionsTableController actionsTableController = new ActionsTableController(this, actionController);
         actionController.setActionsTableController(actionsTableController);
-        activityStateManager = new ActivityStateManager(getFilesDir());
+        activityStateManager = new ActivityStateManager(getFilesDir(), this);
         mainLayout.addView(actionsTableController.getTableView());
 
         final FloatingActionButton fab = findViewById(R.id.fab);

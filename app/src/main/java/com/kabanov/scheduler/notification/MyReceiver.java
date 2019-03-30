@@ -37,7 +37,7 @@ public class MyReceiver extends BroadcastReceiver {
         if (MainActivity.instance == null) {
             if (cache == null) {
                 logger.info("Loading activities from persistence");
-                ActivityStateManager activityStateManager = new ActivityStateManager(context.getFilesDir());
+                ActivityStateManager activityStateManager = new ActivityStateManager(context.getFilesDir(), context);
                 cache = activityStateManager.loadState().getActions();
             }
             for (ActionData actionData : cache) {

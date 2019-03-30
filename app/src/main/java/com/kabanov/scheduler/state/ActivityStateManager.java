@@ -4,19 +4,30 @@ import java.io.File;
 
 import com.kabanov.scheduler.state.saver.BinaryFileSaver;
 
+import android.content.Context;
+
 public class ActivityStateManager {
     public static final String ACTIVITIES_STORAGE_FILENAME = "activities.dat";
+    public static final Object fileAccessLock = new Object();
     private ActionsSaver saver;
+    private Context context;
 
-    public ActivityStateManager(File applicationDateDir) {
+    public ActivityStateManager(File applicationDateDir, Context context) {
         saver = new BinaryFileSaver(applicationDateDir, ACTIVITIES_STORAGE_FILENAME);
+        this.context = context;
     }
 
     public void saveState(ApplicationState applicationState) {
-        saver.save(applicationState);
+        synchronized (fileAccessLock) {
+            saver.save(applicationState);
+            //FilesBackupEngine.requestBackup(context);
+        }
     }
 
     public ApplicationState loadState() {
-        return saver.load();
+        synchronized (fileAccessLock) {
+            //FilesBackupEngine.requestBackup(context);
+            return saver.load();
+        }
     }
 }
