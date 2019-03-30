@@ -12,11 +12,11 @@ public class ActivityStateManager {
         saver = new BinaryFileSaver(applicationDateDir, ACTIVITIES_STORAGE_FILENAME);
     }
 
-    public void saveActions(ApplicationState applicationState) {
+    public void saveState(ApplicationState applicationState) {
         saver.save(applicationState);
     }
 
-    public ApplicationState loadActions() {
+    public ApplicationState loadState() {
         return saver.load();
     }
 }

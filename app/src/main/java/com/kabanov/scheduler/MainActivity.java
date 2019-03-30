@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         ApplicationState applicationState = new ApplicationState(actionController.getAllActions());
-        activityStateManager.saveActions(applicationState);
+        activityStateManager.saveState(applicationState);
         super.onPause();
     }
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         logger.debug("On Resume");
         
         logger.debug("Starting loading actions");
-        List<ActionData> list = activityStateManager.loadActions().getActions();
+        List<ActionData> list = activityStateManager.loadState().getActions();
         logger.debug("Actions loaded " + list.size());
 
         actionController.clearAll();
