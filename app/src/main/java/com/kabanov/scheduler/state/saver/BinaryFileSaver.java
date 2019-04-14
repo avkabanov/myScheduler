@@ -2,7 +2,6 @@ package com.kabanov.scheduler.state.saver;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,12 +12,15 @@ import java.util.List;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.state.ActionsSaver;
 import com.kabanov.scheduler.state.ApplicationState;
+import com.kabanov.scheduler.utils.Logger;
 
 /**
  * @author Алексей
  * @date 30.03.2019
  */
 public class BinaryFileSaver implements ActionsSaver {
+
+    private static final Logger logger = Logger.getLogger(BinaryFileSaver.class.getName());
 
     private final File applicationDateDir;
     private final String activitiesStorageFilename;
@@ -48,11 +50,9 @@ public class BinaryFileSaver implements ActionsSaver {
             o.close();
             f.close();
 
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
         } catch (IOException e) {
-            System.out.println("Error initializing stream");
-        }    
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BinaryFileSaver implements ActionsSaver {
                 System.out.println("File not found. Skipping");
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return new ApplicationState(result);
     }

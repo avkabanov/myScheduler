@@ -16,6 +16,7 @@ import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.app.backup.BackupManager;
 import android.app.backup.FileBackupHelper;
+import android.app.backup.RestoreObserver;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
 
@@ -25,6 +26,12 @@ public class FilesBackupEngine extends BackupAgentHelper {
     // A key to uniquely identify the set of backup data
     private static final String FILES_BACKUP_KEY = "my_actions";
 
+    public static FilesBackupEngine instance;
+    
+    public FilesBackupEngine() {
+        instance = this;
+    }
+    
     // Allocate a helper and add it to the backup agent
     @Override
     public void onCreate() {
@@ -61,5 +68,26 @@ public class FilesBackupEngine extends BackupAgentHelper {
     public static void requestBackup(Context context) {
         BackupManager bm = new BackupManager(context);
         bm.dataChanged();
+    }
+
+    public static void requestRestore(Context context) {
+        BackupManager bm = new BackupManager(context);
+        int result = bm.requestRestore(new RestoreObserver() {
+            @Override
+            public void restoreStarting(int numPackages) {
+                super.restoreStarting(numPackages);
+            }
+
+            @Override
+            public void onUpdate(int nowBeingRestored, String currentPackage) {
+                super.onUpdate(nowBeingRestored, currentPackage);
+            }
+
+            @Override
+            public void restoreFinished(int error) {
+                super.restoreFinished(error);
+            }
+        });
+        System.out.println(result);
     }
 }

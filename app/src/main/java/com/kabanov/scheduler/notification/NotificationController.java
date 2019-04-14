@@ -43,7 +43,9 @@ public class NotificationController {
         
         alarmManager.setRepeating(AlarmManager.RTC, TimeUtils.getTime10AMGivenDay(nextAlarmDay),
                 TimeUnit.DAYS.toMillis(1), pendingIntent);
-
+       // alarmManager.setExact(AlarmManager.RTC, TimeUtils.getTime10AMGivenDay(nextAlarmDay), );
+        
+        
         logger.info("Set alarm manager to fire");
     }
 
