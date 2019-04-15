@@ -89,8 +89,24 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_sendLogs) {
             throw new RuntimeException("test exceotion 1");
+        }
+
+        if (id == R.id.action_export_actions) {
+            activityStateManager.exportState(new ApplicationState(actionController.getAllActions()));
+        }
+
+        if (id == R.id.action_import_actions) {
+            ApplicationState state = activityStateManager.importState();
+            actionController.clearAll();
+            for (ActionData actionData : state.getActions()) {
+                try {
+                    actionController.addActionRequest(actionData);
+                } catch (ValidationException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return super.onOptionsItemSelected(item);

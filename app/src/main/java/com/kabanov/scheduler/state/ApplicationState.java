@@ -23,4 +23,7 @@ public class ApplicationState  {
         this.list = list;
     }
 
+    public void setList(List<ActionData> list) {
+        this.list = list;
+    }
 }

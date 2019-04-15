@@ -39,10 +39,9 @@ dependencies {
     
     implementation 'log4j:log4j:1.2.17'
     implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
-    implementation 'javax.xml.bind:jaxb-api:2.2.11'
-    implementation 'com.dropbox.core:dropbox-core-sdk:3.0.9'
-    implementation 'com.squareup.okhttp:okhttp:2.7.5'
-    implementation 'com.squareup.okhttp3:okhttp:3.5.0'
+
+    // Convert to xml
+    implementation 'org.simpleframework:simple-xml:2.7.1'
 
 
     testImplementation 'junit:junit:4.12'
