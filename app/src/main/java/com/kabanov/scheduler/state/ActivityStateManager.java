@@ -2,7 +2,6 @@ package com.kabanov.scheduler.state;
 
 import java.io.File;
 
-import com.kabanov.scheduler.state.backup_agent.FilesBackupEngine;
 import com.kabanov.scheduler.state.saver.BinaryFileSaver;
 import com.kabanov.scheduler.state.saver.XmlFileSaver;
 
@@ -25,17 +24,14 @@ public class ActivityStateManager {
     public void saveState(ApplicationState applicationState) {
         synchronized (fileAccessLock) {
             saver.save(applicationState);
-            FilesBackupEngine.requestBackup(context);
         }
     }
 
     public ApplicationState loadState() {
         ApplicationState state ;
         synchronized (fileAccessLock) {
-            FilesBackupEngine.requestRestore(context);
             state =  saver.load();
         }
-        saveState(state);
         return state;
     }
     
