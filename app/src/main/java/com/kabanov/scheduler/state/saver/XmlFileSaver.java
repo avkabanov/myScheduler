@@ -25,8 +25,6 @@ public class XmlFileSaver implements ActionsSaver {
 
     @Override
     public void save(ApplicationState applicationState) {
-        
-
         File file = new File(applicationDateDir, activitiesStorageFilename);
         if (file.exists()) {
             file.delete();

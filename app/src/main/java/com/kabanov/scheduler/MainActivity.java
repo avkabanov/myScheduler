@@ -11,6 +11,7 @@ import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.state.ApplicationState;
 import com.kabanov.scheduler.utils.Log4jHelper;
@@ -21,6 +22,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -46,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
         
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        actionController = new ActionsControllerImpl(this);
+        actionController = new ActionsControllerImpl();
         ActionsTableController actionsTableController = new ActionsTableController(this, actionController);
         actionController.setActionsTableController(actionsTableController);
         activityStateManager = new ActivityStateManager(getFilesDir(), this);
         mainLayout.addView(actionsTableController.getTableView());
+
+        new NotificationController(this);
+        Log.d("MainActivity","notification controller is set");
 
         final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {    

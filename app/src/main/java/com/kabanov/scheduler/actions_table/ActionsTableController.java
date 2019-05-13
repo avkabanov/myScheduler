@@ -90,6 +90,10 @@ public class ActionsTableController implements ActionsTableViewController {
     public void onActionClick(String actionId) {
         logger.info("On action click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
+        showViewActionDialog(actionData);
+    }
+
+    void showViewActionDialog(ActionData actionData) {
         new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
     }
 
@@ -97,6 +101,10 @@ public class ActionsTableController implements ActionsTableViewController {
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
+        showEditActionDialog(actionData);
+    }
+
+    void showEditActionDialog(ActionData actionData) {
         new EditActionDialog(mainActivity, updateActionViewPresenter, actionData).show();
     }
 

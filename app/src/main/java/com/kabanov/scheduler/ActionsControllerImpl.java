@@ -13,10 +13,7 @@ import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.ValidationException;
-import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.utils.TimeUtils;
-
-import android.util.Log;
 
 public class ActionsControllerImpl implements ActionController {
 
@@ -24,11 +21,6 @@ public class ActionsControllerImpl implements ActionController {
 
     private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
     private ActionsTableController actionsTableController;
-
-    public ActionsControllerImpl(MainActivity mainActivity) {
-        new NotificationController(mainActivity);
-        Log.d("MainActivity","notification controller is set");
-    }
 
     @Override
     public void setActionsTableController(ActionsTableController actionsTableController) {
