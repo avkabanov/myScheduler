@@ -65,4 +65,16 @@ public class ActionsControllerImplTest {
                 TimeUtils.cutWithDayAcc(expected), 
                 TimeUtils.cutWithDayAcc(actionCaptor.getValue().getNextExecutionDate()));
     }
+
+    @Test
+    public void shouldRemoveActionOnRemoveBtnClick() {
+        ActionData action = ActionTestUtils.createAction("first", 1, new Date());
+        actionsController.addActionRequest(action);
+        
+        updateActionViewPresenter.onActionDeleteBtnPressed(action.getId());
+        
+        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(actionsTableController).removeAction(stringCaptor.capture());
+        Assert.assertEquals(action.getId(), stringCaptor.getValue());
+    }
 }
