@@ -79,12 +79,15 @@ public class ActionsTableControllerTest {
 
     @Test
     public void reorderActionsOnUpdate() {
-        tableController.addNewAction(createAction("First", 5, addDays(new Date(), -10)));     // hardly overdue
+        ActionData first = createAction("First", 5, addDays(new Date(), -10));
+        tableController.addNewAction(first);     // hardly overdue
         tableController.addNewAction(createAction("Second", 2, new Date()));                          // not overdue
 
         // should be sorted like: First, Second. Click on the first one.
         assertViewOrder("First", "Second");
-        tableController.onActionClick(viewActionIds.get(0));
+
+        first.setExecutedAt(new Date());
+        tableController.updateAction(first.getId(), first);
 
         // should be reordered
         assertViewOrder("Second", "First");
