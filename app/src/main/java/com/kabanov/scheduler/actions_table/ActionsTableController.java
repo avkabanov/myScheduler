@@ -3,7 +3,6 @@ package com.kabanov.scheduler.actions_table;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.action_details.dialogs.EditActionDialog;
 import com.kabanov.scheduler.action_details.dialogs.ViewActionDialog;
@@ -20,33 +19,19 @@ public class ActionsTableController implements ActionsTableViewController {
     private ActionsTableModel tableModel;
     private ActionsTableView tableView;
     private MainActivity mainActivity;
-    private final ActionController actionController;
+    private UpdateActionViewPresenter updateActionViewPresenter;
     private List<String> actionsListInView = new ArrayList<>();
-    private UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenter() {
-        @Override
-        public void onActionDeleteBtnPressed(String actionId) {
-            actionController.removeActionRequest(actionId);
-        }
 
-        @Override
-        public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
-            actionController.updateActionRequest(actionId, actionData);
-        }
-
-        @Override
-        public void onActionCompleteBtnPressed(String actionId) {
-            actionController.updateLastExecutionTimeRequest(actionId);
-        }
-    };
-
-    public ActionsTableController(MainActivity mainActivity, ActionController actionController) {
-        this(mainActivity, null, actionController);
+    public ActionsTableController(MainActivity mainActivity, 
+                                  UpdateActionViewPresenter updateActionViewPresenter) {
+        this(mainActivity, null, updateActionViewPresenter);
     }
 
-    public ActionsTableController(MainActivity mainActivity, ActionsTableView actionsTableView,
-                                  ActionController actionController) {
+    public ActionsTableController(MainActivity mainActivity, 
+                                  ActionsTableView actionsTableView,
+                                  UpdateActionViewPresenter updateActionViewPresenter) {
         this.mainActivity = mainActivity;
-        this.actionController = actionController;
+        this.updateActionViewPresenter = updateActionViewPresenter;
 
         if (actionsTableView == null) {
             tableView = new ActionsTableView(mainActivity, this);

@@ -10,6 +10,7 @@ import org.acra.data.StringFormat;
 import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
+import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.state.ActivityStateManager;
@@ -48,8 +49,26 @@ public class MainActivity extends AppCompatActivity {
         
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenter() {
+            @Override
+            public void onActionDeleteBtnPressed(String actionId) {
+                actionController.removeActionRequest(actionId);
+            }
+
+            @Override
+            public void onActionUpdateBtnPressed(String actionId, ActionData actionData) {
+                actionController.updateActionRequest(actionId, actionData);
+            }
+
+            @Override
+            public void onActionCompleteBtnPressed(String actionId) {
+                actionController.updateLastExecutionTimeRequest(actionId);
+            }
+        };
         actionController = new ActionsControllerImpl();
-        ActionsTableController actionsTableController = new ActionsTableController(this, actionController);
+        ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
         actionController.setActionsTableController(actionsTableController);
         activityStateManager = new ActivityStateManager(getFilesDir(), this);
         mainLayout.addView(actionsTableController.getTableView());

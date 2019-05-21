@@ -3,6 +3,7 @@ package com.kabanov.scheduler.actions_table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import com.kabanov.scheduler.utils.TimeUtils;
 
@@ -101,5 +102,27 @@ public class ActionData implements Serializable {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActionData that = (ActionData) o;
+        return periodicityDays == that.periodicityDays &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(comment, that.comment) &&
+                Objects.equals(executionHistory, that.executionHistory) &&
+                Objects.equals(nextExecutionDate, that.nextExecutionDate) &&
+                Objects.equals(lastExecutionDate, that.lastExecutionDate) &&
+                Objects.equals(lastUpdateExecutionTime, that.lastUpdateExecutionTime);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, periodicityDays, comment, executionHistory, nextExecutionDate, lastExecutionDate,
+                lastUpdateExecutionTime);
     }
 }
