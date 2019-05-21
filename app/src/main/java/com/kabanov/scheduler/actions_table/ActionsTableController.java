@@ -108,7 +108,6 @@ public class ActionsTableController implements ActionsTableViewController {
         new EditActionDialog(mainActivity, updateActionViewPresenter, actionData).show();
     }
 
-    @Override
     public void clearAll() {
         for (ActionData action : tableModel.getAllActions()) {
             tableModel.removeAction(action.getId());
