@@ -6,9 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,8 +14,9 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.TestUtils;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
+import com.kabanov.scheduler.test_utils.ActionTestUtils;
+import com.kabanov.scheduler.test_utils.TestUtils;
 import com.kabanov.scheduler.utils.TimeUtils;
 
 import static org.mockito.Matchers.any;
@@ -64,24 +62,24 @@ public class ActionsTableControllerTest {
 
     @Test
     public void addActionsInNormalOrder() {
-        tableController.addNewAction(createAction("First", 1, new Date()));
-        tableController.addNewAction(createAction("Second", 2, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("First", 1, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("Second", 2, new Date()));
         assertViewOrder("First", "Second");
     }
 
     @Test
     public void addActionsInBackOrder() {
-        tableController.addNewAction(createAction("First", 2, new Date()));
-        tableController.addNewAction(createAction("Second", 1, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("First", 2, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("Second", 1, new Date()));
 
         assertViewOrder("Second", "First");
     }
 
     @Test
     public void reorderActionsOnUpdate() {
-        ActionData first = createAction("First", 5, addDays(new Date(), -10));
+        ActionData first = ActionTestUtils.createAction("First", 5, addDays(new Date(), -10));
         tableController.addNewAction(first);     // hardly overdue
-        tableController.addNewAction(createAction("Second", 2, new Date()));                          // not overdue
+        tableController.addNewAction(ActionTestUtils.createAction("Second", 2, new Date()));                          // not overdue
 
         // should be sorted like: First, Second. Click on the first one.
         assertViewOrder("First", "Second");
@@ -97,17 +95,17 @@ public class ActionsTableControllerTest {
                 TimeUtils.cutWithDayAcc(addDays(new Date(), 5)),
                 TimeUtils.cutWithDayAcc(getAction(1).getNextExecutionDate()));
 
-        tableController.addNewAction(createAction("Third", 3, new Date())); // should be located in the middle
+        tableController.addNewAction(ActionTestUtils.createAction("Third", 3, new Date())); // should be located in the middle
         assertViewOrder("Second", "Third", "First");
     }
 
     @Test
     public void openViewDialogOnClick() {
-        ActionData thirdAction = createAction("Third", 12, new Date());
+        ActionData thirdAction = ActionTestUtils.createAction("Third", 12, new Date());
 
-        tableController.addNewAction(createAction("Second", 3, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("Second", 3, new Date()));
         tableController.addNewAction(thirdAction);
-        tableController.addNewAction(createAction("First", 43, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("First", 43, new Date()));
 
         assertViewOrder("Second", "Third", "First");
         tableController.onActionClick(viewActionIds.get(1));
@@ -119,11 +117,11 @@ public class ActionsTableControllerTest {
 
     @Test
     public void openEditDialogOnClick() {
-        ActionData thirdAction = createAction("Third", 12, new Date());
+        ActionData thirdAction = ActionTestUtils.createAction("Third", 12, new Date());
 
-        tableController.addNewAction(createAction("Second", 3, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("Second", 3, new Date()));
         tableController.addNewAction(thirdAction);
-        tableController.addNewAction(createAction("First", 43, new Date()));
+        tableController.addNewAction(ActionTestUtils.createAction("First", 43, new Date()));
 
         assertViewOrder("Second", "Third", "First");
         tableController.onActionLongClick(viewActionIds.get(1));
@@ -153,12 +151,4 @@ public class ActionsTableControllerTest {
             Assert.assertEquals(expectedName, actualName);
         }
     }
-
-    @Nonnull
-    private ActionData createAction(String name, int periodicity, Date lastExecuted) {
-        ActionData actionData = new ActionData(UUID.randomUUID().toString(), name, periodicity);
-        actionData.setExecutedAt(lastExecuted);
-        return actionData;
-    }
-
 }

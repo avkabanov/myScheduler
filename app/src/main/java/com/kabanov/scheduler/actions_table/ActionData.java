@@ -41,6 +41,7 @@ public class ActionData implements Serializable {
 
     public void setPeriodicityDays(int periodicityDays) {
         this.periodicityDays = periodicityDays;
+        updateNextExecutionDate();
     }
 
     public String getComment() {
