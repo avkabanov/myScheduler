@@ -13,12 +13,14 @@ import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.state.ApplicationState;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityStateManager activityStateManager;
     private ActionController actionController;
+    private LogsSender logsSender = new LogsSender(this);
     public static MainActivity instance;
     {
         instance = this;
@@ -100,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sendLogs) {
-            throw new RuntimeException("test exceotion 1");
+            logsSender.sendLogs();
         }
 
         if (id == R.id.action_export_actions) {
@@ -158,6 +161,21 @@ public class MainActivity extends AppCompatActivity {
 
         logger.info("Actions added: " + list.size());
         super.onResume();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case LogsSender.SEND_LOGS_REQUEST_PERMISSIONS:
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Granted.
+                    logsSender.sendLogs();
+                }
+                else{
+                    //Denied.
+                }
+                break;
+        }
     }
 
     public ActionController getActionController() {
