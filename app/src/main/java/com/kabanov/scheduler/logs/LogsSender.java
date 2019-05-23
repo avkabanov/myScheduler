@@ -59,7 +59,7 @@ public class LogsSender {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         // Set type to "email"
         emailIntent.setType("vnd.android.cursor.dir/email");
-        String to[] = {"yourmail@gmail.com"};
+        String to[] = {"mrnuke@yandex.ru"};
         emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
         // the attachment
         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(outputFile));
