@@ -42,6 +42,12 @@ dependencies {
 
     // Convert to xml
     implementation 'org.simpleframework:simple-xml:2.7.1'
+    
+    // google drive 
+    implementation "com.google.android.gms:play-services-auth:15.0.1"
+    implementation "com.google.android.gms:play-services-drive:15.0.1"
+    implementation 'com.squareup.okio:okio:1.14.0'
+    
 
 
     testImplementation 'junit:junit:4.12'

@@ -56,4 +56,27 @@ public class TimeUtilsTest {
             Assert.assertEquals("02.01.18", newDate);
         }
     }
+
+    @Test
+    public void isAfter10AmTest() {
+        Calendar before = Calendar.getInstance();
+        before.setTime(new Date());
+        before.set(Calendar.HOUR, 9);
+        before.set(Calendar.MINUTE, 59);
+        before.set(Calendar.SECOND, 59);
+        before.set(Calendar.MILLISECOND, 999);
+        before.set(Calendar.AM_PM, Calendar.AM);
+        
+        Assert.assertFalse(TimeUtils.isAfter10AM(before.getTime()));
+
+        Calendar after = Calendar.getInstance();
+        after.setTime(new Date());
+        after.set(Calendar.HOUR, 10);
+        after.set(Calendar.MINUTE, 0);
+        after.set(Calendar.SECOND, 0);
+        after.set(Calendar.MILLISECOND, 1);
+        after.set(Calendar.AM_PM, Calendar.AM);
+
+        Assert.assertTrue(TimeUtils.isAfter10AM(after.getTime()));
+    }
 }

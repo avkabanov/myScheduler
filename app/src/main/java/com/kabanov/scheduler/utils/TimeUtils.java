@@ -50,6 +50,7 @@ public class TimeUtils {
         calendar.set(Calendar.HOUR, 10);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
 
         return calendar.getTimeInMillis() < time.getTime();
