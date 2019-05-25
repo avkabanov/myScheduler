@@ -34,7 +34,7 @@ public class TimeUtilsTest {
             second.set(Calendar.HOUR_OF_DAY, 23);
             second.set(Calendar.MINUTE, 59);
             second.set(Calendar.SECOND, 59);
-            second.set(Calendar.MILLISECOND, 100);
+            second.set(Calendar.MILLISECOND, 999);
 
             Assert.assertEquals(TimeUtils.cutWithDayAcc(first.getTime()), TimeUtils.cutWithDayAcc(second.getTime()));
         }
