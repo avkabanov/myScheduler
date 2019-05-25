@@ -12,7 +12,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
 
 import junit.framework.Assert;
 
-public class TimeTestUtilsTest {
+public class TimeUtilsTest {
 
     @Test
     public void cutWithDayAcc() {

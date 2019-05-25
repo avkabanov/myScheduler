@@ -1,9 +1,13 @@
 package com.kabanov.scheduler.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeUtils {
+
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
 
     public static long cutWithDayAcc(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -49,5 +53,10 @@ public class TimeUtils {
         calendar.set(Calendar.AM_PM, Calendar.AM);
 
         return calendar.getTimeInMillis() < time.getTime();
+    }
+
+    public static String toReadableTime(long time) {
+        Date date = new Date(time);
+        return dateFormat.format(date);
     }
 }
