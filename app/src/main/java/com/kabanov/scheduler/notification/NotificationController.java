@@ -39,7 +39,7 @@ public class NotificationController {
         Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
 
         long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
-        alarmManager.setRepeating(AlarmManager.RTC, notificationTime,
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime,
                 TimeUnit.DAYS.toMillis(1), pendingIntent);
         
         logger.info("Set alarm manager to fire at " + TimeUtils.toReadableTime(notificationTime));
