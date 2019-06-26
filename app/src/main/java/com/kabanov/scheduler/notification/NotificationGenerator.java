@@ -17,6 +17,7 @@ public class NotificationGenerator {
     public static void generateNotification(Context context, int numberOfOverdueActions) {
         displayNotification(context, "Brother! Some items are overdue!",
                 numberOfOverdueActions + " items are overdue! Take a look");
+        NotificationController.setPeriodicalAlarmService(context);
     }
 
     private static void displayNotification(Context context, String title, String contentText) {
