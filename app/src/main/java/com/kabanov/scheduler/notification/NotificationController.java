@@ -7,11 +7,11 @@ import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
 
-import static android.content.Context.ALARM_SERVICE;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 public class NotificationController {
 
@@ -19,10 +19,13 @@ public class NotificationController {
 
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntent;
+    private static WorkManager mWorkManager;
     
 
     public NotificationController(MainActivity activity) {
         setPeriodicalAlarmService(activity);
+        mWorkManager = WorkManager.getInstance(activity);
+
     }
 
     private static boolean nowIsAfter10AM() {
@@ -31,7 +34,8 @@ public class NotificationController {
 
     public static void setPeriodicalAlarmService(Context activity) {
         logger.info("Setting alarm service");
-        Intent myIntent = new Intent(activity, MyReceiver.class);
+       
+        /* Intent myIntent = new Intent(activity, MyReceiver.class);
         
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
@@ -40,8 +44,15 @@ public class NotificationController {
 
         long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime,
-                TimeUnit.DAYS.toMillis(1), pendingIntent);
-        
+                TimeUnit.DAYS.toMillis(1), pendingIntent);*/
+
+        mWorkManager.cancelAllWork();
+        mWorkManager.enqueue(new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.DAYS)
+                .setScheduleRequestedAt());
+
+
+
+
         logger.info("Set alarm manager to fire at " + TimeUtils.toReadableTime(notificationTime));
     }
 }
