@@ -30,7 +30,7 @@ public class NotificationController {
 
     public static void setPeriodicalAlarmService(Context activity) {
         logger.info("Setting alarm service");
-        Intent myIntent = new Intent(activity, MyReceiver.class);
+        Intent myIntent = new Intent(activity, AlarmBroadcastReceiver.class);
         
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);

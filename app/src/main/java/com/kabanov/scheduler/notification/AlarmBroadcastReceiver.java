@@ -11,27 +11,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class MyReceiver extends BroadcastReceiver {
+public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
-    private static final Logger logger = Logger.getLogger(MyReceiver.class.getName());
-
+    private static final Logger logger = Logger.getLogger(AlarmBroadcastReceiver.class.getName());
 
     private static List<ActionData> cache;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        logger.info("called receiver method");
-
+        logger.info("onReceive: " + intent.getAction());
+        
         if (context == null) return;
-
-        if (intent.getAction() != null) {
-            if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
-                // Set the alarm here.
-                logger.info("onReceive: BOOT_COMPLETED");
-                NotificationController.setPeriodicalAlarmService(context);
-                return;
-            }
-        }
 
         int overdueActionsCount = 0;
         if (MainActivity.instance == null) {
@@ -45,14 +35,11 @@ public class MyReceiver extends BroadcastReceiver {
                     overdueActionsCount++;
                 }
             }
-
         } else {
-            overdueActionsCount = MainActivity.instance.getActionController().
-                    getAllOverdueActions().size();
+            overdueActionsCount = MainActivity.instance.getActionController().getAllOverdueActions().size();
         }
 
-        logger.info("Showing notification with overdue actions count: " +
-                overdueActionsCount);
+        logger.info("Showing notification with overdue actions count: " + overdueActionsCount);
         // TODO this line should be uncommented
         /*
         if (overdueActionsCount == 0) {
