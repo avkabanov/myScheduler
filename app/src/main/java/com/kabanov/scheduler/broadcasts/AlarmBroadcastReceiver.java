@@ -1,9 +1,11 @@
-package com.kabanov.scheduler.notification;
+package com.kabanov.scheduler.broadcasts;
 
 import java.util.List;
 
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.notification.NotificationController;
+import com.kabanov.scheduler.notification.NotificationGenerator;
 import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
@@ -22,6 +24,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         logger.info("onReceive: " + intent.getAction());
         
         if (context == null) return;
+
+        NotificationController.setPeriodicalAlarmService(context);
 
         int overdueActionsCount = 0;
         if (MainActivity.instance == null) {

@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class TimeUtils {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss.SSS", Locale.getDefault());
 
     public static long cutWithDayAcc(Date date) {
         Calendar calendar = Calendar.getInstance();

@@ -3,6 +3,7 @@ package com.kabanov.scheduler.notification;
 import java.util.Date;
 
 import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.broadcasts.AlarmBroadcastReceiver;
 import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
 
