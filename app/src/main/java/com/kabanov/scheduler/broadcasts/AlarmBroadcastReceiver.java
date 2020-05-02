@@ -44,11 +44,6 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         }
 
         logger.info("Showing notification with overdue actions count: " + overdueActionsCount);
-        // TODO this line should be uncommented
-        /*
-        if (overdueActionsCount == 0) {
-            return;
-        }*/
         try {
             NotificationGenerator.generateNotification(context, overdueActionsCount);
         } catch (Exception e) {

@@ -32,6 +32,13 @@ public class TimeUtils {
         calendar.add(Calendar.DATE, days);
         return calendar.getTime();
     }
+    
+    public static Date addMinutes(Date date, int minutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minutes);
+        return calendar.getTime();
+    }
 
     public static long getTime10AMGivenDay(Date day) {
         Calendar calendar = Calendar.getInstance();

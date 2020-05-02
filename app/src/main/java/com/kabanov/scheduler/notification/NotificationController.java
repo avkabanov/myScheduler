@@ -20,8 +20,7 @@ public class NotificationController {
     private static AlarmManager alarmManager;
     private static PendingIntent pendingIntent;
     
-
-    public NotificationController(MainActivity activity) {
+    public NotificationController(MainActivity activity) {                           
         setPeriodicalAlarmService(activity);
     }
 
@@ -36,11 +35,13 @@ public class NotificationController {
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
         
-        Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
+        //Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
+        Date nextAlarmDay = new Date();
 
-        long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
+        //long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
+        long notificationTime = TimeUtils.addMinutes(nextAlarmDay, 2).getTime();
         int alarmType = AlarmManager.RTC_WAKEUP;
-        alarmManager.setExactAndAllowWhileIdle(alarmType, notificationTime, pendingIntent);;
+        alarmManager.setExactAndAllowWhileIdle(alarmType, notificationTime, pendingIntent);
         
         logger.info("Set alarm manager to fire at " + TimeUtils.toReadableTime(notificationTime));
     }
