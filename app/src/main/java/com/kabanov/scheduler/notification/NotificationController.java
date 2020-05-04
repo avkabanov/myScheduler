@@ -34,12 +34,16 @@ public class NotificationController {
         
         pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
         alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
-        
-        //Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
-        Date nextAlarmDay = new Date();
 
-        //long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
-        long notificationTime = TimeUtils.addMinutes(nextAlarmDay, 2).getTime();
+        /*Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MINUTE, 1);
+        
+        long notificationTime = calendar.getTimeInMillis();*/
+        
+        Date nextAlarmDay = nowIsAfter10AM() ? TimeUtils.addDays(new Date(), 1) : new Date();
+        long notificationTime = TimeUtils.getTime10AMGivenDay(nextAlarmDay);
+
         int alarmType = AlarmManager.RTC_WAKEUP;
         alarmManager.setExactAndAllowWhileIdle(alarmType, notificationTime, pendingIntent);
         
