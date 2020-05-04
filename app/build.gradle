@@ -10,7 +10,7 @@ android {
     }
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.kabanov.scheduler"
+        applicationId "com.kabanov.myscheduler"
         minSdkVersion 24
         targetSdkVersion 27
         versionCode 1
