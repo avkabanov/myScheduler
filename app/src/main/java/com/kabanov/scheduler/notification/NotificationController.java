@@ -17,9 +17,6 @@ public class NotificationController {
 
     private static final Logger logger = Logger.getLogger(NotificationController.class.getName());
 
-    private static AlarmManager alarmManager;
-    private static PendingIntent pendingIntent;
-    
     public NotificationController(MainActivity activity) {                           
         setPeriodicalAlarmService(activity);
     }
@@ -31,9 +28,9 @@ public class NotificationController {
     public static void setPeriodicalAlarmService(Context activity) {
         logger.info("Setting alarm service");
         Intent myIntent = new Intent(activity, AlarmBroadcastReceiver.class);
-        
-        pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
-        alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, myIntent, 0);
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(ALARM_SERVICE);
 
         /*Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());

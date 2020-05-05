@@ -17,11 +17,15 @@ import android.widget.TextView;
 
 public class ActionsTableView {
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
+    private static final String OVERDUE_ACTION_COLOR = "#f08f8f";
+    private static final String ABOUT_TO_OVERDUE_ACTION_COLOR = "#f6bcbc";
+    private static final String NOT_OVERDUE_ACTION_COLOR = "#ECECEC";
+    
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
 
-    private MainActivity activity;
-    private ActionsTableViewController viewController;
-    private TableLayout table;
+    private final MainActivity activity;
+    private final ActionsTableViewController viewController;
+    private final TableLayout table;
 
     public ActionsTableView(MainActivity activity, ActionsTableViewController viewController) {
         this.activity = activity;
@@ -92,11 +96,11 @@ public class ActionsTableView {
 
     private void updateTableRowView(ActionData actionData, TableRow tableRow) {
         if (actionData.isOverdue()) {
-            tableRow.setBackgroundColor(Color.parseColor("#EE9292"));
+            tableRow.setBackgroundColor(Color.parseColor(OVERDUE_ACTION_COLOR));
         } else if (actionData.isAboutToOverdue()) {
-            tableRow.setBackgroundColor(Color.parseColor("#FFFF66"));
+            tableRow.setBackgroundColor(Color.parseColor(ABOUT_TO_OVERDUE_ACTION_COLOR));
         } else {
-            tableRow.setBackgroundColor(Color.parseColor("#ECECEC"));
+            tableRow.setBackgroundColor(Color.parseColor(NOT_OVERDUE_ACTION_COLOR));
         }
     }
 

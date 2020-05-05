@@ -14,16 +14,16 @@
         android:gravity="top">
 
         <TableRow
-            android:id="@+id/table_row"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="0dp"
-            android:background="#ececec"
-            android:minHeight="40dp"
-            tools:padding="10dp">
+                android:id="@+id/table_row"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
+                android:background="#ececec"
+                android:minHeight="50dp"
+                tools:padding="10dp">
 
             <TableRow
                     android:layout_width="match_parent"
