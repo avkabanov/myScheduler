@@ -15,11 +15,13 @@ import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
+import com.kabanov.scheduler.settings.SettingsActivity;
 import com.kabanov.scheduler.state.ActivityStateManager;
 import com.kabanov.scheduler.state.ApplicationState;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -120,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+        
+        if (id == R.id.action_open_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

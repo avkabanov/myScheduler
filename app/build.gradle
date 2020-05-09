@@ -47,13 +47,13 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
     implementation 'com.android.support:gridlayout-v7:27.1.0'
-    
+
     implementation 'log4j:log4j:1.2.17'
     implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
 
     // Convert to xml
     implementation 'org.simpleframework:simple-xml:2.7.1'
-    
+
     // google drive 
     implementation "com.google.android.gms:play-services-auth:15.0.1"
     implementation "com.google.android.gms:play-services-drive:15.0.1"
@@ -72,7 +72,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-all:1.9.5'
     testImplementation 'org.powermock:powermock-module-junit4:1.7.4'
     testImplementation 'org.reflections:reflections:0.9.10'
-
 }
 
 def getCheckedOutGitCommitHash() {
@@ -87,7 +86,7 @@ def getCheckedOutGitCommitHash() {
     def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
     // def isRef = head.length > 1     // ref: refs/heads/master
 
-    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+    if (isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
 
     def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
     refHead.text.trim().take takeFromHash
@@ -98,4 +97,3 @@ def getDateTime() {
 
     return df.format(new Date());
 }
-
