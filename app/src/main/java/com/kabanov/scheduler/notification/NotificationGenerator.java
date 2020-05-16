@@ -5,7 +5,6 @@ import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.notification.title.NotificationMessageGenerator;
 import com.kabanov.scheduler.preferences.ProjectPreferences;
 
-import static android.content.Context.MODE_PRIVATE;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,7 +19,7 @@ public class NotificationGenerator {
     private static ProjectPreferences projectPreferences;
 
     public static void generateNotification(Context context, int numberOfOverdueActions) {
-        projectPreferences = new ProjectPreferences(context.getSharedPreferences(ProjectPreferences.PREFERENCE_NAME, MODE_PRIVATE));
+        projectPreferences = new ProjectPreferences(context);
         TitleContentHolder message;
         if (numberOfOverdueActions == 0) {
             message = generateNoOverdueActionsMessage(projectPreferences.isFishModeEnabled());
