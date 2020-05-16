@@ -2,8 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
-        android:key="fish_mode"
-        android:title="@string/fish_mode"/>
-    
-    
+            android:id="@+id/is_fish_mode_enabled"
+            android:key="fish_mode"
+            android:title="@string/fish_mode"/>
+
+
 </PreferenceScreen>

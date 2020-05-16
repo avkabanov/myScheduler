@@ -3,7 +3,9 @@ package com.kabanov.scheduler.notification;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.notification.title.NotificationMessageGenerator;
+import com.kabanov.scheduler.preferences.ProjectPreferences;
 
+import static android.content.Context.MODE_PRIVATE;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,25 +17,25 @@ import android.support.v4.app.NotificationCompat;
 public class NotificationGenerator {
 
     private static final NotificationMessageGenerator notificationMessageGenerator = new NotificationMessageGenerator();
-    private static final boolean IS_FISH_MODE = true;
+    private static ProjectPreferences projectPreferences;
 
-    @SuppressWarnings("static-access")
     public static void generateNotification(Context context, int numberOfOverdueActions) {
-
+        projectPreferences = new ProjectPreferences(context.getSharedPreferences(ProjectPreferences.PREFERENCE_NAME, MODE_PRIVATE));
         TitleContentHolder message;
         if (numberOfOverdueActions == 0) {
-            message = generateNoOverdueActionsMessage();
+            message = generateNoOverdueActionsMessage(projectPreferences.isFishModeEnabled());
         } else {
-            message = generateOverdueActionsMessage(numberOfOverdueActions);
+            message = generateOverdueActionsMessage(numberOfOverdueActions, projectPreferences.isFishModeEnabled());
         }
 
         displayNotification(context, message.title, message.content);
     }
 
-    private static TitleContentHolder generateOverdueActionsMessage(int numberOfOverdueActions) {
+    private static TitleContentHolder generateOverdueActionsMessage(int numberOfOverdueActions, 
+                                                                    boolean isFishModeEnabled) {
         String title;
         String content;
-        if (IS_FISH_MODE) {
+        if (isFishModeEnabled) {
             title = "Fish! Some items are overdue!";
             content = String.format("%s items are overdue! Complete them immediately", numberOfOverdueActions);
         } else {
@@ -43,11 +45,11 @@ public class NotificationGenerator {
         return new TitleContentHolder(title, content);        
     }
 
-    private static TitleContentHolder generateNoOverdueActionsMessage() {
+    private static TitleContentHolder generateNoOverdueActionsMessage(boolean isFishModeEnabled) {
         String title;
         String content;
         
-        if (IS_FISH_MODE) {
+        if (isFishModeEnabled) {
             title = "Good fish! No items are overdue!";
             content = notificationMessageGenerator.generate();
         } else {
