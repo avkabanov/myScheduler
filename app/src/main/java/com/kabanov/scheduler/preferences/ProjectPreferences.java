@@ -1,21 +1,15 @@
 package com.kabanov.scheduler.preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class ProjectPreferences {
-    
-    public static final String PREFERENCE_NAME = "prefs";
 
-    private final SharedPreferences preferences;
+    private final SharedPreferences preferences; 
     
-    public ProjectPreferences(SharedPreferences preferences) {
-        this.preferences = preferences;
-    }
-
-    public void setFishModeEnabled(boolean value) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(Settings.IS_FISH_MODE_ENABLED.getAlias(), value);
-        editor.apply();
+    public ProjectPreferences(Context context) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
     
     public boolean isFishModeEnabled() {
