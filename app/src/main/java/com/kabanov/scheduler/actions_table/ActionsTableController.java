@@ -10,14 +10,12 @@ import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
 
-import android.widget.TableLayout;
-
 public class ActionsTableController implements ActionsTableViewController {
 
     private static final Logger logger = Logger.getLogger(ActionsTableController.class.getName());
 
     private ActionsTableModel tableModel;
-    private ActionsTableView tableView;
+    private ActionsTableViewImpl tableView;
     private MainActivity mainActivity;
     private UpdateActionViewPresenter updateActionViewPresenter;
     private List<String> actionsListInView = new ArrayList<>();
@@ -28,7 +26,7 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     public ActionsTableController(MainActivity mainActivity, 
-                                  ActionsTableView actionsTableView,
+                                  ActionsTableViewImpl actionsTableView,
                                   UpdateActionViewPresenter updateActionViewPresenter) {
         this.mainActivity = mainActivity;
         this.updateActionViewPresenter = updateActionViewPresenter;
@@ -41,10 +39,6 @@ public class ActionsTableController implements ActionsTableViewController {
         tableModel = new ActionsTableModel();
     }
 
-    public TableLayout getTableView() {
-        return tableView.getActionsTable();
-    }
-
     public void addNewAction(ActionData actionData) {
         logger.info("Add new action: " + actionData);
         logger.info("Action id: " + actionData.getId());
@@ -52,23 +46,6 @@ public class ActionsTableController implements ActionsTableViewController {
         tableModel.addAction(actionData);
         tableView.addRow(actionData);
         actionsListInView.add(actionData.getId());
-
-        reorderIfRequired(actionData);
-    }
-
-    private void reorderIfRequired(ActionData actionData) {
-        if (actionsListInView.size() > 1) {
-            int oldIndex = actionsListInView.indexOf(actionData.getId());
-            actionsListInView.remove(oldIndex);
-            int newIndex = getNewRowPosition(actionData.getId());
-
-            actionsListInView.add(newIndex, actionData.getId());
-            if (oldIndex != newIndex) {
-                tableView.moveRow(oldIndex, newIndex);
-                logger.info(
-                        "Reordering: name=" + actionData.getName() + " oldIndex=" + oldIndex + " newIndex=" + newIndex);
-            }
-        }
     }
 
     @Override
@@ -124,6 +101,5 @@ public class ActionsTableController implements ActionsTableViewController {
 
     public void updateAction(String actionId, ActionData actionData) {
         tableView.updateAction(actionId, actionData);
-        reorderIfRequired(actionData);
     }
 }

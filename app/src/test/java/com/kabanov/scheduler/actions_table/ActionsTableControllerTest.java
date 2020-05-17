@@ -16,8 +16,6 @@ import org.mockito.Mockito;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.test_utils.ActionTestUtils;
-import com.kabanov.scheduler.test_utils.TestUtils;
-import com.kabanov.scheduler.utils.TimeUtils;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -25,7 +23,7 @@ import static org.mockito.Mockito.spy;
 
 public class ActionsTableControllerTest {
     private MainActivity mainActivity = mock(MainActivity.class);
-    private ActionsTableView tableView = mock(ActionsTableView.class);
+    private ActionsTableViewImpl tableView = mock(ActionsTableView.class);
 
     private UpdateActionViewPresenter updateActionViewPresenter = Mockito.mock(UpdateActionViewPresenter.class);
     private ActionsTableController tableController = spy(
@@ -49,13 +47,6 @@ public class ActionsTableControllerTest {
             return null;
         }).when(tableView).removeRow(Matchers.<String>anyObject());
 
-        Mockito.doAnswer(invocation -> {
-            int oldIndex = (Integer) invocation.getArguments()[0];
-            int newIndex = (Integer) invocation.getArguments()[1];
-            TestUtils.switchElements(oldIndex, newIndex, viewActionIds);
-            return null;
-        }).when(tableView).moveRow(Matchers.anyInt(), Matchers.anyInt());
-
         Mockito.doNothing().when(tableController).showViewActionDialog(any());
         Mockito.doNothing().when(tableController).showEditActionDialog(any());
     }
@@ -65,38 +56,6 @@ public class ActionsTableControllerTest {
         tableController.addNewAction(ActionTestUtils.createAction("First", 1, new Date()));
         tableController.addNewAction(ActionTestUtils.createAction("Second", 2, new Date()));
         assertViewOrder("First", "Second");
-    }
-
-    @Test
-    public void addActionsInBackOrder() {
-        tableController.addNewAction(ActionTestUtils.createAction("First", 2, new Date()));
-        tableController.addNewAction(ActionTestUtils.createAction("Second", 1, new Date()));
-
-        assertViewOrder("Second", "First");
-    }
-
-    @Test
-    public void reorderActionsOnUpdate() {
-        ActionData first = ActionTestUtils.createAction("First", 5, addDays(new Date(), -10));
-        tableController.addNewAction(first);     // hardly overdue
-        tableController.addNewAction(ActionTestUtils.createAction("Second", 2, new Date()));                          // not overdue
-
-        // should be sorted like: First, Second. Click on the first one.
-        assertViewOrder("First", "Second");
-
-        first.setExecutedAt(new Date());
-        tableController.updateAction(first.getId(), first);
-
-        // should be reordered
-        assertViewOrder("Second", "First");
-
-        // check that next execution date is updated
-        Assert.assertEquals(
-                TimeUtils.cutWithDayAcc(addDays(new Date(), 5)),
-                TimeUtils.cutWithDayAcc(getAction(1).getNextExecutionDate()));
-
-        tableController.addNewAction(ActionTestUtils.createAction("Third", 3, new Date())); // should be located in the middle
-        assertViewOrder("Second", "Third", "First");
     }
 
     @Test

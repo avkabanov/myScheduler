@@ -34,7 +34,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayout mainLayout = findViewById(R.id.content_main_layout);
 
         Log4jHelper.configureLog4j(getFilesDir());
 
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
         actionController.setActionsTableController(actionsTableController);
         userActivityStateManager = new UserActivityStateManager(this, actionController);
-        mainLayout.addView(actionsTableController.getTableView());
         innerActivityStateManager = new InnerActivityStateManager(this);
 
         new NotificationController(this);
