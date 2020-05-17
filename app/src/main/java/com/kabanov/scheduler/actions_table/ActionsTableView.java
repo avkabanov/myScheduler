@@ -41,7 +41,6 @@ public class ActionsTableView implements ActionsTableViewImpl {
     public void addRow(ActionData action) {
         list.add(action);
         adapter.sort();
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -49,7 +48,6 @@ public class ActionsTableView implements ActionsTableViewImpl {
         int index = findActionIdIndex(actionId);
         list.set(index, actionData);
         adapter.sort();
-        adapter.notifyDataSetChanged();
     }
 
     private int findActionIdIndex(String actionId) {
@@ -66,6 +64,5 @@ public class ActionsTableView implements ActionsTableViewImpl {
         int index = findActionIdIndex(actionId);
         list.remove(index);
         adapter.sort();
-        adapter.notifyDataSetChanged();
     }
 }
