@@ -13,11 +13,14 @@ import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.settings.SettingsActivity;
-import com.kabanov.scheduler.state.ActivityStateManager;
-import com.kabanov.scheduler.state.ApplicationState;
+import com.kabanov.scheduler.state.data.ApplicationState;
+import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
+import com.kabanov.scheduler.state.user.UserActivityStateManager;
+import com.kabanov.scheduler.state.user.UserStateSelectorActivity;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
@@ -32,15 +35,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final Logger logger = Logger.getLogger(MainActivity.class.getName());
 
-    private ActivityStateManager activityStateManager;
+    private UserActivityStateManager userActivityStateManager;
+    private InnerActivityStateManager innerActivityStateManager;
     private ActionController actionController;
     private LogsSender logsSender = new LogsSender(this);
     public static MainActivity instance;
+
     {
         instance = this;
     }
@@ -52,23 +58,24 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout mainLayout = findViewById(R.id.content_main_layout);
 
         Log4jHelper.configureLog4j(getFilesDir());
-        
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         actionController = new ActionsControllerImpl();
-        
+
         UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenterImpl(actionController);
         ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
         actionController.setActionsTableController(actionsTableController);
-        activityStateManager = new ActivityStateManager(getFilesDir(), this);
+        userActivityStateManager = new UserActivityStateManager(this, actionController);
         mainLayout.addView(actionsTableController.getTableView());
+        innerActivityStateManager = new InnerActivityStateManager(this);
 
         new NotificationController(this);
-        Log.d("MainActivity","notification controller is set");
+        Log.d("MainActivity", "notification controller is set");
 
         final FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {    
+        fab.setOnClickListener(view -> {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
@@ -109,21 +116,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_export_actions) {
-            activityStateManager.exportState(new ApplicationState(actionController.getAllActions()));
+            userActivityStateManager.exportUserState(ApplicationState.from(actionController.getAllActions()));
         }
 
         if (id == R.id.action_import_actions) {
-            ApplicationState state = activityStateManager.importState();
-            actionController.clearAll();
-            for (ActionData actionData : state.getActions()) {
-                try {
-                    actionController.addActionRequest(actionData);
-                } catch (ValidationException e) {
-                    e.printStackTrace();
-                }
-            }
+            userActivityStateManager.requestImportUserState();
         }
-        
+
         if (id == R.id.action_open_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }
@@ -143,17 +142,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        ApplicationState applicationState = new ApplicationState(actionController.getAllActions());
-        activityStateManager.saveState(applicationState);
+        ApplicationState applicationState = ApplicationState.from(actionController.getAllActions());
+        innerActivityStateManager.saveInnerState(applicationState);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         logger.debug("On Resume");
-        
+
         logger.debug("Starting loading actions");
-        List<ActionData> list = activityStateManager.loadState().getActions();
+        List<ActionData> list = innerActivityStateManager.loadInnerState().getActions();
         logger.debug("Actions loaded " + list.size());
 
         actionController.clearAll();
@@ -173,14 +172,29 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LogsSender.SEND_LOGS_REQUEST_PERMISSIONS:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Granted.
                     logsSender.sendLogs();
-                }
-                else{
+                } else {
                     //Denied.
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case RequestCode.IMPORT_USER_SETTINGS: {
+                if (resultCode == RESULT_OK) {
+                    userActivityStateManager.onImportUserStateFinished(
+                            data.getStringExtra(UserStateSelectorActivity.Extras.CONTENT.getAlias()));
+                    innerActivityStateManager.saveInnerState(ApplicationState.from(actionController.getAllActions()));
+                    Toast.makeText(this, actionController.getAllActions().size() + " actions imported successfully",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 

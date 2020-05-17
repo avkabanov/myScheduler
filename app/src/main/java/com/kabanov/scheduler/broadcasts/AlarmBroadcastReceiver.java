@@ -6,7 +6,7 @@ import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.notification.NotificationGenerator;
-import com.kabanov.scheduler.state.ActivityStateManager;
+import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.content.BroadcastReceiver;
@@ -31,8 +31,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         if (MainActivity.instance == null) {
             if (cache == null) {
                 logger.info("Loading activities from persistence");
-                ActivityStateManager activityStateManager = new ActivityStateManager(context.getFilesDir(), context);
-                cache = activityStateManager.loadState().getActions();
+                InnerActivityStateManager activityStateManager = new InnerActivityStateManager(context);
+                cache = activityStateManager.loadInnerState().getActions();
             }
             for (ActionData actionData : cache) {
                 if (actionData.isOverdue()) {

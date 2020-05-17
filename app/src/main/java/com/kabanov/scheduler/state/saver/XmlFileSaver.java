@@ -1,13 +1,12 @@
 package com.kabanov.scheduler.state.saver;
 
 import java.io.File;
-import java.io.IOException;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import com.kabanov.scheduler.state.ActionsSaver;
-import com.kabanov.scheduler.state.ApplicationState;
+import com.kabanov.scheduler.state.data.ApplicationState;
+import com.kabanov.scheduler.state.file.FileWriter;
+import com.kabanov.scheduler.state.xml.XmlParser;
+import com.kabanov.scheduler.utils.Logger;
 
 /**
  * @author Алексей
@@ -15,49 +14,33 @@ import com.kabanov.scheduler.state.ApplicationState;
  */
 public class XmlFileSaver implements ActionsSaver {
 
-    private final File applicationDateDir;
-    private final String activitiesStorageFilename;
+    private static final Logger logger = Logger.getLogger(XmlFileSaver.class.getName());
+
+    private final XmlParser xmlParser = new XmlParser();
+    private final FileWriter fileWriter;
 
     public XmlFileSaver(File applicationDateDir, String activitiesStorageFilename) {
-        this.applicationDateDir = applicationDateDir;
-        this.activitiesStorageFilename = activitiesStorageFilename;
+        fileWriter = new FileWriter(applicationDateDir, activitiesStorageFilename);
     }
 
     @Override
     public void save(ApplicationState applicationState) {
-        File file = new File(applicationDateDir, activitiesStorageFilename);
-        if (file.exists()) {
-            file.delete();
-        }
         try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Serializer serializer = new Persister();
-
-        try {
-            serializer.write(applicationState, file);
+            String result = xmlParser.parse(applicationState);
+            fileWriter.write(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
     @Override
     public ApplicationState load() {
-        File xmlFile = new File(activitiesStorageFilename);
-
-        Serializer serializer = new Persister();
-
-        ApplicationState example = null;
-
         try {
-            example = serializer.read(ApplicationState.class, xmlFile);
+            String result = fileWriter.read();
+            return xmlParser.format(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            return null;
         }
-
-        return example;
     }
 }
