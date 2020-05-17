@@ -24,7 +24,7 @@ public class ActionsTableView implements ActionsTableViewImpl {
 
         // addHeaderView (View v, Object data, boolean isSelectable)
         adapter = new ActionDataAdapter(activity, list);
-        
+
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((adapterView, view, position, l) -> {
             ActionData action = adapter.getItem(position);
@@ -35,6 +35,7 @@ public class ActionsTableView implements ActionsTableViewImpl {
             viewController.onActionLongClick(action.getId());
             return true;
         });
+
     }
 
     @Override

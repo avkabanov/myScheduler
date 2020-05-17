@@ -15,13 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ActionDataAdapter extends ArrayAdapter <ActionData> {
 
-    private static final String OVERDUE_ACTION_COLOR = "#f08f8f";
-    private static final String ABOUT_TO_OVERDUE_ACTION_COLOR = "#f6bcbc";
-    private static final String NOT_OVERDUE_ACTION_COLOR = "#ECECEC";
+    private static final String DUE_DATE_NOT_OVERDUE_TEXT_COLOR = "#737373";
+    private static final String DUE_DATE_OVERDUE_TEXT_COLOR = "#ff0000";     
 
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
     
@@ -38,9 +38,9 @@ public class ActionDataAdapter extends ArrayAdapter <ActionData> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.action_table_row, parent, false);
         }
-        
+
         fillTableRow(convertView, action);
-        //updateTableRowView(action, convertView);
+        updateTableRowView(action, convertView);
         
         return convertView;
     }
@@ -56,12 +56,22 @@ public class ActionDataAdapter extends ArrayAdapter <ActionData> {
     }
 
     private void updateTableRowView(ActionData actionData, View tableRow) {
+        ImageView image = tableRow.findViewById(R.id.table_row_icon);
+        TextView dueToText = tableRow.findViewById(R.id.action_due_date);
+
         if (actionData.isOverdue()) {
-            tableRow.setBackgroundColor(Color.parseColor(OVERDUE_ACTION_COLOR));
+            image.setImageResource(R.drawable.alarm_overdue_255_100_100);
+            image.setVisibility(View.VISIBLE);
+            
+            dueToText.setTextColor(Color.parseColor(DUE_DATE_OVERDUE_TEXT_COLOR));
         } else if (actionData.isAboutToOverdue()) {
-            tableRow.setBackgroundColor(Color.parseColor(ABOUT_TO_OVERDUE_ACTION_COLOR));
+            image.setImageResource(R.drawable.sandglass_115_115_115);
+            image.setVisibility(View.VISIBLE);
+
+            dueToText.setTextColor(Color.parseColor(DUE_DATE_NOT_OVERDUE_TEXT_COLOR));
         } else {
-            tableRow.setBackgroundColor(Color.parseColor(NOT_OVERDUE_ACTION_COLOR));
+            image.setVisibility(View.INVISIBLE);
+            dueToText.setTextColor(Color.parseColor(DUE_DATE_NOT_OVERDUE_TEXT_COLOR));
         }
     }
 
