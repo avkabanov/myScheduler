@@ -1,4 +1,4 @@
-package com.kabanov.scheduler.state.saver;
+package com.kabanov.scheduler.state.persistence;
 
 import java.io.File;
 
@@ -12,14 +12,14 @@ import com.kabanov.scheduler.utils.Logger;
  * @author Алексей
  * @date 14.04.2019
  */
-public class XmlFileSaver implements ActionsSaver {
+public class XmlFilePersistence implements ActionsSaver {
 
-    private static final Logger logger = Logger.getLogger(XmlFileSaver.class.getName());
+    private static final Logger logger = Logger.getLogger(XmlFilePersistence.class.getName());
 
     private final XmlParser xmlParser = new XmlParser();
     private final FileWriter fileWriter;
 
-    public XmlFileSaver(File applicationDateDir, String activitiesStorageFilename) {
+    public XmlFilePersistence(File applicationDateDir, String activitiesStorageFilename) {
         fileWriter = new FileWriter(applicationDateDir, activitiesStorageFilename);
     }
 

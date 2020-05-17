@@ -2,7 +2,7 @@ package com.kabanov.scheduler.state.inner;
 
 import com.kabanov.scheduler.state.ActionsSaver;
 import com.kabanov.scheduler.state.data.ApplicationState;
-import com.kabanov.scheduler.state.saver.XmlFileSaver;
+import com.kabanov.scheduler.state.persistence.XmlFilePersistence;
 
 import android.content.Context;
 
@@ -12,7 +12,7 @@ public class InnerActivityStateManager {
     private final ActionsSaver innerState;
     
     public InnerActivityStateManager(Context context) {
-        innerState = new XmlFileSaver(context.getFilesDir(), ACTIVITIES_STORAGE_FILENAME);
+        innerState = new XmlFilePersistence(context.getFilesDir(), ACTIVITIES_STORAGE_FILENAME);
     }
 
     public void saveInnerState(ApplicationState applicationState) {
