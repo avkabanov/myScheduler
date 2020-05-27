@@ -1,12 +1,11 @@
 package com.kabanov.scheduler.broadcasts;
 
-import java.util.List;
-
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.notification.NotificationGenerator;
-import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
+import com.kabanov.scheduler.state.data.ApplicationState;
+import com.kabanov.scheduler.state.persistence.BinaryStatePersistence;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.content.BroadcastReceiver;
@@ -17,24 +16,27 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
     private static final Logger logger = Logger.getLogger(AlarmBroadcastReceiver.class.getName());
 
-    private static List<ActionData> cache;
+    private BinaryStatePersistence innerActivityStateManager;
+    private ApplicationState applicationState;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         logger.info("onReceive: " + intent.getAction());
-        
+
         if (context == null) return;
 
         NotificationController.setPeriodicalAlarmService(context);
 
         int overdueActionsCount = 0;
         if (MainActivity.instance == null) {
-            if (cache == null) {
+            if (applicationState == null) {
                 logger.info("Loading activities from persistence");
-                InnerActivityStateManager activityStateManager = new InnerActivityStateManager(context);
-                cache = activityStateManager.loadInnerState().getActions();
+                if (innerActivityStateManager == null) {
+                    innerActivityStateManager = new BinaryStatePersistence(context);
+                }
+                applicationState = innerActivityStateManager.loadInnerState();
             }
-            for (ActionData actionData : cache) {
+            for (ActionData actionData : applicationState.getActions()) {
                 if (actionData.isOverdue()) {
                     overdueActionsCount++;
                 }
@@ -45,7 +47,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
         logger.info("Showing notification with overdue actions count: " + overdueActionsCount);
         try {
-            NotificationGenerator.generateNotification(context, overdueActionsCount);
+            NotificationGenerator.generateNotification(context, overdueActionsCount,
+                    applicationState.getSettingsPersistence().getFishModeEnabled());
         } catch (Exception e) {
             e.printStackTrace();
         }

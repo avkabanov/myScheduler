@@ -13,21 +13,15 @@ public class ApplicationState {
 
     @ElementList(name = "ActionDataStateList")
     private List<ActionDataState> actionDataStateList = new ArrayList<>();
+    
+    private SettingsPersistence settingsPersistence;
 
     public ApplicationState() {
     }
 
-    public ApplicationState(List<ActionDataState> actionDataStateList) {
+    public ApplicationState(List<ActionDataState> actionDataStateList, SettingsPersistence settingsPersistence) {
         this.actionDataStateList = actionDataStateList;
-    }
-
-    
-    public static ApplicationState from(List<ActionData> actionDataList) {
-        List<ActionDataState> data = new ArrayList<>();
-        for (ActionData actionData : actionDataList) {
-            data.add(ActionDataState.from(actionData));
-        }
-        return new ApplicationState(data);
+        this.settingsPersistence = settingsPersistence;
     }
 
     public List<ActionData> getActions() {
@@ -42,5 +36,9 @@ public class ApplicationState {
 
         }
         return result;
+    }
+
+    public SettingsPersistence getSettingsPersistence() {
+        return settingsPersistence;
     }
 }

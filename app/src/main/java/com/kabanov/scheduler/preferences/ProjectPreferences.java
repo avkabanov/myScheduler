@@ -15,9 +15,15 @@ public class ProjectPreferences {
     public boolean isFishModeEnabled() {
         return preferences.getBoolean(Settings.IS_FISH_MODE_ENABLED.getAlias(), Settings.IS_FISH_MODE_ENABLED.getDefaultValue());
     }
+
+    public void setFishModeEnabled(boolean value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Settings.IS_FISH_MODE_ENABLED.getAlias(), value);
+        editor.apply();
+    }
     
     private enum Settings {
-        IS_FISH_MODE_ENABLED("IS_FISH_MODE_ENABLED", false);
+        IS_FISH_MODE_ENABLED("IS_FISH_MODE_ENABLED", true);
 
         private String alias;
         private boolean defaultValue;

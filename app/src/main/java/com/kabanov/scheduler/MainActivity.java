@@ -1,14 +1,11 @@
 package com.kabanov.scheduler;
 
-import java.util.List;
-
 import org.acra.ACRA;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
 import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
-import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
@@ -16,11 +13,12 @@ import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
+import com.kabanov.scheduler.preferences.ProjectPreferences;
 import com.kabanov.scheduler.settings.SettingsActivity;
-import com.kabanov.scheduler.state.data.ApplicationState;
-import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
+import com.kabanov.scheduler.state.ApplicationStateCreator;
+import com.kabanov.scheduler.state.ApplicationStateManager;
+import com.kabanov.scheduler.state.user.ImportExportUserStateActivity;
 import com.kabanov.scheduler.state.user.UserActivityStateManager;
-import com.kabanov.scheduler.state.user.UserStateSelectorActivity;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
 
@@ -41,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
     private static final Logger logger = Logger.getLogger(MainActivity.class.getName());
 
     private UserActivityStateManager userActivityStateManager;
-    private InnerActivityStateManager innerActivityStateManager;
+    private ApplicationStateManager applicationStateManager;
     private ActionController actionController;
     private LogsSender logsSender = new LogsSender(this);
+    private ApplicationStateCreator applicationStateCreator;
+    private ProjectPreferences projectPreferences;
     public static MainActivity instance;
 
     {
@@ -65,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
         UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenterImpl(actionController);
         ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
         actionController.setActionsTableController(actionsTableController);
-        userActivityStateManager = new UserActivityStateManager(this, actionController);
-        innerActivityStateManager = new InnerActivityStateManager(this);
-
+        applicationStateManager = new ApplicationStateManager(this, actionController, applicationStateCreator);
+        userActivityStateManager = new UserActivityStateManager(this, applicationStateManager);
+        projectPreferences = new ProjectPreferences(this);
+        applicationStateCreator = new ApplicationStateCreator(actionController, projectPreferences);
+        
         new NotificationController(this);
         Log.d("MainActivity", "notification controller is set");
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_export_actions) {
-            userActivityStateManager.exportUserState(ApplicationState.from(actionController.getAllActions()));
+            userActivityStateManager.exportUserState(applicationStateCreator.create());
         }
 
         if (id == R.id.action_import_actions) {
@@ -139,29 +141,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        ApplicationState applicationState = ApplicationState.from(actionController.getAllActions());
-        innerActivityStateManager.saveInnerState(applicationState);
+        applicationStateManager.saveInnerState();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        logger.debug("On Resume");
-
-        logger.debug("Starting loading actions");
-        List<ActionData> list = innerActivityStateManager.loadInnerState().getActions();
-        logger.debug("Actions loaded " + list.size());
-
-        actionController.clearAll();
-        for (ActionData actionData : list) {
-            try {
-                actionController.addActionRequest(actionData);
-            } catch (ValidationException e) {
-                e.printStackTrace();
-            }
-        }
-
-        logger.info("Actions added: " + list.size());
+        applicationStateManager.restoreInnerState();
         super.onResume();
     }
 
@@ -186,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
             case RequestCode.IMPORT_USER_SETTINGS: {
                 if (resultCode == RESULT_OK) {
                     userActivityStateManager.onImportUserStateFinished(
-                            data.getStringExtra(UserStateSelectorActivity.Extras.CONTENT.getAlias()));
-                    innerActivityStateManager.saveInnerState(ApplicationState.from(actionController.getAllActions()));
+                            data.getStringExtra(ImportExportUserStateActivity.Extras.CONTENT.getAlias()));
+                    applicationStateManager.saveInnerState();
                     Toast.makeText(this, actionController.getAllActions().size() + " actions imported successfully",
                             Toast.LENGTH_LONG).show();
                 }

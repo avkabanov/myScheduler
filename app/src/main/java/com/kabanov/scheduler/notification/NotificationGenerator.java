@@ -3,7 +3,6 @@ package com.kabanov.scheduler.notification;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.notification.title.NotificationMessageGenerator;
-import com.kabanov.scheduler.preferences.ProjectPreferences;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -16,15 +15,13 @@ import android.support.v4.app.NotificationCompat;
 public class NotificationGenerator {
 
     private static final NotificationMessageGenerator notificationMessageGenerator = new NotificationMessageGenerator();
-    private static ProjectPreferences projectPreferences;
 
-    public static void generateNotification(Context context, int numberOfOverdueActions) {
-        projectPreferences = new ProjectPreferences(context);
+    public static void generateNotification(Context context, int numberOfOverdueActions, boolean isFishModeEnabled) {
         TitleContentHolder message;
         if (numberOfOverdueActions == 0) {
-            message = generateNoOverdueActionsMessage(projectPreferences.isFishModeEnabled());
+            message = generateNoOverdueActionsMessage(isFishModeEnabled);
         } else {
-            message = generateOverdueActionsMessage(numberOfOverdueActions, projectPreferences.isFishModeEnabled());
+            message = generateOverdueActionsMessage(numberOfOverdueActions, isFishModeEnabled);
         }
 
         displayNotification(context, message.title, message.content);

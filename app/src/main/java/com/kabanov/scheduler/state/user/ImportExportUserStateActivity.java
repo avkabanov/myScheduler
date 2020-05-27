@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class UserStateSelectorActivity extends AppCompatActivity {
+public class ImportExportUserStateActivity extends AppCompatActivity {
 
     private FileWriter fileWriter;
 

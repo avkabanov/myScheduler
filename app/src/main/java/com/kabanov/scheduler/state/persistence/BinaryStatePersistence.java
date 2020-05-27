@@ -1,18 +1,17 @@
-package com.kabanov.scheduler.state.inner;
+package com.kabanov.scheduler.state.persistence;
 
 import com.kabanov.scheduler.state.ActionsSaver;
 import com.kabanov.scheduler.state.data.ApplicationState;
-import com.kabanov.scheduler.state.persistence.XmlFilePersistence;
 
 import android.content.Context;
 
-public class InnerActivityStateManager {
+public class BinaryStatePersistence {
     public static final String ACTIVITIES_STORAGE_FILENAME = "application-state.xml";
     public static final Object fileAccessLock = new Object();
     private final ActionsSaver innerState;
     
-    public InnerActivityStateManager(Context context) {
-        innerState = new XmlFilePersistence(context.getFilesDir(), ACTIVITIES_STORAGE_FILENAME);
+    public BinaryStatePersistence(Context context) {
+        innerState = new XmlStatePersistence(context.getFilesDir(), ACTIVITIES_STORAGE_FILENAME);
     }
 
     public void saveInnerState(ApplicationState applicationState) {

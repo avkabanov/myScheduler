@@ -8,17 +8,16 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-public class UserStateManager {
+public class ImportExportUserActivityStarter {
 
-    private XmlParser xmlParser = new XmlParser();
-    private AppCompatActivity activity;
+    private final XmlParser xmlParser = new XmlParser();
+    private final AppCompatActivity activity;
 
-    public UserStateManager(AppCompatActivity activity) {
+    public ImportExportUserActivityStarter(AppCompatActivity activity) {
         this.activity = activity;
     }
 
     public void exportUserState(ApplicationState applicationState) {
-
         String state;
         try {
             state = xmlParser.parse(applicationState);
@@ -28,15 +27,15 @@ public class UserStateManager {
             return;
         }
 
-        Intent intent = new Intent(activity, UserStateSelectorActivity.class);
-        intent.putExtra(UserStateSelectorActivity.Extras.CONTENT.getAlias(), state);
-        intent.putExtra(UserStateSelectorActivity.Extras.OPEN_MODE.getAlias(), UserStateSelectorActivity.OpenMode.EXPORT.getAlias());
+        Intent intent = new Intent(activity, ImportExportUserStateActivity.class);
+        intent.putExtra(ImportExportUserStateActivity.Extras.CONTENT.getAlias(), state);
+        intent.putExtra(ImportExportUserStateActivity.Extras.OPEN_MODE.getAlias(), ImportExportUserStateActivity.OpenMode.EXPORT.getAlias());
         activity.startActivity(intent);
     }
 
     public void requestImportUserState() {
-        Intent intent = new Intent(activity, UserStateSelectorActivity.class);
-        intent.putExtra(UserStateSelectorActivity.Extras.OPEN_MODE.getAlias(), UserStateSelectorActivity.OpenMode.IMPORT.getAlias());
+        Intent intent = new Intent(activity, ImportExportUserStateActivity.class);
+        intent.putExtra(ImportExportUserStateActivity.Extras.OPEN_MODE.getAlias(), ImportExportUserStateActivity.OpenMode.IMPORT.getAlias());
 
         activity.startActivityForResult(intent, RequestCode.IMPORT_USER_SETTINGS);
     }
