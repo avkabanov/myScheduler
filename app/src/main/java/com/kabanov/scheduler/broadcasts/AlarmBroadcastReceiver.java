@@ -1,11 +1,14 @@
 package com.kabanov.scheduler.broadcasts;
 
+import java.util.List;
+
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.notification.NotificationController;
 import com.kabanov.scheduler.notification.NotificationGenerator;
+import com.kabanov.scheduler.state.converter.Converter;
 import com.kabanov.scheduler.state.data.ApplicationState;
-import com.kabanov.scheduler.state.persistence.BinaryStatePersistence;
+import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.content.BroadcastReceiver;
@@ -16,8 +19,9 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
     private static final Logger logger = Logger.getLogger(AlarmBroadcastReceiver.class.getName());
 
-    private BinaryStatePersistence innerActivityStateManager;
+    private InnerActivityStateManager innerActivityStateManager;
     private ApplicationState applicationState;
+    private final Converter converter = new Converter();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -29,14 +33,13 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
         int overdueActionsCount = 0;
         if (MainActivity.instance == null) {
-            if (applicationState == null) {
-                logger.info("Loading activities from persistence");
-                if (innerActivityStateManager == null) {
-                    innerActivityStateManager = new BinaryStatePersistence(context);
-                }
-                applicationState = innerActivityStateManager.loadInnerState();
+            logger.info("Loading activities from persistence");
+            if (innerActivityStateManager == null) {
+                innerActivityStateManager = new InnerActivityStateManager(context);
             }
-            for (ActionData actionData : applicationState.getActions()) {
+            applicationState = innerActivityStateManager.loadInnerState();
+            List<ActionData> actions = converter.toActionDataList(applicationState.getActionDataStateList());
+            for (ActionData actionData : actions) {
                 if (actionData.isOverdue()) {
                     overdueActionsCount++;
                 }

@@ -17,6 +17,7 @@ import com.kabanov.scheduler.preferences.ProjectPreferences;
 import com.kabanov.scheduler.settings.SettingsActivity;
 import com.kabanov.scheduler.state.ApplicationStateCreator;
 import com.kabanov.scheduler.state.ApplicationStateManager;
+import com.kabanov.scheduler.state.converter.Converter;
 import com.kabanov.scheduler.state.user.ImportExportUserStateActivity;
 import com.kabanov.scheduler.state.user.UserActivityStateManager;
 import com.kabanov.scheduler.utils.Log4jHelper;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private ApplicationStateCreator applicationStateCreator;
     private ProjectPreferences projectPreferences;
     public static MainActivity instance;
+    public Converter converter = new Converter();
 
     {
         instance = this;
@@ -65,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
         UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenterImpl(actionController);
         ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
         actionController.setActionsTableController(actionsTableController);
-        applicationStateManager = new ApplicationStateManager(this, actionController, applicationStateCreator);
+        applicationStateManager = new ApplicationStateManager(this, actionController, applicationStateCreator,
+                converter);
         userActivityStateManager = new UserActivityStateManager(this, applicationStateManager);
         projectPreferences = new ProjectPreferences(this);
-        applicationStateCreator = new ApplicationStateCreator(actionController, projectPreferences);
+        applicationStateCreator = new ApplicationStateCreator(actionController, projectPreferences, converter);
         
         new NotificationController(this);
         Log.d("MainActivity", "notification controller is set");

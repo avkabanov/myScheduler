@@ -1,0 +1,16 @@
+<ApplicationState>
+    <ActionDataStateList class="java.util.ArrayList">
+        <actionDataState>
+            <id>action1</id>
+            <name>firstActionName</name>
+            <periodicityDays>45</periodicityDays>
+            <lastExecutionDate>2020-02-09</lastExecutionDate>
+        </actionDataState>
+        <actionDataState>
+            <id>action2</id>
+            <name>secondActionName</name>
+            <periodicityDays>360</periodicityDays>
+            <lastExecutionDate>2019-04-15</lastExecutionDate>
+        </actionDataState>
+    </ActionDataStateList>
+</ApplicationState>

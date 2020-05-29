@@ -1,10 +1,9 @@
 package com.kabanov.scheduler.state.data;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.simpleframework.xml.Element;
-
-import com.kabanov.scheduler.actions_table.ActionData;
 
 @Element(name = "ActionDataState")
 public class ActionDataState {
@@ -28,14 +27,6 @@ public class ActionDataState {
         this.lastExecutionDate = lastExecutionDate;
     }
     
-    public static ActionDataState from(ActionData actionData) {
-        return new ActionDataState(
-                actionData.getId(), 
-                actionData.getName(), 
-                actionData.getPeriodicityDays(),
-                actionData.getLastExecutionDate());
-    }
-
     public String getId() {
         return id;
     }
@@ -66,5 +57,31 @@ public class ActionDataState {
 
     public void setLastExecutionDate(Date lastExecutionDate) {
         this.lastExecutionDate = lastExecutionDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ActionDataState{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", periodicityDays=" + periodicityDays +
+                ", lastExecutionDate=" + lastExecutionDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActionDataState that = (ActionDataState) o;
+        return periodicityDays == that.periodicityDays &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(lastExecutionDate, that.lastExecutionDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, periodicityDays, lastExecutionDate);
     }
 }

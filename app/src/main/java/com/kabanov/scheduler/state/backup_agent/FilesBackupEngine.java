@@ -7,10 +7,10 @@ package com.kabanov.scheduler.state.backup_agent;
 
 import java.io.IOException;
 
-import com.kabanov.scheduler.state.persistence.BinaryStatePersistence;
+import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
-import static com.kabanov.scheduler.state.persistence.BinaryStatePersistence.fileAccessLock;
+import static com.kabanov.scheduler.state.inner.InnerActivityStateManager.fileAccessLock;
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
@@ -35,7 +35,7 @@ public class FilesBackupEngine extends BackupAgentHelper {
     // Allocate a helper and add it to the backup agent
     @Override
     public void onCreate() {
-        FileBackupHelper helper = new FileBackupHelper(this, BinaryStatePersistence.ACTIVITIES_STORAGE_FILENAME);
+        FileBackupHelper helper = new FileBackupHelper(this, InnerActivityStateManager.ACTIVITIES_STORAGE_FILENAME);
         addHelper(FILES_BACKUP_KEY, helper);
     }
 

@@ -20,10 +20,14 @@ public class ActionData implements Serializable {
     private Date lastUpdateExecutionTime;
 
     public ActionData(String id, String name, int periodicityDays) {
+        this(id, name, periodicityDays, new Date());    
+    }
+
+    public ActionData(String id, String name, int periodicityDays, Date lastExecutionDate) {
         this.id = id;
         this.name = name;
         this.periodicityDays = periodicityDays;
-        lastExecutionDate = new Date();
+        this.lastExecutionDate = lastExecutionDate;
         updateNextExecutionDate();
     }
 

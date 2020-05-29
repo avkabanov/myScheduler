@@ -6,9 +6,10 @@ import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.preferences.ProjectPreferences;
+import com.kabanov.scheduler.state.converter.Converter;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.data.SettingsPersistence;
-import com.kabanov.scheduler.state.persistence.BinaryStatePersistence;
+import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
 
 import android.content.Context;
@@ -16,17 +17,20 @@ import android.content.Context;
 public class ApplicationStateManager {
     private static final Logger logger = Logger.getLogger(ApplicationStateManager.class.getName());
 
-    private BinaryStatePersistence innerActivityStateManager;
+    private InnerActivityStateManager innerActivityStateManager;
     private ActionController actionController;
     private ApplicationStateCreator applicationStateCreator;
     private ProjectPreferences projectPreferences;
+    private Converter converter;
 
     public ApplicationStateManager(Context context, ActionController actionController,
-                                   ApplicationStateCreator applicationStateCreator) {
-        innerActivityStateManager = new BinaryStatePersistence(context);
+                                   ApplicationStateCreator applicationStateCreator,
+                                   Converter converter) {
+        innerActivityStateManager = new InnerActivityStateManager(context);
         this.actionController = actionController;
         this.applicationStateCreator = applicationStateCreator;
         projectPreferences = new ProjectPreferences(context);
+        this.converter = converter;
     }
     
     public void restoreInnerState() {
@@ -41,7 +45,7 @@ public class ApplicationStateManager {
 
     public void restoreState(ApplicationState state) {
         logger.debug("Restoring state");
-        restoreActions(state.getActions());
+        restoreActions(converter.toActionDataList(state.getActionDataStateList()));
         restoreSettings(state.getSettingsPersistence());
     }
 

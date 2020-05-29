@@ -1,52 +1,59 @@
 package com.kabanov.scheduler.state.xml;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.state.data.ActionDataState;
 import com.kabanov.scheduler.state.data.ApplicationState;
+import com.kabanov.scheduler.state.data.SettingsPersistence;
+import com.kabanov.scheduler.utils.IOTestUtils;
+import com.kabanov.scheduler.utils.TimeUtilsTest;
 
+import android.support.annotation.NonNull;
 import junit.framework.Assert;
 
 public class XmlParserTest {
 
     private XmlParser xmlParser = new XmlParser();
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    
     @Test
-    public void shouldFormatStateWhenValidStateIsGiven() throws Exception {
-
-        ApplicationState result = xmlParser.format(state);
-
-        List<ActionData> actualActions = result.getActions();
-        Assert.assertEquals(2, actualActions.size());
-
-        ActionData firstAction = getActionWithId("action1", actualActions);
-        assertAction(firstAction, "action1", 45, "2020-02-09");
-
-        ActionData secondAction = getActionWithId("action2", actualActions);
-        assertAction(secondAction, "action2", 360, "2019-04-15");
-
+    public void stateShouldBeParsedToGivenXml() throws Exception {
+        ApplicationState state = generateApplicationState();
+        String formattedXml = xmlParser.parse(state);
+        
+        String expectedXml = IOTestUtils.readAllLinesFromResource("xml_state/current_state.xml").replace("\r\n", "\n");
+        Assert.assertEquals(expectedXml, formattedXml);
+    }
+    
+    @Test
+    public void stateShouldBeReadFromGivenXml() throws Exception {
+        ApplicationState expectedState = generateApplicationState();
+        ApplicationState actualState = xmlParser
+                .format(IOTestUtils.readAllLinesFromResource("xml_state/current_state.xml"));
+        
+        Assert.assertEquals(expectedState, actualState);
     }
 
-    private void assertAction(ActionData action, String id, int periodicity, String lastExecutionDate) throws ParseException {
-        Assert.assertEquals(id, action.getId());
-        Assert.assertEquals(periodicity, action.getPeriodicityDays());
-        Assert.assertEquals(simpleDateFormat.parse(lastExecutionDate), action.getLastExecutionDate());
-
+    private ApplicationState generateApplicationState() {
+        ApplicationState applicationState = new ApplicationState();
+        applicationState.setActionDataStateList(generateActions());
+        applicationState.setSettingsPersistence(generateSettings());
+        return applicationState;
     }
 
-    private ActionData getActionWithId(String actionId, List<ActionData> actualActions) {
-        return actualActions.stream().filter(it -> it.getId().equals(actionId)).findAny().orElse(null);
+    private SettingsPersistence generateSettings() {
+        SettingsPersistence result = new SettingsPersistence();
+        result.setFishModeEnabled(true);
+        return result;
     }
 
-    private String state = "<ApplicationState>\n" +
-            "    <ActionDataStateList class=\"java.util.ArrayList\">\n" +
-            "        <actionDataState><id>action1</id><name>firstActionName</name><periodicityDays>45</periodicityDays><lastExecutionDate>2020-02-09</lastExecutionDate></actionDataState>\n" +
-            "        <actionDataState><id>action2</id><name>secondActionName</name><periodicityDays>360</periodicityDays><lastExecutionDate>2019-04-15</lastExecutionDate></actionDataState>\n" +
-            "    </ActionDataStateList>\n" +
-            "</ApplicationState>";
+    @NonNull
+    private List<ActionDataState> generateActions() {
+        return Arrays.asList(
+                    new ActionDataState("action1", "firstActionName", 45, TimeUtilsTest.toDate("2020-02-09")),
+                    new ActionDataState("action2", "secondActionName", 360, TimeUtilsTest.toDate("2019-04-15"))
+            );
+    }
 }

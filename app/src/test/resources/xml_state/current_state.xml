@@ -1,0 +1,19 @@
+<ApplicationState>
+   <ActionDataStateList class="java.util.Arrays$ArrayList">
+      <actionDataState>
+         <id>action1</id>
+         <name>firstActionName</name>
+         <periodicityDays>45</periodicityDays>
+         <lastExecutionDate>2020-02-09 00:00:00.0 MSK</lastExecutionDate>
+      </actionDataState>
+      <actionDataState>
+         <id>action2</id>
+         <name>secondActionName</name>
+         <periodicityDays>360</periodicityDays>
+         <lastExecutionDate>2019-04-15 00:00:00.0 MSK</lastExecutionDate>
+      </actionDataState>
+   </ActionDataStateList>
+   <Settings>
+      <FishModeEnabled>true</FishModeEnabled>
+   </Settings>
+</ApplicationState>

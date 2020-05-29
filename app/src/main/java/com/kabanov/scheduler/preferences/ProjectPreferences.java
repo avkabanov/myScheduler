@@ -22,7 +22,7 @@ public class ProjectPreferences {
         editor.apply();
     }
     
-    private enum Settings {
+    public enum Settings {
         IS_FISH_MODE_ENABLED("IS_FISH_MODE_ENABLED", true);
 
         private String alias;

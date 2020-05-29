@@ -14,6 +14,8 @@ import junit.framework.Assert;
 
 public class TimeUtilsTest {
 
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
     @Test
     public void cutWithDayAcc() {
         Date date = new Date();
@@ -78,5 +80,13 @@ public class TimeUtilsTest {
         after.set(Calendar.AM_PM, Calendar.AM);
 
         Assert.assertTrue(TimeUtils.isAfter10AM(after.getTime()));
+    }
+    
+    public static Date toDate(String date) {
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(date);
+        }
     }
 }
