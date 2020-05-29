@@ -1,6 +1,5 @@
 package com.kabanov.scheduler.state.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +9,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name = "ApplicationState")
-public class ApplicationState implements Serializable {
+public class ApplicationState {
 
     @Element(name = "version", required = false)
     private String version = "2";

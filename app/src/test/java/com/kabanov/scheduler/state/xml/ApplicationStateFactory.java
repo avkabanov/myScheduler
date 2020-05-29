@@ -9,6 +9,17 @@ import com.kabanov.scheduler.utils.TimeUtilsTest;
 
 public class ApplicationStateFactory {
 
+    public static ApplicationState applicationState00() {
+        ApplicationState state = new ApplicationState();
+
+        List<ActionDataState> actionList = Arrays.asList(
+                new ActionDataState("action1", "name1", 20, TimeUtilsTest.toDate("2020-05-01")),
+                new ActionDataState("action2", "name2", 19, TimeUtilsTest.toDate("2020-05-17"))
+        );
+        state.setActionDataStateList(actionList);
+        return state;
+    }
+
     public static ApplicationState applicationState01() {
         ApplicationState state = new ApplicationState();
 

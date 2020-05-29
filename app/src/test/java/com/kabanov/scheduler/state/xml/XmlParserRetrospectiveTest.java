@@ -28,6 +28,7 @@ public class XmlParserRetrospectiveTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
+                {"xml_state/00.xml", ApplicationStateFactory.applicationState00()}, 
                 {"xml_state/01.xml", ApplicationStateFactory.applicationState01()} 
         });
     }

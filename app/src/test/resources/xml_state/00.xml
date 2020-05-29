@@ -1,0 +1,18 @@
+<applicationState>
+    <list class="java.util.ArrayList">
+        <actionData>
+            <id>action1</id>
+            <lastExecutionDate>2020-05-01</lastExecutionDate>
+            <name>name1</name>
+            <nextExecutionDate>2020-05-21</nextExecutionDate>
+            <periodicityDays>20</periodicityDays>
+        </actionData>
+        <actionData>
+            <id>action2</id>
+            <lastExecutionDate>2020-05-17</lastExecutionDate>
+            <name>name2</name>
+            <nextExecutionDate>2020-06-05</nextExecutionDate>
+            <periodicityDays>19</periodicityDays>
+        </actionData>
+    </list>
+</applicationState>

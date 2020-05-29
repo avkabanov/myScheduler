@@ -6,6 +6,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import com.kabanov.scheduler.state.data.ApplicationState;
+import com.kabanov.scheduler.state.data.legacy.ApplicationState00;
 
 public class XmlParser {
 
@@ -20,6 +21,10 @@ public class XmlParser {
     
     public ApplicationState format(String xml) throws Exception {
         Serializer serializer = new Persister();
-        return serializer.read(ApplicationState.class, xml);
+        try {
+            return serializer.read(ApplicationState.class, xml);
+        } catch (Exception e) {
+            return new ApplicationState00.Converter().convert(serializer.read(ApplicationState00.class, xml));
+        }
     }
 }
