@@ -1,4 +1,5 @@
 <ApplicationState>
+   <version>2</version>
    <ActionDataStateList class="java.util.Arrays$ArrayList">
       <actionDataState>
          <id>action1</id>
