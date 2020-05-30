@@ -1,10 +1,12 @@
 package com.kabanov.scheduler;
 
 import org.acra.ACRA;
+import org.acra.BuildConfig;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
+import com.kabanov.scheduler.about.AboutActivity;
 import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
@@ -72,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         applicationStateManager = new ApplicationStateManager(this, actionController, applicationStateCreator,
                 converter);
         userActivityStateManager = new UserActivityStateManager(this, applicationStateManager);
-        
+
+        getResources().openRawResource(R.raw.version);
         new NotificationController(this);
         Log.d("MainActivity", "notification controller is set");
 
@@ -127,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_open_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        }
+
+        if (id == R.id.action_open_about) {
+            startActivity(new Intent(this, AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

@@ -98,3 +98,12 @@ def getDateTime() {
 
     return df.format(new Date());
 }
+
+
+preBuild {
+    doFirst {
+        def versionPath = "src\\main\\res\\raw\\version"
+        File versionFile = file(versionPath)
+        versionFile.text = "${getDateTime()}_${getCheckedOutGitCommitHash()}"
+    }
+}
