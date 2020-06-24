@@ -1,10 +1,9 @@
 package com.kabanov.scheduler.settings;
 
-import com.kabanov.scheduler.R;
-
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import com.kabanov.scheduler.R;
 
 public class SettingsFragment extends PreferenceFragment {
 

@@ -1,13 +1,12 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
+import androidx.annotation.NonNull;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.utils.ActionUtils;
-
-import android.support.annotation.NonNull;
 
 public class EditActionDialog extends BaseActionDetailsDialog {
 

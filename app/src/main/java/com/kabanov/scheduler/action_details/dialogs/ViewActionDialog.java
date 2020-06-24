@@ -1,10 +1,9 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
+import androidx.annotation.NonNull;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
-
-import android.support.annotation.NonNull;
 
 public class ViewActionDialog extends BaseActionDetailsDialog {
 

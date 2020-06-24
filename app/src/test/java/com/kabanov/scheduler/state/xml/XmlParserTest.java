@@ -1,18 +1,15 @@
 package com.kabanov.scheduler.state.xml;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
+import androidx.annotation.NonNull;
 import com.kabanov.scheduler.state.data.ActionDataState;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.data.SettingsPersistence;
 import com.kabanov.scheduler.utils.IOTestUtils;
 import com.kabanov.scheduler.utils.TimeUtilsTest;
-
-import android.support.annotation.NonNull;
+import java.util.Arrays;
+import java.util.List;
 import junit.framework.Assert;
+import org.junit.Test;
 
 public class XmlParserTest {
 

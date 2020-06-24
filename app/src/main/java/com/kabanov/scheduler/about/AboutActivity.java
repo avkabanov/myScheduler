@@ -1,9 +1,9 @@
 package com.kabanov.scheduler.about;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 import com.kabanov.scheduler.R;
 import java.io.BufferedReader;
 import java.io.IOException;

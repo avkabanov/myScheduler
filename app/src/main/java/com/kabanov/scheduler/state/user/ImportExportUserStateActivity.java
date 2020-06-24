@@ -1,19 +1,17 @@
 package com.kabanov.scheduler.state.user;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import com.kabanov.scheduler.R;
-import com.kabanov.scheduler.state.file.FileWriter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.kabanov.scheduler.R;
+import com.kabanov.scheduler.state.file.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class ImportExportUserStateActivity extends AppCompatActivity {
 

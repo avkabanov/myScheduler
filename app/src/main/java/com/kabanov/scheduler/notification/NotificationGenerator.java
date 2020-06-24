@@ -1,16 +1,15 @@
 package com.kabanov.scheduler.notification;
 
-import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.R;
-import com.kabanov.scheduler.notification.title.NotificationMessageGenerator;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
+import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.R;
+import com.kabanov.scheduler.notification.title.NotificationMessageGenerator;
 
 public class NotificationGenerator {
 

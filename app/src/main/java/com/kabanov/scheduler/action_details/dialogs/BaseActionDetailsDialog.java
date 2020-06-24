@@ -1,25 +1,23 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
+import android.app.DatePickerDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.google.common.base.Strings;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.ValidationException;
-
-import android.app.DatePickerDialog;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Алексей

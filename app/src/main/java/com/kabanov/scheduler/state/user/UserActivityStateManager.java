@@ -1,11 +1,10 @@
 package com.kabanov.scheduler.state.user;
 
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 import com.kabanov.scheduler.state.ApplicationStateManager;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.xml.XmlParser;
-
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 public class UserActivityStateManager {
     private final AppCompatActivity activity;
