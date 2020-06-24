@@ -8,6 +8,7 @@ import java.util.Locale;
 public class TimeUtils {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss.SSS", Locale.getDefault());
+    private static SimpleDateFormat userDateFormat = new SimpleDateFormat("E, dd MMM yyyy", Locale.getDefault());
 
     public static long cutWithDayAcc(Date date) {
         Calendar calendar = Calendar.getInstance();
@@ -66,5 +67,10 @@ public class TimeUtils {
     public static String toReadableTime(long time) {
         Date date = new Date(time);
         return dateFormat.format(date);
+    }
+
+    public static String toUserTime(long time) {
+        Date date = new Date(time);
+        return userDateFormat.format(date);
     }
 }

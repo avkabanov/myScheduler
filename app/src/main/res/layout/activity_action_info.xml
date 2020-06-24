@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.kabanov.scheduler.action_details.ActionInfo">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
+
+            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/TitleTxt"
+                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginStart="@dimen/text_action_details_margin_left"
+
+                            android:hint="Action Name"/>
+                </TableRow>
+            </TableRow>
+            <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:background="@color/TableBgColor"
+                    android:minHeight="1dp">
+
+            </TableRow>
+            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/PeriodicityTxt"
+                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginStart="@dimen/text_action_details_margin_left"
+
+                            android:hint="Last Executed Time"/>
+                </TableRow>
+            </TableRow>
+            <TableRow
+                    android:id="@+id/table_row_delimiter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:background="@color/TableBgColor"
+                    android:minHeight="1dp">
+
+            </TableRow>
+            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:text="Name"
+                            android:ems="10"
+                            android:background="@android:color/transparent"
+                            android:id="@+id/LastExecutedTimeTxt"
+                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                            android:layout_marginStart="@dimen/text_action_details_margin_left"
+
+                            android:hint="Last Executed Time"/>
+                </TableRow>
+            </TableRow>
+            <TableRow
+                    android:id="@+id/table_row_delimiter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:background="@color/TableBgColor"
+                    android:minHeight="1dp">
+
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

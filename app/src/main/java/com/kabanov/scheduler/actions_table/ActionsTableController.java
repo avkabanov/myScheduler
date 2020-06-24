@@ -1,14 +1,15 @@
 package com.kabanov.scheduler.actions_table;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.content.Intent;
 import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.action_details.ActionInfo;
 import com.kabanov.scheduler.action_details.dialogs.EditActionDialog;
-import com.kabanov.scheduler.action_details.dialogs.ViewActionDialog;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
+import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.utils.Logger;
 import com.kabanov.scheduler.utils.TimeUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActionsTableController implements ActionsTableViewController {
 
@@ -56,7 +57,12 @@ public class ActionsTableController implements ActionsTableViewController {
     }
 
     void showViewActionDialog(ActionData actionData) {
-        new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
+        //new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
+        Intent intent = new Intent(mainActivity, ActionInfo.class);
+        intent.putExtra(ActionInfo.Extras.ACTION.getAlias(), actionData);
+        intent.putExtra(ActionInfo.Extras.MODE.getAlias(), ActionInfo.Mode.VIEW.getAlias());
+
+        mainActivity.startActivityForResult(intent, RequestCode.USER_DETAILS_INFO);
     }
 
     @Override
