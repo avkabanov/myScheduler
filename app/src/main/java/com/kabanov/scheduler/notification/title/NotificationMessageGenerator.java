@@ -1,13 +1,12 @@
 package com.kabanov.scheduler.notification.title;
 
+import com.kabanov.scheduler.resource.ResourceReader;
 import java.util.List;
 import java.util.Random;
 
-import com.kabanov.scheduler.resource.ResourceReader;
-
 public class NotificationMessageGenerator {
     
-    private final ResourceReader resourceReader = new ResourceReader("notification/notification-text.txt");
+    private final ResourceReader resourceReader = new ResourceReader();
     private final Random random = new Random();
 
     public String generate() {

@@ -20,7 +20,7 @@ public class ResourceReader {
         lines.add("Рыба все сделала и может есть страчителлу!");
     }
 
-    public ResourceReader(String path) {
+    public ResourceReader() {
     }
 
     public List<String> getLines() {
