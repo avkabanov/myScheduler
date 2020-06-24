@@ -1,6 +1,6 @@
 package com.kabanov.scheduler.state.xml;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 import com.kabanov.scheduler.state.data.ActionDataState;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.data.SettingsPersistence;

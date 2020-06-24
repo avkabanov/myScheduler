@@ -1,6 +1,6 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.NewAction;

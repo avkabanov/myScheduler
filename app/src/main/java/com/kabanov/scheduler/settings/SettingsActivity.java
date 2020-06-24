@@ -1,8 +1,8 @@
 package com.kabanov.scheduler.settings;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import androidx.appcompat.app.AppCompatActivity;
 import com.kabanov.scheduler.R;
 
 public class SettingsActivity extends AppCompatActivity {

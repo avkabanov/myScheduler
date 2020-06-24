@@ -1,8 +1,8 @@
 package com.kabanov.scheduler.state.user;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.xml.XmlParser;

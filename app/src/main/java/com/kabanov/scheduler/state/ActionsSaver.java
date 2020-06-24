@@ -1,6 +1,6 @@
 package com.kabanov.scheduler.state;
 
-import androidx.annotation.Nullable;
+import android.support.annotation.Nullable;
 import com.kabanov.scheduler.state.data.ApplicationState;
 
 /**
