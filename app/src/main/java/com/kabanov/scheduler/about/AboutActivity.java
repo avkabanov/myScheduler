@@ -1,15 +1,14 @@
 package com.kabanov.scheduler.about;
 
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.widget.TextView;
+import com.kabanov.scheduler.R;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import com.kabanov.scheduler.R;
-
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -20,6 +19,16 @@ public class AboutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("About");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fillVersionField();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     
     private void fillVersionField() {
