@@ -1,7 +1,8 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
 import android.support.annotation.NonNull;
-import com.kabanov.scheduler.MainActivity;
+import android.app.Activity;
+import android.support.annotation.NonNull;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
@@ -10,7 +11,7 @@ import com.kabanov.scheduler.utils.ActionUtils;
 
 public class EditActionDialog extends BaseActionDetailsDialog {
 
-    public EditActionDialog(MainActivity activity, final UpdateActionViewPresenter viewPresenter, final ActionData actionData) {
+    public EditActionDialog(Activity activity, final UpdateActionViewPresenter viewPresenter, final ActionData actionData) {
         super(activity);
 
         fillDialog(actionData);

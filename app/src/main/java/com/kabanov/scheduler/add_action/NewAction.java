@@ -1,11 +1,14 @@
 package com.kabanov.scheduler.add_action;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class NewAction {
+public class NewAction implements Serializable {
+   
+    // TODO generate UUID
     private String name;
     private Integer periodicityDays;
-    private Date lastExecutedDate = new Date();
+    private Date lastExecutedDate;
 
     public NewAction(String name, Integer periodicityDays, Date lastExecutedDate) {
         this.name = name;

@@ -1,12 +1,5 @@
 package com.kabanov.scheduler;
 
-import java.util.Date;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
@@ -14,6 +7,12 @@ import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.test_utils.ActionTestUtils;
 import com.kabanov.scheduler.test_utils.AssertUtils;
 import com.kabanov.scheduler.utils.TimeUtils;
+import java.util.Date;
+import org.junit.Assert;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Алексей
@@ -21,8 +20,8 @@ import com.kabanov.scheduler.utils.TimeUtils;
  */
 public class ActionsControllerImplTest {
 
-    private ActionsTableController actionsTableController = Mockito.mock(ActionsTableController.class);
-    private ActionsControllerImpl actionsController = new ActionsControllerImpl();
+    private ActionsTableController actionsTableController = mock(ActionsTableController.class);
+    private ActionsControllerImpl actionsController = new ActionsControllerImpl(mock(MainActivity.class));
     {
         actionsController.setActionsTableController(actionsTableController);
     }

@@ -1,5 +1,17 @@
 package com.kabanov.scheduler;
 
+import static android.app.Activity.RESULT_CANCELED;
+import android.content.Intent;
+import com.kabanov.scheduler.action_details.BaseActionInfo;
+import com.kabanov.scheduler.action_details.CreateActionInfo;
+import com.kabanov.scheduler.action_details.EditActionInfo;
+import com.kabanov.scheduler.action_details.ViewActionInfo;
+import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.actions_table.ActionsTableController;
+import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.intents.RequestCode;
+import com.kabanov.scheduler.utils.TimeUtils;
+import com.kabanov.scheduler.utils.Utils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,18 +21,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.NewAction;
-import com.kabanov.scheduler.add_action.ValidationException;
-import com.kabanov.scheduler.utils.TimeUtils;
-
 public class ActionsControllerImpl implements ActionController {
 
     private static final Logger logger = Logger.getLogger(ActionsControllerImpl.class.getName());
 
-    private Map<String, ActionData> actionIdToActionMap = new HashMap<>();
+    private final Map<String, ActionData> actionIdToActionMap = new HashMap<>();
+    private final MainActivity mainActivity;
     private ActionsTableController actionsTableController;
+
+    public ActionsControllerImpl(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     @Override
     public void setActionsTableController(ActionsTableController actionsTableController) {
@@ -34,7 +45,7 @@ public class ActionsControllerImpl implements ActionController {
     }
 
     @Override
-    public void addActionRequest(NewAction newAction) throws ValidationException {
+    public void addActionRequest(NewAction newAction) {
         ActionData actionData = createActionData(newAction);
         addActionRequest(actionData);
     }
@@ -45,10 +56,11 @@ public class ActionsControllerImpl implements ActionController {
         actionsTableController.removeAction(actionId);
     }
 
-    @Override
+    @Override   // TODO do we need actionID here?
     public void updateActionRequest(String actionId, ActionData actionData) {
-        actionsTableController.updateAction(actionId, actionData);
         actionData.setLastUpdateExecutionTime(null);
+        actionsTableController.updateAction(actionId, actionData);
+        actionIdToActionMap.put(actionId, actionData);
     }
 
     @Override
@@ -96,5 +108,76 @@ public class ActionsControllerImpl implements ActionController {
     private String generateActionId() {
         TimeUtils.sleepForMillisecond();
         return "action" + System.currentTimeMillis();
+    }
+
+    @Override
+    public void onEvent(int resultCode, Intent data) {
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+        
+        BaseActionInfo.Extras extras = new BaseActionInfo.Extras(data);
+        
+        switch (extras.getRequestedAction()) {
+            
+            case CREATE: {
+                NewAction newAction = Utils.getOrThrow(extras.getNewAction(), IllegalStateException::new);
+                addActionRequest(newAction);
+                break;
+            }
+            
+            case COMPLETE: {
+                ActionData actionData = Utils.getOrThrow(extras.getActionData(), IllegalStateException::new);
+                updateLastExecutionTimeRequest(actionData.getId());
+                break;
+            }
+            
+            case EDIT: {
+                ActionData actionData = Utils.getOrThrow(extras.getActionData(), IllegalStateException::new);
+                showModifyActionDialog(actionData);
+                break;
+            }
+            
+            case DELETE: {
+                ActionData actionData = Utils.getOrThrow(extras.getActionData(), IllegalStateException::new);
+                removeActionRequest(actionData.getId());
+                break;
+            }
+            case SAVE:
+                ActionData actionData = Utils.getOrThrow(extras.getActionData(), IllegalStateException::new);
+                updateActionRequest(actionData.getId(), actionData);
+                break;
+        }
+    }
+
+    void showViewActionDialog(ActionData actionData) {
+        Intent intent = new Intent(mainActivity, ViewActionInfo.class);
+
+        BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
+        extras.setActionData(actionData);
+        
+        mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
+    }
+
+    void showModifyActionDialog(ActionData actionData) {
+        Intent intent = new Intent(mainActivity, EditActionInfo.class);
+
+        BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
+        extras.setActionData(actionData);
+
+        mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
+    }
+    
+    @Override
+    public void showCreateNewActionDialog() {
+        Intent intent = new Intent(mainActivity, CreateActionInfo.class);
+
+        mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
+        
+    }
+
+    @Override
+    public void onActionClicked(ActionData actionData) {
+        showViewActionDialog(actionData);
     }
 }

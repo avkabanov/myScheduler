@@ -28,4 +28,10 @@ public class UpdateActionViewPresenterImpl implements UpdateActionViewPresenter 
     public void onActionCompleteBtnPressed(String actionId) {
         actionController.updateLastExecutionTimeRequest(actionId);
     }
+
+    @Override
+    public void onActionClicked(ActionData actionData) {
+        actionController.onActionClicked(actionData);
+        
+    }
 }

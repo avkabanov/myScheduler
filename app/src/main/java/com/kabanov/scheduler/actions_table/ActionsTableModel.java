@@ -1,25 +1,21 @@
 package com.kabanov.scheduler.actions_table;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionsTableModel {
 
-    private Map<String, ActionData> actions = new HashMap<>();
+    private final Map<String, ActionData> actions = new ConcurrentHashMap<>();
 
     public void addAction(ActionData actionData) {
         actions.put(actionData.getId(), actionData);
     }
 
-    public void setExecutionDateTo(String actionId, Date date) {
-        actions.get(actionId).setExecutedAt(date);
-    }
-
     public ActionData getAction(String actionId) {
-        return actions.get(actionId);
+        ActionData actionData = actions.get(actionId);
+        return new ActionData(actionData.getId(), actionData.getName(), actionData.getPeriodicityDays(), actionData.getLastExecutionDate());
     }
 
     public void removeAction(String actionId) {
@@ -30,4 +26,7 @@ public class ActionsTableModel {
        return new ArrayList<>(actions.values());
     }
 
+    public void updateAction(String actionId, ActionData actionData) {
+        actions.put(actionId, actionData);
+    }
 }

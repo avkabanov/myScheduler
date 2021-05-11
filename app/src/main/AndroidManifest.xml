@@ -19,7 +19,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".action_details.ActionInfo">
+        <activity android:name=".action_details.CreateActionInfo">
+        </activity>
+        <activity android:name=".action_details.EditActionInfo">
+        </activity>
+        <activity android:name=".action_details.ViewActionInfo">
         </activity>
         <activity android:name=".about.AboutActivity">
         </activity>

@@ -1,5 +1,6 @@
 package com.kabanov.scheduler.action_details.dialogs;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.google.common.base.Strings;
+import com.kabanov.scheduler.R;
+import com.kabanov.scheduler.actions_table.ActionData;
+import com.kabanov.scheduler.add_action.NewAction;
+import com.kabanov.scheduler.add_action.ValidationException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import com.google.common.base.Strings;
 import com.kabanov.scheduler.MainActivity;
 import com.kabanov.scheduler.R;
@@ -25,14 +35,14 @@ import java.util.Date;
  */
 public class BaseActionDetailsDialog {
 
-    private final MainActivity activity;
+    private final Activity activity;
     private final View popupView;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yy");
     final AlertDialog.Builder builder;
 
     private final Calendar myCalendar = Calendar.getInstance();
 
-    public BaseActionDetailsDialog(MainActivity activity) {
+    public BaseActionDetailsDialog(Activity activity) {
         this.activity = activity;
 
         LayoutInflater inflater = activity.getLayoutInflater();

@@ -1,25 +1,22 @@
 package com.kabanov.scheduler.actions_table;
 
+import android.app.Activity;
 import android.content.Intent;
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.action_details.ActionInfo;
-import com.kabanov.scheduler.action_details.dialogs.EditActionDialog;
+import com.kabanov.scheduler.action_details.BaseActionInfo;
+import com.kabanov.scheduler.action_details.EditActionInfo;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.utils.Logger;
-import com.kabanov.scheduler.utils.TimeUtils;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ActionsTableController implements ActionsTableViewController {
 
     private static final Logger logger = Logger.getLogger(ActionsTableController.class.getName());
 
-    private ActionsTableModel tableModel;
-    private ActionsTableViewImpl tableView;
-    private MainActivity mainActivity;
-    private UpdateActionViewPresenter updateActionViewPresenter;
-    private List<String> actionsListInView = new ArrayList<>();
+    private final ActionsTableModel tableModel;
+    private final ActionsTableViewImpl tableView;
+    private final Activity mainActivity;
+    private final UpdateActionViewPresenter updateActionViewPresenter;
 
     public ActionsTableController(MainActivity mainActivity, 
                                   UpdateActionViewPresenter updateActionViewPresenter) {
@@ -29,6 +26,7 @@ public class ActionsTableController implements ActionsTableViewController {
     public ActionsTableController(MainActivity mainActivity, 
                                   ActionsTableViewImpl actionsTableView,
                                   UpdateActionViewPresenter updateActionViewPresenter) {
+
         this.mainActivity = mainActivity;
         this.updateActionViewPresenter = updateActionViewPresenter;
 
@@ -46,66 +44,51 @@ public class ActionsTableController implements ActionsTableViewController {
 
         tableModel.addAction(actionData);
         tableView.addRow(actionData);
-        actionsListInView.add(actionData.getId());
     }
 
     @Override
     public void onActionClick(String actionId) {
         logger.info("On action click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        showViewActionDialog(actionData);
+        updateActionViewPresenter.onActionClicked(actionData);
     }
 
-    void showViewActionDialog(ActionData actionData) {
+    void showEditActionDialog(ActionData actionData) {
         //new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
-        Intent intent = new Intent(mainActivity, ActionInfo.class);
-        intent.putExtra(ActionInfo.Extras.ACTION.getAlias(), actionData);
-        intent.putExtra(ActionInfo.Extras.MODE.getAlias(), ActionInfo.Mode.VIEW.getAlias());
+        Intent intent = new Intent(mainActivity, EditActionInfo.class);
 
-        mainActivity.startActivityForResult(intent, RequestCode.USER_DETAILS_INFO);
+        BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
+        extras.setActionData(actionData);
+        mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
     }
 
     @Override
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        showEditActionDialog(actionData);
+        //showEditActionDialog(actionData);
     }
 
+/*
     void showEditActionDialog(ActionData actionData) {
         new EditActionDialog(mainActivity, updateActionViewPresenter, actionData).show();
     }
+*/
 
     public void clearAll() {
         for (ActionData action : tableModel.getAllActions()) {
             tableModel.removeAction(action.getId());
             tableView.removeRow(action.getId());
-            actionsListInView.remove(action.getId());
         }
-    }
-
-    private int getNewRowPosition(String actionId) {
-        long nextDateForCurrAction = TimeUtils.cutWithDayAcc(tableModel.getAction(actionId).getNextExecutionDate());
-
-        int i;
-        for (i = 0; i < actionsListInView.size(); i++) {
-            ActionData currAction = tableModel.getAction(actionsListInView.get(i));
-            long nextExecutionDateOfItem = TimeUtils.cutWithDayAcc(currAction.getNextExecutionDate());
-
-            if (nextDateForCurrAction < nextExecutionDateOfItem) {
-                return i;
-            }
-        }
-        return i;
     }
 
     public void removeAction(String actionId) {
         tableModel.removeAction(actionId);
         tableView.removeRow(actionId);
-        actionsListInView.remove(actionId);
     }
 
     public void updateAction(String actionId, ActionData actionData) {
+        tableModel.updateAction(actionId, actionData);
         tableView.updateAction(actionId, actionData);
     }
 }

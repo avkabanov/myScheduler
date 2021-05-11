@@ -1,11 +1,11 @@
 package com.kabanov.scheduler;
 
-import java.util.List;
-
+import android.content.Intent;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.add_action.NewAction;
 import com.kabanov.scheduler.add_action.ValidationException;
+import java.util.List;
 
 public interface ActionController {
 
@@ -26,4 +26,10 @@ public interface ActionController {
     void clearAll();
 
     List<ActionData> getAllOverdueActions();
+
+    void onEvent(int resultCode, Intent data) ;
+
+    void showCreateNewActionDialog();
+
+    void onActionClicked(ActionData actionData);
 }
