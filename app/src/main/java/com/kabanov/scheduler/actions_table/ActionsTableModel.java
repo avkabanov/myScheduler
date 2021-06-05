@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionsTableModel {
-
     private final Map<String, ActionData> actions = new ConcurrentHashMap<>();
 
     public void addAction(ActionData actionData) {

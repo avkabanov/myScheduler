@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.kabanov.scheduler.about.AboutActivity;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
+import com.kabanov.scheduler.actions_table.UpdateActionViewPresenter;
+import com.kabanov.scheduler.actions_table.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
-            actionController.showCreateNewActionDialog();
+            actionController.onCreateNewActionBtnClicked();
         });
         initAcra();
         logger.debug("onCreate");

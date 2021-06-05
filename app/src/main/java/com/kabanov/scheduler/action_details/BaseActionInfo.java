@@ -12,8 +12,8 @@ import android.widget.EditText;
 import com.google.common.base.Strings;
 import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.add_action.NewAction;
-import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.data.NewAction;
+import com.kabanov.scheduler.exceptions.ValidationException;
 import com.kabanov.scheduler.utils.UIUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,18 +76,11 @@ public abstract class BaseActionInfo extends AppCompatActivity {
         }
     }
     
-    protected abstract void enrichWithResult(Extras extras) throws ValidationException;
-    protected abstract String getDialogTitle();
-    protected abstract boolean isFieldsEditable();
-    protected abstract ButtonConfiguration getLeftButtonConfiguration();
-    protected abstract ButtonConfiguration getRightButtonConfiguration();
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -171,6 +164,16 @@ public abstract class BaseActionInfo extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+    protected abstract void enrichWithResult(Extras extras) throws ValidationException;
+
+    protected abstract String getDialogTitle();
+
+    protected abstract boolean isFieldsEditable();
+
+    protected abstract ButtonConfiguration getLeftButtonConfiguration();
+
+    protected abstract ButtonConfiguration getRightButtonConfiguration();
 
     public enum RequestedActions {
         CREATE,

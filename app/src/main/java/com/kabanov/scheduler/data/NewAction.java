@@ -1,4 +1,4 @@
-package com.kabanov.scheduler.add_action;
+package com.kabanov.scheduler.data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,14 +26,6 @@ public class NewAction implements Serializable {
 
     public Integer getPeriodicityDays() {
         return periodicityDays;
-    }
-
-    public void setPeriodicityDays(Integer periodicityDays) {
-        this.periodicityDays = periodicityDays;
-    }
-
-    public void setLastExecutedDate(Date lastExecutedDate) {
-        this.lastExecutedDate = lastExecutedDate;
     }
 
     public Date getLastExecutedDate() {

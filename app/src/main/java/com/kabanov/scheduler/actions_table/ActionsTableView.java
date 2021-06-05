@@ -1,28 +1,18 @@
 package com.kabanov.scheduler.actions_table;
 
+import android.widget.ListView;
+import com.kabanov.scheduler.MainActivity;
+import com.kabanov.scheduler.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.R;
-
-import android.widget.ListView;
-
 public class ActionsTableView implements ActionsTableViewImpl {
-
-    private final MainActivity activity;
-    private final ActionsTableViewController viewController;
     private final List<ActionData> list = new ArrayList<>();
     private final ActionDataAdapter adapter;
     
-
     public ActionsTableView(MainActivity activity, ActionsTableViewController viewController) {
-        this.activity = activity;
-        this.viewController = viewController;
-
         ListView listView = activity.findViewById(R.id.listView);
 
-        // addHeaderView (View v, Object data, boolean isSelectable)
         adapter = new ActionDataAdapter(activity, list);
 
         listView.setAdapter(adapter);

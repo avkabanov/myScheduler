@@ -1,7 +1,7 @@
 package com.kabanov.scheduler.action_details;
 
 import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.exceptions.ValidationException;
 import com.kabanov.scheduler.utils.Utils;
 
 public class EditActionInfo extends BaseActionInfo {

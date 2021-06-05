@@ -1,17 +1,13 @@
 package com.kabanov.scheduler.actions_table;
 
-import android.app.Activity;
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.utils.Logger;
 
 public class ActionsTableController implements ActionsTableViewController {
-
     private static final Logger logger = Logger.getLogger(ActionsTableController.class.getName());
 
     private final ActionsTableModel tableModel;
     private final ActionsTableViewImpl tableView;
-    private final Activity mainActivity;
     private final UpdateActionViewPresenter updateActionViewPresenter;
 
     public ActionsTableController(MainActivity mainActivity, 
@@ -22,8 +18,6 @@ public class ActionsTableController implements ActionsTableViewController {
     public ActionsTableController(MainActivity mainActivity, 
                                   ActionsTableViewImpl actionsTableView,
                                   UpdateActionViewPresenter updateActionViewPresenter) {
-
-        this.mainActivity = mainActivity;
         this.updateActionViewPresenter = updateActionViewPresenter;
 
         if (actionsTableView == null) {
@@ -49,28 +43,12 @@ public class ActionsTableController implements ActionsTableViewController {
         updateActionViewPresenter.onActionClicked(actionData);
     }
 
-    /*void showEditActionDialog(ActionData actionData) {
-        //new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
-        Intent intent = new Intent(mainActivity, EditActionInfo.class);
-
-        BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
-        extras.setActionData(actionData);
-        mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
-    }*/
-
     @Override
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
-        //showEditActionDialog(actionData);
         updateActionViewPresenter.onActionLongClicked(actionData);
     }
-
-/*
-    void showEditActionDialog(ActionData actionData) {
-        new EditActionDialog(mainActivity, updateActionViewPresenter, actionData).show();
-    }
-*/
 
     public void clearAll() {
         for (ActionData action : tableModel.getAllActions()) {

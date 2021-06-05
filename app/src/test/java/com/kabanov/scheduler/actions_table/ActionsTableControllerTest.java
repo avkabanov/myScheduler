@@ -1,7 +1,6 @@
 package com.kabanov.scheduler.actions_table;
 
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
 import com.kabanov.scheduler.test_utils.ActionTestUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
