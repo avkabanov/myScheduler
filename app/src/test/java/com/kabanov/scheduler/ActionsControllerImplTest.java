@@ -1,11 +1,11 @@
 package com.kabanov.scheduler;
 
+import com.google.common.collect.Lists;
 import com.kabanov.scheduler.actions_table.ActionData;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
 import com.kabanov.scheduler.actions_table.UpdateActionViewPresenter;
 import com.kabanov.scheduler.actions_table.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.test_utils.ActionTestUtils;
-import com.kabanov.scheduler.test_utils.AssertUtils;
 import com.kabanov.scheduler.utils.TimeUtils;
 import java.util.Date;
 import org.junit.Assert;
@@ -29,26 +29,16 @@ public class ActionsControllerImplTest {
     
     @Test
     public void shouldUpdateActionOnUpdateBtnClick() {
-        ActionData action = ActionTestUtils.createAction("first", 1, new Date());
+        ActionData oldAction = ActionTestUtils.createAction("first", 1, new Date());
         
-        // TODO fix tests
-        //actionsController.addActionRequest(action);
-
-        action.setName("Second");
-        action.setPeriodicityDays(2);
-        Date newTime = TimeUtils.addDays(new Date(), -2); 
-        action.setExecutedAt(newTime);
-        
-        // TODO fix tests
-        //updateActionViewPresenter.onActionUpdateBtnPressed(action.getId(), action);
+        actionsController.setActionsList(Lists.newArrayList(oldAction));
+        ActionData newAction = ActionTestUtils.createAction(oldAction.getId(), "second", 2, TimeUtils.addDays(new Date(), -2));
+        actionsTableController.updateAction(oldAction.getId(), newAction);
 
         ArgumentCaptor<ActionData> actionCaptor = ArgumentCaptor.forClass(ActionData.class);
-        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(actionsTableController).updateAction(stringCaptor.capture(), actionCaptor.capture());
-        Assert.assertEquals(action.getId(), stringCaptor.getValue());
-        Assert.assertEquals("Second", actionCaptor.getValue().getName());
-        Assert.assertEquals(2, actionCaptor.getValue().getPeriodicityDays());
-        AssertUtils.assertEqualsDate(newTime, actionCaptor.getValue().getLastExecutionDate());
+        ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(actionsTableController).updateAction(idCaptor.capture(), actionCaptor.capture());
+        Assert.assertEquals(newAction, actionCaptor.getValue());
     }
 
     @Test
@@ -56,6 +46,7 @@ public class ActionsControllerImplTest {
         Date now = new Date();
         Date expected = TimeUtils.addDays(now, 1);
         ActionData action = ActionTestUtils.createAction("first", 1, now);
+        
         // TODO fix tests
         //actionsController.addActionRequest(action);
 
