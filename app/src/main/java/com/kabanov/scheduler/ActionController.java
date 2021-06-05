@@ -29,6 +29,8 @@ public interface ActionController {
 
     void onEvent(int resultCode, Intent data) ;
 
+    void showModifyActionDialog(ActionData actionData);
+
     void showCreateNewActionDialog();
 
     void onActionClicked(ActionData actionData);

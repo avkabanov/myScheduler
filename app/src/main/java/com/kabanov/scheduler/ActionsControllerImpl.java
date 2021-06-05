@@ -152,28 +152,25 @@ public class ActionsControllerImpl implements ActionController {
 
     void showViewActionDialog(ActionData actionData) {
         Intent intent = new Intent(mainActivity, ViewActionInfo.class);
-
         BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
         extras.setActionData(actionData);
         
         mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
     }
 
-    void showModifyActionDialog(ActionData actionData) {
+    @Override
+    public void showModifyActionDialog(ActionData actionData) {
         Intent intent = new Intent(mainActivity, EditActionInfo.class);
 
         BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
         extras.setActionData(actionData);
-
         mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
     }
     
     @Override
     public void showCreateNewActionDialog() {
         Intent intent = new Intent(mainActivity, CreateActionInfo.class);
-
         mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
-        
     }
 
     @Override

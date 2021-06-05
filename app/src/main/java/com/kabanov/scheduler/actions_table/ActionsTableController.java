@@ -1,12 +1,8 @@
 package com.kabanov.scheduler.actions_table;
 
 import android.app.Activity;
-import android.content.Intent;
 import com.kabanov.scheduler.MainActivity;
-import com.kabanov.scheduler.action_details.BaseActionInfo;
-import com.kabanov.scheduler.action_details.EditActionInfo;
 import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
-import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.utils.Logger;
 
 public class ActionsTableController implements ActionsTableViewController {
@@ -53,20 +49,21 @@ public class ActionsTableController implements ActionsTableViewController {
         updateActionViewPresenter.onActionClicked(actionData);
     }
 
-    void showEditActionDialog(ActionData actionData) {
+    /*void showEditActionDialog(ActionData actionData) {
         //new ViewActionDialog(mainActivity, actionData, updateActionViewPresenter).show();
         Intent intent = new Intent(mainActivity, EditActionInfo.class);
 
         BaseActionInfo.Extras extras = new BaseActionInfo.Extras(intent);
         extras.setActionData(actionData);
         mainActivity.startActivityForResult(intent, RequestCode.ACTION_UPDATE);
-    }
+    }*/
 
     @Override
     public void onActionLongClick(String actionId) {
         logger.info("On action long click: " + actionId);
         ActionData actionData = tableModel.getAction(actionId);
         //showEditActionDialog(actionData);
+        updateActionViewPresenter.onActionLongClicked(actionData);
     }
 
 /*

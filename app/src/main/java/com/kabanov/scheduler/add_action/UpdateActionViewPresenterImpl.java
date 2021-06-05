@@ -34,4 +34,9 @@ public class UpdateActionViewPresenterImpl implements UpdateActionViewPresenter 
         actionController.onActionClicked(actionData);
         
     }
+
+    @Override
+    public void onActionLongClicked(ActionData actionData) {
+        actionController.showModifyActionDialog(actionData);
+    }
 }

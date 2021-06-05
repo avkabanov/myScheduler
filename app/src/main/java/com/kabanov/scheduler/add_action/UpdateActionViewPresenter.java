@@ -11,4 +11,6 @@ public interface UpdateActionViewPresenter {
     void onActionCompleteBtnPressed(String actionId);
 
     void onActionClicked(ActionData actionData);
+
+    void onActionLongClicked(ActionData actionData);
 }
