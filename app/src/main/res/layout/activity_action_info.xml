@@ -9,97 +9,93 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:paddingBottom="10dp">
-        <TableLayout
+            android:layout_height="wrap_content" 
+            android:paddingBottom="10dp">
+        <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-        >
-
-            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
-                <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:ems="10"
-                            android:background="@android:color/transparent"
-                            android:id="@+id/TitleTxt"
-                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginStart="@dimen/text_action_details_margin_left"
-
-                            android:hint="Action Name"/>
-                </TableRow>
-            </TableRow>
-            <TableRow
+                android:layout_weight="0"
+                android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginStart="@dimen/text_action_details_margin_left"
+                android:id="@+id/action_name_table_row">
+            <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="@color/TableBgColor"
-                    android:minHeight="1dp">
-
-            </TableRow>
-            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
-                <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:ems="10"
-                            android:background="@android:color/transparent"
-                            android:id="@+id/PeriodicityTxt"
-                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginStart="@dimen/text_action_details_margin_left"
-
-                            android:hint="Periodicity, Days"/>
-                </TableRow>
-            </TableRow>
-            <TableRow
-                    android:id="@+id/table_row_delimiter"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="@color/TableBgColor"
-                    android:minHeight="1dp">
-
-            </TableRow>
-            <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
-                <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:ems="10"
-                            android:background="@android:color/transparent"
-                            android:id="@+id/LastExecutedTimeTxt"
-                            android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
-                            android:layout_marginStart="@dimen/text_action_details_margin_left"
-
-                            android:hint="Last Executed Time"/>
-                </TableRow>
-            </TableRow>
-            <TableRow
-                    android:id="@+id/table_row_delimiter"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="@color/TableBgColor"
-                    android:minHeight="1dp">
-
-            </TableRow>
-            <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-            </TableRow>
-        </TableLayout>
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/TitleTxt"
+                    android:hint="Action Name"/>
+        </TableRow>
+        <TableRow
+                android:id="@+id/table_row_delimiter1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@color/TableBgColor"
+                android:minHeight="1dp"/>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_weight="0"
+                android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginStart="@dimen/text_action_details_margin_left"
+                android:layout_marginEnd="@dimen/text_action_details_margin_left">
+            <TextView
+                    android:text="Interval in days:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/periodicityDaysTitle"
+                    android:textColor="@android:color/black" android:textSize="18sp"/>
+            <EditText
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/PeriodicityTxt"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:hint="Interval in days"
+                    android:layout_width="wrap_content"/>
+        </TableRow>
+        <TableRow
+                android:id="@+id/table_row_delimiter2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@color/TableBgColor"
+                android:minHeight="1dp"/>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:layout_weight="0"
+                android:layout_marginTop="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginBottom="@dimen/text_action_details_margin_top_bottom"
+                android:layout_marginStart="@dimen/text_action_details_margin_left"
+                android:layout_marginEnd="@dimen/text_action_details_margin_left">
+            <TextView
+                    android:text="Executed last time:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lastExecutionTimeTitle"
+                    android:textSize="18sp" android:textColor="@android:color/black"/>
+            <EditText
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/LastExecutedTimeTxt"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:hint="Executed last time"
+                    android:layout_width="wrap_content"/>
+        </TableRow>
+        <TableRow
+                android:id="@+id/table_row_delimiter3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@color/TableBgColor"
+                android:minHeight="1dp"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"

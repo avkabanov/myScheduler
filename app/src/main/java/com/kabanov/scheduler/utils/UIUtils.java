@@ -1,10 +1,10 @@
 package com.kabanov.scheduler.utils;
 
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class UIUtils {
     
-    public static void allowEdit(EditText editText, boolean allowEdit) {
+    public static void allowEdit(TextView editText, boolean allowEdit) {
         editText.setCursorVisible(allowEdit);
         editText.setClickable(allowEdit);
         editText.setFocusable(allowEdit);

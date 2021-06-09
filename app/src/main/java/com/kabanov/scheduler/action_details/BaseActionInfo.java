@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.google.common.base.Strings;
 import com.kabanov.scheduler.R;
 import com.kabanov.scheduler.actions_table.ActionData;
@@ -26,7 +27,9 @@ public abstract class BaseActionInfo extends AppCompatActivity {
     private final Calendar myCalendar = Calendar.getInstance();
     private EditText titleTxtEdt;
     private EditText periodicityDaysEdt;
+    private TextView periodicityDaysTitle;
     private EditText lastExecutionTimeEdt;
+    private TextView lastExecutionTimeTitle;
 
     private Optional<ActionData> initialAction;
 
@@ -41,12 +44,19 @@ public abstract class BaseActionInfo extends AppCompatActivity {
         lastExecutionTimeEdt = findViewById(R.id.LastExecutedTimeTxt);
         periodicityDaysEdt = findViewById(R.id.PeriodicityTxt);
 
+        lastExecutionTimeTitle = findViewById(R.id.lastExecutionTimeTitle);
+        periodicityDaysTitle = findViewById(R.id.periodicityDaysTitle);
+        
         Button leftBtn = findViewById(R.id.edit_btn);
         Button rightBtn = findViewById(R.id.complete_btn);
 
         leftBtn.setOnClickListener(view -> setupButtonHandler(getLeftButtonConfiguration().getRequestedActions()));
         rightBtn.setOnClickListener(view -> setupButtonHandler(getRightButtonConfiguration().getRequestedActions()));
 
+        periodicityDaysTitle.setOnClickListener(v -> {
+            periodicityDaysEdt.requestFocus();
+        });
+        
         setFieldsEditable(isFieldsEditable());
         setButtonView(leftBtn, getLeftButtonConfiguration());
         setButtonView(rightBtn, getRightButtonConfiguration());
@@ -88,6 +98,7 @@ public abstract class BaseActionInfo extends AppCompatActivity {
     private void setFieldsEditable(boolean allowEdit) {
         UIUtils.allowEdit(titleTxtEdt, allowEdit);
         UIUtils.allowEdit(periodicityDaysEdt, allowEdit);
+        UIUtils.allowEdit(periodicityDaysTitle, allowEdit);
         UIUtils.allowEdit(lastExecutionTimeEdt, false);
         
         if (allowEdit) {
@@ -98,11 +109,14 @@ public abstract class BaseActionInfo extends AppCompatActivity {
                 lastExecutionTimeEdt.setText(formatLastExecutedDate(myCalendar.getTime()));
             };
 
-            lastExecutionTimeEdt.setOnClickListener(v -> {
-                new DatePickerDialog(this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            });
+            lastExecutionTimeEdt.setOnClickListener(v -> 
+                    new DatePickerDialog(this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+            lastExecutionTimeTitle.setOnClickListener(v -> 
+                    new DatePickerDialog(this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show());
         }
     }
 
