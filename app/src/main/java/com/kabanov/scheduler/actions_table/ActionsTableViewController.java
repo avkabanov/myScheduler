@@ -4,5 +4,4 @@ public interface ActionsTableViewController {
     void onActionClick(String actionId);
 
     void onActionLongClick(String actionId);
-
 }

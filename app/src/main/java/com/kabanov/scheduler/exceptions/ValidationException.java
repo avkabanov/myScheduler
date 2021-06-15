@@ -1,4 +1,4 @@
-package com.kabanov.scheduler.add_action;
+package com.kabanov.scheduler.exceptions;
 
 public class ValidationException extends Exception {
 

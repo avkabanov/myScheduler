@@ -1,18 +1,15 @@
 package com.kabanov.scheduler.state;
 
-import java.util.List;
-
+import android.content.Context;
 import com.kabanov.scheduler.ActionController;
 import com.kabanov.scheduler.actions_table.ActionData;
-import com.kabanov.scheduler.add_action.ValidationException;
 import com.kabanov.scheduler.preferences.ProjectPreferences;
 import com.kabanov.scheduler.state.converter.Converter;
 import com.kabanov.scheduler.state.data.ApplicationState;
 import com.kabanov.scheduler.state.data.SettingsPersistence;
 import com.kabanov.scheduler.state.inner.InnerActivityStateManager;
 import com.kabanov.scheduler.utils.Logger;
-
-import android.content.Context;
+import java.util.List;
 
 public class ApplicationStateManager {
     private static final Logger logger = Logger.getLogger(ApplicationStateManager.class.getName());
@@ -55,15 +52,7 @@ public class ApplicationStateManager {
 
     private void restoreActions(List<ActionData> actions) {
         logger.debug("Actions loaded " + actions.size());
-        actionController.clearAll();
-        for (ActionData actionData : actions) {
-            try {
-                actionController.addActionRequest(actionData);
-            } catch (ValidationException e) {
-                e.printStackTrace();
-            }
-        }
-
+        actionController.setActionsList(actions);
         logger.info("Actions added: " + actions.size());
     }
 

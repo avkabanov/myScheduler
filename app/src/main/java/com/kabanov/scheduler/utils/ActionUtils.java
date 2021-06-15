@@ -1,8 +1,8 @@
 package com.kabanov.scheduler.utils;
 
 import com.google.common.base.Strings;
-import com.kabanov.scheduler.add_action.NewAction;
-import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.data.NewAction;
+import com.kabanov.scheduler.exceptions.ValidationException;
 
 /**
  * @author Алексей

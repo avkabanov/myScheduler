@@ -12,11 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import com.kabanov.scheduler.about.AboutActivity;
-import com.kabanov.scheduler.action_details.dialogs.AddActionDialog;
 import com.kabanov.scheduler.actions_table.ActionsTableController;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenter;
-import com.kabanov.scheduler.add_action.UpdateActionViewPresenterImpl;
-import com.kabanov.scheduler.add_action.ValidationException;
+import com.kabanov.scheduler.actions_table.UpdateActionViewPresenter;
+import com.kabanov.scheduler.actions_table.UpdateActionViewPresenterImpl;
 import com.kabanov.scheduler.intents.RequestCode;
 import com.kabanov.scheduler.logs.LogsSender;
 import com.kabanov.scheduler.notification.NotificationController;
@@ -29,6 +27,12 @@ import com.kabanov.scheduler.state.user.ImportExportUserStateActivity;
 import com.kabanov.scheduler.state.user.UserActivityStateManager;
 import com.kabanov.scheduler.utils.Log4jHelper;
 import com.kabanov.scheduler.utils.Logger;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.acra.ACRA;
+import org.acra.BuildConfig;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.MailSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
 import org.acra.ACRA;
 import org.acra.BuildConfig;
 import org.acra.config.CoreConfigurationBuilder;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ApplicationStateCreator applicationStateCreator;
     private ProjectPreferences projectPreferences;
     public static MainActivity instance;
+    public AtomicBoolean isDataLoaded = new AtomicBoolean(false);
     public Converter converter = new Converter();
 
     {
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        actionController = new ActionsControllerImpl();
+        actionController = new ActionsControllerImpl(this);
 
         UpdateActionViewPresenter updateActionViewPresenter = new UpdateActionViewPresenterImpl(actionController);
         ActionsTableController actionsTableController = new ActionsTableController(this, updateActionViewPresenter);
@@ -82,13 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
-            new AddActionDialog(MainActivity.this, action -> {
-                try {
-                    actionController.addActionRequest(action);
-                } catch (ValidationException e) {
-                    e.printStackTrace();
-                }
-            }).show();
+            actionController.onCreateNewActionBtnClicked();
         });
         initAcra();
         logger.debug("onCreate");
@@ -149,14 +148,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        applicationStateManager.saveInnerState();
+        if (isDataChanged()) {
+            applicationStateManager.saveInnerState();
+        }
         super.onPause();
+    }
+
+    private boolean isDataChanged() {
+        return true; // TODO  fix
     }
 
     @Override
     protected void onResume() {
-        applicationStateManager.restoreInnerState();
+        if (needToRestoreState()) {
+            applicationStateManager.restoreInnerState();
+            isDataLoaded.set(true);
+        }
         super.onResume();
+    }
+
+    private boolean needToRestoreState() {
+        return !isDataLoaded.get();
     }
 
     @Override
@@ -185,7 +197,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, actionController.getAllActions().size() + " actions imported successfully",
                             Toast.LENGTH_LONG).show();
                 }
+                break;
             }
+            case RequestCode.ACTION_UPDATE:
+                MainActivity.this.actionController.onEvent(resultCode, data);
         }
     }
 

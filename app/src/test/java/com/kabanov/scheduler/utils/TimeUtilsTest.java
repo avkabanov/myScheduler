@@ -1,16 +1,13 @@
 package com.kabanov.scheduler.utils;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.Test;
-
-import com.google.common.util.concurrent.Uninterruptibles;
-
 import junit.framework.Assert;
+import org.junit.Test;
 
 public class TimeUtilsTest {
 
@@ -80,6 +77,16 @@ public class TimeUtilsTest {
         after.set(Calendar.AM_PM, Calendar.AM);
 
         Assert.assertTrue(TimeUtils.isAfter10AM(after.getTime()));
+    }
+
+    @Test
+    public void shouldPrintDataInUserDateFormat() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
+        Date date = format.parse("01/05/88");
+
+        String time = TimeUtils.toUserTime(date.getTime());
+        
+        Assert.assertEquals("Sun, 01 May 1988", time);
     }
     
     public static Date toDate(String date) {
