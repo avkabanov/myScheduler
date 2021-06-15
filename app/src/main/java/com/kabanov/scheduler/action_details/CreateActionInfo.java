@@ -2,15 +2,23 @@ package com.kabanov.scheduler.action_details;
 
 import com.kabanov.scheduler.data.NewAction;
 import com.kabanov.scheduler.exceptions.ValidationException;
+import java.util.Date;
 
 public class CreateActionInfo extends BaseActionInfo {
     
     @Override
     protected void enrichWithResult(Extras extras) throws ValidationException {
+        String actionName = getActionName();
+        validateActionName(actionName);
+        Integer executionInterval = getExecutionInterval();
+        validateExecutionInterval(executionInterval);
+        Date lastExecutedDate = getLastExecutedDate();
+        
+        validateLastExecutionDate(lastExecutedDate);
         extras.setNewAction(new NewAction(
-                getActionName(),
-                getExecutionInterval(),
-                getLastExecutedDate()
+                actionName,
+                executionInterval,
+                lastExecutedDate
         ));        
     }
 

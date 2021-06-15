@@ -160,7 +160,7 @@ public abstract class BaseActionInfo extends AppCompatActivity {
         try {
             return Integer.parseInt(value);
         } catch (Exception e) {
-            throw new ValidationException("Can not parse execution interval: " + value);
+            throw new ValidationException(String.format("Execution interval must be a number: '%s'", value));
         }
     }
 
@@ -177,6 +177,24 @@ public abstract class BaseActionInfo extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    protected void validateActionName(String actionName) throws ValidationException {
+        if (actionName.trim().isEmpty()) {
+            throw new ValidationException("Action name can not be empty");
+        }
+    }
+
+    protected void validateExecutionInterval(Integer value) throws ValidationException {
+        if (value == null) {
+            throw new ValidationException("Execution interval can not be empty");
+        }
+    }
+
+    protected void validateLastExecutionDate(Date date) throws ValidationException {
+        if (date == null) {
+            throw new ValidationException("Last execution date can not be empty");
+        }
     }
 
     protected abstract void enrichWithResult(Extras extras) throws ValidationException;
